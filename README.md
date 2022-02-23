@@ -1,2 +1,2 @@
 # Catan
-UR MO,M
+ur mom
