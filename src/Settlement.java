@@ -1,4 +1,4 @@
-/*public class Settlement extends Comparable {
+public class Settlement extends Comparable {
 
     Player owner;
     int tier;
@@ -19,4 +19,3 @@
         return 0;
     }
 }
-*/
