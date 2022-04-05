@@ -1,4 +1,4 @@
-/*public class Settlement extends Comparable {
+public class Settlement {
 
     Player owner;
     int tier;
@@ -10,13 +10,11 @@
         owner = o;
         row = r;
         col = c;
-        main.board[r][c].addSettlement(this);
+        //main.board[r][c].addSettlement(this);
     }
 
 
-    @Override
     public int compareTo(Object o) {
         return 0;
     }
 }
-*/
