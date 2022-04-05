@@ -1,4 +1,4 @@
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class Tile {
 
@@ -11,4 +11,3 @@ public class Tile {
     int pipNumber;
 
 }
-*/
