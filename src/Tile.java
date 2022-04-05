@@ -10,4 +10,9 @@ public class Tile {
 
     int pipNumber;
 
+    public Tile(int x, int y) {
+        row = x;
+        col = y;
+    }
+
 }
