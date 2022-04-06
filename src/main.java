@@ -50,8 +50,7 @@ public class main {
         for (int i = 2; i < 43; i += 2) {
             c = 3 * (i / 9) + 2;
             r = i % 9 + 1;
-            //board[r][c].distributeResources();
-            board[r][c] = new Tile();
+            board[r][c].distributeResources();
         }
     }
 
