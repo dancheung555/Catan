@@ -1,3 +1,4 @@
+
 public class Settlement {
 
     Player owner;
@@ -13,8 +14,12 @@ public class Settlement {
         //main.board[r][c].addSettlement(this);
     }
 
+    public Player getOwner() { return owner; }
+    public int getTier() { return tier; }
 
     public int compareTo(Object o) {
         return 0;
     }
+
+
 }

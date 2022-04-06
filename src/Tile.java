@@ -10,8 +10,21 @@ public class Tile {
 
     int pipNumber;
 
-    public Tile() {
-
+    public Tile(int x, int y) {
+        row = x;
+        col = y;
     }
+
+    public int getPipNumber() {
+        return pipNumber;
+    }
+
+    public void distributeResources() {
+        for (Settlement s: settlements) {
+            s.getOwner().addResourceCard(resourceType, s.getTier());
+        }
+    }
+
+
 
 }

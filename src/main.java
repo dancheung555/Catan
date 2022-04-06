@@ -6,6 +6,9 @@ import static java.lang.System.*;
 public class main {
 
     static Tile[][] board = new Tile[11][17];
+    static ArrayList<Port> ports = new ArrayList<Port>();
+
+    int robberx, robbery;
 
 
     public static void main(String[] args) {
@@ -24,6 +27,14 @@ public class main {
 
         System.out.println(map);
         */
+
+
+
+
+
+
+
+
         boolean running = false;
 
         while (running) {
@@ -50,23 +61,56 @@ public class main {
         for (int i = 2; i < 43; i += 2) {
             c = 3 * (i / 9) + 2;
             r = i % 9 + 1;
-            board[r][c].distributeResources();
+            if (board[r][c].getPipNumber() == roll)
+                board[r][c].distributeResources();
         }
     }
 
     public static void tradePlayers(Player a, Player b, ArrayList<ResourceCard> aOffer, ArrayList<ResourceCard> bOffer) {
-
+        for (ResourceCard rc: aOffer) {
+            a.removeResourceCard(rc, 1);
+            b.addResourceCard(rc, 1);
+        }
+        for (ResourceCard rc: bOffer) {
+            b.removeResourceCard(rc, 1);
+            a.addResourceCard(rc, 1);
+        }
     }
 
     public static void tradeBank(Player p, ArrayList<ResourceCard> offer, ResourceCard receipt) {
-
+        ResourceCard type = offer.get(0);
+        int count = 0;
+        for (ResourceCard rc: offer) {
+            if (rc.equals(type)) {
+                count++;
+            }
+        }
+        for (Port port: ports) {
+            if (port.getIntersection().getSettlement().getOwner().equals(p)) {
+                if (port.getSpecialty().equals(type) && count > 1) {
+                    p.removeResourceCard(type, 2);
+                    return;
+                }
+                else if (port.getSpecialty() == null && count > 2) {
+                    p.removeResourceCard(type, 3);
+                    return;
+                }
+            }
+        }
+        if (count > 3)
+            p.removeResourceCard(type, 4);
     }
 
+    // Includes buying development cards
     public static void build(Player p, String type) {
 
     }
 
+
+
     public static void moveRobber(Player p, int x, int y) {
+
+
 
     }
 

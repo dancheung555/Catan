@@ -18,7 +18,7 @@ public class Intersection {
         settlement = s;
     }
 
-
+    public Settlement getSettlement() { return settlement; }
 
 
 

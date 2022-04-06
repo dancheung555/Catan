@@ -2,6 +2,7 @@ public class Port {
 
     ResourceCard specialty;
     int offer;
+    Intersection intersection;
 
     int row;
     int col;
@@ -28,4 +29,7 @@ public class Port {
     public int getCol() {
         return col;
     }
+
+    public Intersection getIntersection() { return intersection; }
+
 }

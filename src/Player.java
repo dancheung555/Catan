@@ -1,16 +1,13 @@
 import java.util.ArrayList;
-
 public class Player {
-
     String color;
     ArrayList<ResourceCard> resourceHand;
     ArrayList<DevelopmentCard> developmentCardHand;
-
     int victoryPoints;
     int longestRoadLength;
     int knightsPlayed;
-
-    public Player(String c) {
+    public Player(String c)
+    {
         color = c;
     }
 
