@@ -12,7 +12,7 @@ public class mainPanel extends JPanel implements MouseListener {
     }
     public void paint(Graphics g)
     {
-        g.setColor(new Color(0, 204, 255));
+        g.setColor(new Color(0, 140, 240));
         g.fillRect(0,0, getWidth(), getHeight());
     }
     public void mousePressed(MouseEvent e) {}
