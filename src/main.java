@@ -41,8 +41,7 @@ public class main {
 
         }
 
-        distributeResources(rollDie());
-        tempdisplayshittyboard();
+
 
 
     }
@@ -101,11 +100,17 @@ public class main {
             p.removeResourceCard(type, 4);
     }
 
-    // Includes buying development cards
-    public static void build(Player p, String type) {
+    public static void buildSettlement(Player p, int x, int y) {
 
     }
 
+    public static void buildCity(Player p, int x, int y) {
+
+    }
+
+    public static void buildRoad(Player p, int x1, int y1, int x2, int y2) {
+
+    }
 
 
     public static void moveRobber(Player p, int x, int y) {
@@ -135,8 +140,8 @@ public class main {
     }
 
     public static void tempdisplayshittyboard() {
-        for (int r = 0; r < 11; r++) {
-            for (int c = 0; c < 17; c++) {
+        for (int r = 0; r < 17; r++) {
+            for (int c = 0; c < 11; c++) {
                 if (board[r][c] == null) {
                     out.print("•");
                 }
