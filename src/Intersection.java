@@ -10,8 +10,7 @@ public class Intersection extends Tile {
     Port p;
 
     public Intersection(int r, int c) {
-        row = r;
-        col = c;
+        super(r, c);
     }
 
     public void addSettlement(Settlement s) {

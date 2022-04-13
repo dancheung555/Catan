@@ -10,6 +10,11 @@ public class Tile {
 
     int pipNumber;
 
+    public Tile(int x, int y) {
+        row = x;
+        col = y;
+    }
+
     public Tile(int x, int y, ResourceCard rType, int pip) {
         row = x;
         col = y;
