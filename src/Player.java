@@ -3,6 +3,7 @@ public class Player {
     String color;
     ArrayList<ResourceCard> resourceHand;
     ArrayList<DevelopmentCard> developmentCardHand;
+    ArrayList<Settlement> settlements;
     int victoryPoints;
     int longestRoadLength;
     int knightsPlayed;
@@ -54,6 +55,9 @@ public class Player {
 
     public int getLongestRoadLength() {
         return longestRoadLength;
+    }
+
+    public void updateLongestRoad() {
     }
 
     public int getKnightsPlayed() {

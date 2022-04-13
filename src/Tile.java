@@ -15,4 +15,23 @@ public class Tile {
         col = y;
     }
 
+    public Tile(int x, int y, ResourceCard rType, int pip) {
+        row = x;
+        col = y;
+        resourceType = rType;
+        pipNumber = pip;
+    }
+
+    public int getPipNumber() {
+        return pipNumber;
+    }
+
+    public void distributeResources() {
+        for (Settlement s: settlements) {
+            s.getOwner().addResourceCard(resourceType, s.getTier());
+        }
+    }
+
+
+
 }
