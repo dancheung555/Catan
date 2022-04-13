@@ -7,12 +7,12 @@ public class main {
 
     static Tile[][] board = new Tile[11][17];
     static ArrayList<Port> ports = new ArrayList<Port>();
+    static ArrayList<Player> players = new ArrayList<Player>();
 
-    int robberx, robbery;
 
 
     public static void main(String[] args) {
-        //mainFrame main = new mainFrame("Catan");
+        mainFrame main = new mainFrame("Catan");
 
         /* For testing roll die distributions
         int roll = 0;
@@ -29,6 +29,8 @@ public class main {
         */
 
 
+        int robberx, robbery;
+
 
 
 
@@ -38,6 +40,9 @@ public class main {
         boolean running = false;
 
         while (running) {
+
+
+
 
         }
 
@@ -115,12 +120,10 @@ public class main {
 
     public static void moveRobber(Player p, int x, int y) {
 
-
-
     }
 
     public static void steal(Player stealer, Player victim) {
-
+        stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
     }
 
     public static void halveResources() {
@@ -151,4 +154,9 @@ public class main {
             out.println("");
         }
     }
+
+    public static void createBoard() {
+
+    }
+
 }

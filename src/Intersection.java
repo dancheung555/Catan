@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Intersection {
+public class Intersection extends Tile {
 
     int row;
     int col;
