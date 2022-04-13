@@ -1,8 +1,8 @@
 import javax.swing.JFrame;
 public class mainFrame extends JFrame
 {
-    private static final int WIDTH = 1440;
-    private static final int HEIGHT = 900;
+    private static final int WIDTH = 1080;
+    private static final int HEIGHT = 1920;
     public mainFrame(String title)
     {
         super(title);
