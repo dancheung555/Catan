@@ -129,6 +129,11 @@ public class main {
         return false;
     }
 
+    public static boolean checkRoads(Player p, int x, int y) {
+
+        return false;
+    }
+
     public static void buildSettlement(Player p, int x, int y) {
 
     }

@@ -9,6 +9,7 @@ public class mainFrame extends JFrame
         setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(new mainPanel());
+        setResizable(false);
         setVisible(true);
     }
 }
