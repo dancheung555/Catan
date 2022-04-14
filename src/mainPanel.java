@@ -48,7 +48,7 @@ public class mainPanel extends JPanel implements MouseListener {
     public void paint(Graphics g)
     {
         g.setColor(new Color(0, 140, 240));
-        g.fillRect(0,0, getWidth(), getHeight());
+        g.fillRect(0,0, 960, 540);
         g.setColor(Color.BLUE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Settler 1", 0,40);
@@ -91,7 +91,9 @@ public class mainPanel extends JPanel implements MouseListener {
         }
         for(int i = 0; i<5; i++)
             g.drawImage(tiles.pop(), i*90+480,218, 90,104,null);
-        g.fillRect(885,400,60,20);
+        g.fillRect(885,450,60,20);
+        g.fillRect(885, 480,60,20);
+        g.fillRect(885, 510,60,20);
     }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
