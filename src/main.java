@@ -1,6 +1,8 @@
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Stack;
+
 import static java.lang.System.*;
 
 public class main {
@@ -157,6 +159,30 @@ public class main {
     }
 
     public static void createBoard() {
+        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        for (int i = 0; i < 4; i++) {
+            tiles.add(new Tile(ResourceCard.WOOD));
+            tiles.add(new Tile(ResourceCard.WHEAT));
+            tiles.add(new Tile(ResourceCard.SHEEP));
+            tiles.add(new Tile(ResourceCard.ORE));
+            tiles.add(new Tile(ResourceCard.BRICK));
+        }
+        tiles.remove(tiles.size() - 1);
+        tiles.remove(tiles.size() - 1);
+        tiles.add(new Tile());
+
+        Stack<Tile> randoTiles = new Stack<Tile>();
+        for (int i = 17; i > 0; i++) {
+            randoTiles.add(tiles.remove((int) (Math.random() * i)));
+        }
+
+        int[] pipOrder = {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
+        int p = 0;
+        while (p < 18) {
+            if (randoTiles.peek().getResourceType() != null) {
+
+            }
+        }
 
     }
 
