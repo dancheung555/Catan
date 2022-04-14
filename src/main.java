@@ -106,6 +106,29 @@ public class main {
             p.removeResourceCard(type, 4);
     }
 
+    //(1) check resources, (2) check roads, (3) displaying it
+    //tier = 0 means road, tier = 1 means settlement, tier = 2 means city
+    public static boolean checkResources(Player p, int tier) {
+        int BrickCount = p.countResources(ResourceCard.BRICK);
+        int WoodCount = p.countResources(ResourceCard.WOOD);
+        int SheepCount = p.countResources(ResourceCard.SHEEP);
+        int WheatCount = p.countResources(ResourceCard.WHEAT);
+        int OreCount = p.countResources(ResourceCard.ORE);
+        //check roads
+        if(tier == 0) {
+            if(BrickCount>=1 && WoodCount>=1) { return true; } else { return false; }
+        }
+        //check settlement
+        if(tier == 0) {
+            if(BrickCount>=1 && WoodCount>=1 && SheepCount>=1 && WheatCount>=1) { return true; } else { return false; }
+        }
+        //check city
+        if(tier == 0) {
+            if(OreCount >= 3 && WheatCount>=2) { return true; } else { return false; }
+        }
+        return false;
+    }
+
     public static void buildSettlement(Player p, int x, int y) {
 
     }
