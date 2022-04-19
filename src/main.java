@@ -34,7 +34,7 @@ public class main {
         int robberx, robbery;
 
 
-
+        createBoard();
 
 
 
@@ -172,7 +172,7 @@ public class main {
         tiles.add(new Tile());
 
         Stack<Tile> randoTiles = new Stack<Tile>();
-        for (int i = 17; i > 0; i++) {
+        for (int i = 19; i > 0; i--) {
             randoTiles.add(tiles.remove((int) (Math.random() * i)));
         }
 
@@ -180,10 +180,17 @@ public class main {
         int p = 0;
         while (p < 18) {
             if (randoTiles.peek().getResourceType() != null) {
-
+                randoTiles.peek().setPipNumber(pipOrder[p]);
+                tiles.add(randoTiles.pop());
+                p++;
             }
+            else
+                tiles.add(randoTiles.pop());
         }
 
+        for (Tile t: tiles) {
+            out.println("" + t.getResourceType() + " \t" + t.getPipNumber());
+        }
     }
 
 }

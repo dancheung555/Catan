@@ -34,6 +34,10 @@ public class Tile {
         return pipNumber;
     }
 
+    public void setPipNumber(int p) {
+        pipNumber = p;
+    }
+
     public void distributeResources() {
         for (Settlement s: settlements) {
             s.getOwner().addResourceCard(resourceType, s.getTier());
