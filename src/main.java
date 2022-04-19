@@ -191,6 +191,11 @@ public class main {
         for (Tile t: tiles) {
             out.println("" + t.getResourceType() + " \t" + t.getPipNumber());
         }
+
+
+
+
+
     }
 
 }
