@@ -35,7 +35,7 @@ public class main {
 
 
         createBoard();
-
+        tempdisplayshittyboard();
 
 
 
@@ -146,13 +146,17 @@ public class main {
     }
 
     public static void tempdisplayshittyboard() {
-        for (int r = 0; r < 17; r++) {
-            for (int c = 0; c < 11; c++) {
-                if (board[r][c] == null) {
-                    out.print("•");
+        for (int x = 0; x < 11; x++) {
+            for (int y = 0; y < 17; y++) {
+                if (board[x][y] == null) {
+                    out.print("••");
                 }
-                else
-                    out.print("T");
+                else {
+                    if (board[x][y].getPipNumber() / 10 == 1) {
+
+                    }
+                    else
+                }
             }
             out.println("");
         }
@@ -192,9 +196,44 @@ public class main {
             out.println("" + t.getResourceType() + " \t" + t.getPipNumber());
         }
 
+        board[3][2] = tiles.remove(0);
+        board[2][5] = tiles.remove(0);
+        board[1][8] = tiles.remove(0);
+        board[2][11] = tiles.remove(0);
+        board[3][14] = tiles.remove(0);
+        board[5][14] = tiles.remove(0);
+        board[7][14] = tiles.remove(0);
+        board[8][11] = tiles.remove(0);
+        board[9][8] = tiles.remove(0);
+        board[8][5] = tiles.remove(0);
+        board[7][2] = tiles.remove(0);
+        board[5][2] = tiles.remove(0);
+        board[4][5] = tiles.remove(0);
+        board[3][8] = tiles.remove(0);
+        board[4][11] = tiles.remove(0);
+        board[6][11] = tiles.remove(0);
+        board[7][8] = tiles.remove(0);
+        board[6][5] = tiles.remove(0);
+        board[5][8] = tiles.remove(0);
 
+        ArrayList<Port> toRandomizePorts = new ArrayList<Port>();
+        toRandomizePorts.add(new Port(null, 3));
+        toRandomizePorts.add(new Port(null, 3));
+        toRandomizePorts.add(new Port(null, 3));
+        toRandomizePorts.add(new Port(null, 3));
+        toRandomizePorts.add(new Port(ResourceCard.BRICK, 2));
+        toRandomizePorts.add(new Port(ResourceCard.ORE, 2));
+        toRandomizePorts.add(new Port(ResourceCard.SHEEP, 2));
+        toRandomizePorts.add(new Port(ResourceCard.WHEAT, 2));
+        toRandomizePorts.add(new Port(ResourceCard.WOOD, 2));
 
+        for (int i = 9; i > 0; i--) {
+            ports.add(toRandomizePorts.remove((int) (Math.random() * i)));
+        }
 
+        for (Port po: ports) {
+            out.println("" + po.getSpecialty() + " \t" + po.getOffer());
+        }
 
     }
 

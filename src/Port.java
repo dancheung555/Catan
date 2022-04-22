@@ -7,6 +7,11 @@ public class Port {
     int row;
     int col;
 
+    public Port(ResourceCard s, int o) {
+        specialty = s;
+        offer = o;
+    }
+
     public Port(ResourceCard s, int o, int r, int c) {
         specialty = s;
         offer = o;
