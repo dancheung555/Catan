@@ -1,7 +1,4 @@
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 import static java.lang.System.*;
 
@@ -14,7 +11,7 @@ public class main {
 
 
     public static void main(String[] args) {
-        mainFrame main = new mainFrame("Catan");
+
 
         /* For testing roll die distributions
         int roll = 0;
@@ -37,7 +34,7 @@ public class main {
         createBoard();
         tempdisplayshittyboard();
 
-
+        mainFrame main = new mainFrame("Catan");
 
 
         boolean running = false;
@@ -146,16 +143,25 @@ public class main {
     }
 
     public static void tempdisplayshittyboard() {
-        for (int x = 0; x < 11; x++) {
-            for (int y = 0; y < 17; y++) {
-                if (board[x][y] == null) {
-                    out.print("••");
+        Tile temp;
+        for (int y = 0; y < 17; y++) {
+            for (int x = 0; x < 11; x++) {
+                temp = board[x][y];
+                if (temp == null) {
+                    out.print(" •• ");
                 }
                 else {
-                    if (board[x][y].getPipNumber() / 10 == 1) {
-
+                    try {
+                        if (temp.getPipNumber() / 10 == 1) {
+                            out.print(temp.getResourceType().toString().substring(0, 1) + " " + temp.getPipNumber());
+                        }
+                        else {
+                            out.print(temp.getResourceType().toString().substring(0, 1) + " 0" + temp.getPipNumber());
+                        }
                     }
-                    else
+                    catch (Exception e) {
+                        out.print("D 00");
+                    }
                 }
             }
             out.println("");
@@ -175,21 +181,15 @@ public class main {
         tiles.remove(tiles.size() - 1);
         tiles.add(new Tile());
 
-        Stack<Tile> randoTiles = new Stack<Tile>();
-        for (int i = 19; i > 0; i--) {
-            randoTiles.add(tiles.remove((int) (Math.random() * i)));
-        }
+        Collections.shuffle(tiles);
 
         int[] pipOrder = {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
         int p = 0;
-        while (p < 18) {
-            if (randoTiles.peek().getResourceType() != null) {
-                randoTiles.peek().setPipNumber(pipOrder[p]);
-                tiles.add(randoTiles.pop());
+        for (Tile t: tiles){
+            if (t.getResourceType() != null) {
+                t.setPipNumber(pipOrder[p]);
                 p++;
             }
-            else
-                tiles.add(randoTiles.pop());
         }
 
         for (Tile t: tiles) {
@@ -216,24 +216,17 @@ public class main {
         board[6][5] = tiles.remove(0);
         board[5][8] = tiles.remove(0);
 
-        ArrayList<Port> toRandomizePorts = new ArrayList<Port>();
-        toRandomizePorts.add(new Port(null, 3));
-        toRandomizePorts.add(new Port(null, 3));
-        toRandomizePorts.add(new Port(null, 3));
-        toRandomizePorts.add(new Port(null, 3));
-        toRandomizePorts.add(new Port(ResourceCard.BRICK, 2));
-        toRandomizePorts.add(new Port(ResourceCard.ORE, 2));
-        toRandomizePorts.add(new Port(ResourceCard.SHEEP, 2));
-        toRandomizePorts.add(new Port(ResourceCard.WHEAT, 2));
-        toRandomizePorts.add(new Port(ResourceCard.WOOD, 2));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(ResourceCard.BRICK, 2));
+        ports.add(new Port(ResourceCard.ORE, 2));
+        ports.add(new Port(ResourceCard.SHEEP, 2));
+        ports.add(new Port(ResourceCard.WHEAT, 2));
+        ports.add(new Port(ResourceCard.WOOD, 2));
+        Collections.shuffle(ports);
 
-        for (int i = 9; i > 0; i--) {
-            ports.add(toRandomizePorts.remove((int) (Math.random() * i)));
-        }
-
-        for (Port po: ports) {
-            out.println("" + po.getSpecialty() + " \t" + po.getOffer());
-        }
 
     }
 
