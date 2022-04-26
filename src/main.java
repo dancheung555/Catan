@@ -227,6 +227,16 @@ public class main {
         ports.add(new Port(ResourceCard.WOOD, 2));
         Collections.shuffle(ports);
 
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+
+
 
     }
 

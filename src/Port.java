@@ -4,19 +4,19 @@ public class Port {
     int offer;
     Intersection intersection;
 
-    int row;
-    int col;
+    int x1, x2;
+    int y1, y2;
 
     public Port(ResourceCard s, int o) {
         specialty = s;
         offer = o;
     }
 
-    public Port(ResourceCard s, int o, int r, int c) {
-        specialty = s;
-        offer = o;
-        row = r;
-        col = c;
+    public void setCoords(int x1, int y1, int x2, int y2) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
     }
 
     public ResourceCard getSpecialty() {
@@ -27,11 +27,11 @@ public class Port {
         return offer;
     }
 
-    public int getRow() {
+    public int getX() {
         return row;
     }
 
-    public int getCol() {
+    public int getY() {
         return col;
     }
 
