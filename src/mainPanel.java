@@ -7,6 +7,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 import java.util.Collections;
+
+import static java.lang.System.out;
+
 public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
     private Stack<BufferedImage> tiles = new Stack<>();
@@ -56,21 +59,21 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,50,0,60);
         g.drawLine(10,50,20,60);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,50,26,39,null);
+            g.drawImage(clayCard, i*13+30,50,34,52,null);
         g.setColor(Color.RED);
         g.drawString("Settler 2", 0,175);
         g.drawLine(10,185,10,215);
         g.drawLine(10,185,0,195);
         g.drawLine(10,185,20,195);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,185,26,39,null);
+            g.drawImage(clayCard, i*13+30,185,34,52,null);
         g.setColor(Color.GREEN);
         g.drawString("Settler 3", 0,310);
         g.drawLine(10,320,10,350);
         g.drawLine(10,320,0,330);
         g.drawLine(10,320,20,330);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,320,26,39,null);
+            g.drawImage(clayCard, i*13+30,320,34,52,null);
         g.setColor(Color.YELLOW);
         g.drawString("Settler 4", 0,445);
         g.drawLine(10,455,10,485);
@@ -78,7 +81,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,455,20,465);
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,455,26,39,null);
+            g.drawImage(clayCard, i*13+30,455,34,52,null);
         for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
@@ -94,6 +97,9 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885,450,60,20);
         g.fillRect(885, 480,60,20);
         g.fillRect(885, 510,60,20);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+        g.drawString("Road", 885,470);
     }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
