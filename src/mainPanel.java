@@ -40,7 +40,7 @@ public class mainPanel extends JPanel implements MouseListener {
             pips[4] = ImageIO.read(new File("4 pip.png"));
             pips[5] = ImageIO.read(new File("5 pip.png"));
             pips[6] = ImageIO.read(new File("6 pip.png"));
-            pips[7] = ImageIO.read(new File("7 pip.png"));
+            pips[7] = null;
             pips[8] = ImageIO.read(new File("8 pip.png"));
             pips[9] = ImageIO.read(new File("9 pip.png"));
             pips[10] = ImageIO.read(new File("10 pip.png"));
@@ -129,11 +129,10 @@ public class mainPanel extends JPanel implements MouseListener {
             temp = main.board[x][y];
             if (temp != null) {
                 res = temp.getResourceType();
-                pip = temp.getPipNumber();
 
                 if (res == null)
-
-                if (res.equals(ResourceCard.BRICK))
+                    img = desert;
+                else if (res.equals(ResourceCard.BRICK))
                     img = clay;
                 else if (res.equals(ResourceCard.ORE))
                     img = mountains;
@@ -144,8 +143,10 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * 98 - 49, y * 112 - 56, 98, 112, null);
-                g.drawImage(pips[pip], x * 98 - 20, y * 112 - 20, 40, 40, null);
+                g.drawImage(img, x * 98 - 98, y * 56 - 112, 196, 224, null);
+
+                pip = temp.getPipNumber();
+                g.drawImage(pips[pip], x * 98 - 40, y * 56 - 40, 80, 80, null);
             }
         }
 
