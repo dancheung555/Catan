@@ -27,14 +27,6 @@ public class Port {
         return offer;
     }
 
-    public int getX() {
-        return row;
-    }
-
-    public int getY() {
-        return col;
-    }
-
     public Intersection getIntersection() { return intersection; }
 
 }
