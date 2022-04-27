@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Stack;
 import java.util.Collections;
 public class mainPanel extends JPanel implements MouseListener {
-    private BufferedImage clay, forest, desert, mountains, grassland, wheat, sand, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
+    private BufferedImage clay, forest, desert, mountains, grassland, wheat, background, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
     private BufferedImage[] pips = new BufferedImage[13];
     private Stack<BufferedImage> tiles = new Stack<>();
 
@@ -53,7 +53,7 @@ public class mainPanel extends JPanel implements MouseListener {
             pips[11] = ImageIO.read(new File("11 pip.png"));
             pips[12] = ImageIO.read(new File("12 pip.png"));
 
-            sand = ImageIO.read(new File("sand.png"));
+            background = ImageIO.read(new File("board background.png"));
 
             clayCard = ImageIO.read(new File("Clay Card.png"));
             wheatCard = ImageIO.read(new File("Wheat Card.png"));
@@ -125,7 +125,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885, 510,60,20);*/
 
 
-        g.drawImage(sand, 5 * w + 260, HEIGHT / 2 - 508, 1040, 956, null);
+        g.drawImage(background, 5 * w + 274, HEIGHT / 2 - 508, 1040, 956, null);
 
         int x, y;
         Tile temp = null;
