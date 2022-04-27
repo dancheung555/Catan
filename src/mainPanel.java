@@ -7,9 +7,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 import java.util.Collections;
-
-import static java.lang.System.out;
-
 public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
     private Stack<BufferedImage> tiles = new Stack<>();
