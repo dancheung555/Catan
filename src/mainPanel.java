@@ -12,7 +12,6 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage[] pips = new BufferedImage[13];
     private Stack<BufferedImage> tiles = new Stack<>();
 
-    final int WIDTH = 1920;
     final int HEIGHT = 1080;
     private int h = (HEIGHT - 120) / 17;
     private int w = (int) ((HEIGHT - 120) * 1.12 / 11);
@@ -125,9 +124,9 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885, 510,60,20);*/
 
 
-        g.drawImage(background, 5 * w + 274, HEIGHT / 2 - 508, 1040, 956, null);
+        //g.drawImage(background, 0, 0, 1080, 1080, null);
 
-        int x, y;
+        /*int x, y;
         Tile temp = null;
         Image img = null;
         ResourceCard res;
@@ -153,12 +152,12 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 780, y * h - 2 * h + 60, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 60, y * h - 2 * h + 60, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 740, y * h - 40 + 60, 80, 80, null);
+                g.drawImage(pips[pip], x * w + 20, y * h + 20, 80, 80, null);
             }
-        }
+        }*/
 
 
     }
