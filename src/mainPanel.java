@@ -83,21 +83,21 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,50,0,60);
         g.drawLine(10,50,20,60);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,50,35,52,null);
+            g.drawImage(clayCard, i*13+30,50,52,78,null);
         g.setColor(Color.RED);
         g.drawString("Settler 2", 0,175);
         g.drawLine(10,185,10,215);
         g.drawLine(10,185,0,195);
         g.drawLine(10,185,20,195);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,185,35,52,null);
+            g.drawImage(clayCard, i*13+30,185,52,78,null);
         g.setColor(Color.GREEN);
         g.drawString("Settler 3", 0,310);
         g.drawLine(10,320,10,350);
         g.drawLine(10,320,0,330);
         g.drawLine(10,320,20,330);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,320,35,52,null);
+            g.drawImage(clayCard, i*13+30,320,52,78,null);
         g.setColor(Color.YELLOW);
         g.drawString("Settler 4", 0,445);
         g.drawLine(10,455,10,485);
@@ -105,7 +105,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,455,20,465);
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,455,35,52,null);
+            g.drawImage(clayCard, i*13+30,455,52,78,null);
         /*for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
