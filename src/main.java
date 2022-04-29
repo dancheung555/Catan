@@ -1,6 +1,5 @@
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
+
 import static java.lang.System.*;
 
 public class main {
@@ -12,7 +11,7 @@ public class main {
 
 
     public static void main(String[] args) {
-        mainFrame main = new mainFrame("Catan");
+
 
         /* For testing roll die distributions
         int roll = 0;
@@ -32,9 +31,10 @@ public class main {
         int robberx, robbery;
 
 
+        createBoard();
+        tempdisplayshittyboard();
 
-
-
+        mainFrame main = new mainFrame("Catan");
 
 
 
@@ -172,19 +172,100 @@ public class main {
     }
 
     public static void tempdisplayshittyboard() {
-        for (int r = 0; r < 17; r++) {
-            for (int c = 0; c < 11; c++) {
-                if (board[r][c] == null) {
-                    out.print("•");
+        Tile temp;
+        for (int y = 0; y < 17; y++) {
+            for (int x = 0; x < 11; x++) {
+                temp = board[x][y];
+                if (temp == null) {
+                    out.print(" •• ");
                 }
-                else
-                    out.print("T");
+                else {
+                    try {
+                        if (temp.getPipNumber() / 10 == 1) {
+                            out.print(temp.getResourceType().toString().substring(0, 1) + " " + temp.getPipNumber());
+                        }
+                        else {
+                            out.print(temp.getResourceType().toString().substring(0, 1) + " 0" + temp.getPipNumber());
+                        }
+                    }
+                    catch (Exception e) {
+                        out.print("D 00");
+                    }
+                }
             }
             out.println("");
         }
     }
 
     public static void createBoard() {
+        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        for (int i = 0; i < 4; i++) {
+            tiles.add(new Tile(ResourceCard.WOOD));
+            tiles.add(new Tile(ResourceCard.WHEAT));
+            tiles.add(new Tile(ResourceCard.SHEEP));
+            tiles.add(new Tile(ResourceCard.ORE));
+            tiles.add(new Tile(ResourceCard.BRICK));
+        }
+        tiles.remove(tiles.size() - 1);
+        tiles.remove(tiles.size() - 1);
+        tiles.add(new Tile());
+
+        Collections.shuffle(tiles);
+
+        int[] pipOrder = {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
+        int p = 0;
+        for (Tile t: tiles){
+            if (t.getResourceType() != null) {
+                t.setPipNumber(pipOrder[p]);
+                p++;
+            }
+        }
+
+        for (Tile t: tiles) {
+            out.println("" + t.getResourceType() + " \t" + t.getPipNumber());
+        }
+
+        board[3][2] = tiles.remove(0);
+        board[2][5] = tiles.remove(0);
+        board[1][8] = tiles.remove(0);
+        board[2][11] = tiles.remove(0);
+        board[3][14] = tiles.remove(0);
+        board[5][14] = tiles.remove(0);
+        board[7][14] = tiles.remove(0);
+        board[8][11] = tiles.remove(0);
+        board[9][8] = tiles.remove(0);
+        board[8][5] = tiles.remove(0);
+        board[7][2] = tiles.remove(0);
+        board[5][2] = tiles.remove(0);
+        board[4][5] = tiles.remove(0);
+        board[3][8] = tiles.remove(0);
+        board[4][11] = tiles.remove(0);
+        board[6][11] = tiles.remove(0);
+        board[7][8] = tiles.remove(0);
+        board[6][5] = tiles.remove(0);
+        board[5][8] = tiles.remove(0);
+
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(null, 3));
+        ports.add(new Port(ResourceCard.BRICK, 2));
+        ports.add(new Port(ResourceCard.ORE, 2));
+        ports.add(new Port(ResourceCard.SHEEP, 2));
+        ports.add(new Port(ResourceCard.WHEAT, 2));
+        ports.add(new Port(ResourceCard.WOOD, 2));
+        Collections.shuffle(ports);
+
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+        ports.get(0).setCoords(2, 1, 3, 0);
+
+
 
     }
 

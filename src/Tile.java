@@ -7,6 +7,14 @@ public class Tile {
     int col;
     int pipNumber;
 
+    public Tile() {
+        resourceType = null;
+    }
+
+    public Tile(ResourceCard rType) {
+        resourceType = rType;
+    }
+
     public Tile(int x, int y) {
         row = x;
         col = y;
@@ -23,10 +31,18 @@ public class Tile {
         return pipNumber;
     }
 
+    public void setPipNumber(int p) {
+        pipNumber = p;
+    }
+
     public void distributeResources() {
         for (Settlement s: settlements) {
             s.getOwner().addResourceCard(resourceType, s.getTier());
         }
+    }
+
+    public ResourceCard getResourceType() {
+        return resourceType;
     }
 
 

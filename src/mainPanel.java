@@ -8,8 +8,14 @@ import java.awt.event.MouseEvent;
 import java.util.Stack;
 import java.util.Collections;
 public class mainPanel extends JPanel implements MouseListener {
-    private BufferedImage clay, forest, desert, mountains, grassland, wheat, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
+    private BufferedImage clay, forest, desert, mountains, grassland, wheat, background, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
+    private BufferedImage[] pips = new BufferedImage[13];
     private Stack<BufferedImage> tiles = new Stack<>();
+
+    final int HEIGHT = 1080;
+    private int h = (HEIGHT - 120) / 17;
+    private int w = (int) ((HEIGHT - 120) * 1.12 / 11);
+
     public mainPanel()
     {
         try
@@ -31,12 +37,33 @@ public class mainPanel extends JPanel implements MouseListener {
             wheat = ImageIO.read(new File("Wheat.png"));
             for(int i = 0; i<4; i++)
                 tiles.push(wheat);
+
+            pips[0] = null;
+            pips[1] = null;
+            pips[2] = ImageIO.read(new File("2 pip.png"));
+            pips[3] = ImageIO.read(new File("3 pip.png"));
+            pips[4] = ImageIO.read(new File("4 pip.png"));
+            pips[5] = ImageIO.read(new File("5 pip.png"));
+            pips[6] = ImageIO.read(new File("6 pip.png"));
+            pips[7] = null;
+            pips[8] = ImageIO.read(new File("8 pip.png"));
+            pips[9] = ImageIO.read(new File("9 pip.png"));
+            pips[10] = ImageIO.read(new File("10 pip.png"));
+            pips[11] = ImageIO.read(new File("11 pip.png"));
+            pips[12] = ImageIO.read(new File("12 pip.png"));
+
+            background = ImageIO.read(new File("board background.png"));
+
             clayCard = ImageIO.read(new File("Clay Card.png"));
             wheatCard = ImageIO.read(new File("Wheat Card.png"));
             woodCard = ImageIO.read(new File("Wood Card.png"));
             oreCard = ImageIO.read(new File("Ore Card.png"));
             sheepCard = ImageIO.read(new File("Sheep Card.png"));
             buildingCost = ImageIO.read(new File("Building Costs.png"));
+
+
+
+
         }
         catch (Exception E)
         {
@@ -48,7 +75,8 @@ public class mainPanel extends JPanel implements MouseListener {
     public void paint(Graphics g)
     {
         g.setColor(new Color(0, 140, 240));
-        g.fillRect(0,0, 960, 540);
+        g.fillRect(0,0, WIDTH, HEIGHT);
+        /*
         g.setColor(Color.BLUE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Settler 1", 0,40);
@@ -56,21 +84,21 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,50,0,60);
         g.drawLine(10,50,20,60);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,50,34,52,null);
+            g.drawImage(clayCard, i*13+30,50,26,39,null);
         g.setColor(Color.RED);
         g.drawString("Settler 2", 0,175);
         g.drawLine(10,185,10,215);
         g.drawLine(10,185,0,195);
         g.drawLine(10,185,20,195);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,185,34,52,null);
+            g.drawImage(clayCard, i*13+30,185,26,39,null);
         g.setColor(Color.GREEN);
         g.drawString("Settler 3", 0,310);
         g.drawLine(10,320,10,350);
         g.drawLine(10,320,0,330);
         g.drawLine(10,320,20,330);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,320,34,52,null);
+            g.drawImage(clayCard, i*13+30,320,26,39,null);
         g.setColor(Color.YELLOW);
         g.drawString("Settler 4", 0,445);
         g.drawLine(10,455,10,485);
@@ -78,7 +106,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,455,20,465);
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,455,34,52,null);
+            g.drawImage(clayCard, i*13+30,455,26,39,null);
         for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
@@ -93,10 +121,45 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(tiles.pop(), i*90+480,218, 90,104,null);
         g.fillRect(885,450,60,20);
         g.fillRect(885, 480,60,20);
-        g.fillRect(885, 510,60,20);
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        g.drawString("Road", 885,470);
+        g.fillRect(885, 510,60,20);*/
+
+
+        //g.drawImage(background, 0, 0, 1080, 1080, null);
+
+        /*int x, y;
+        Tile temp = null;
+        Image img = null;
+        ResourceCard res;
+        int pip;
+        for (int i = 2; i < 43; i += 2) {
+            x = i % 9 + 1;
+            y = 3 * (i / 9) + 2;
+
+            temp = main.board[x][y];
+            if (temp != null) {
+                res = temp.getResourceType();
+
+                if (res == null)
+                    img = desert;
+                else if (res.equals(ResourceCard.BRICK))
+                    img = clay;
+                else if (res.equals(ResourceCard.ORE))
+                    img = mountains;
+                else if (res.equals(ResourceCard.SHEEP))
+                    img = grassland;
+                else if (res.equals(ResourceCard.WHEAT))
+                    img = wheat;
+                else if (res.equals(ResourceCard.WOOD))
+                    img = forest;
+
+                g.drawImage(img, x * w - w + 60, y * h - 2 * h + 60, 2 * w, 4 * h, null);
+
+                pip = temp.getPipNumber();
+                g.drawImage(pips[pip], x * w + 20, y * h + 20, 80, 80, null);
+            }
+        }*/
+
+
     }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}

@@ -3,5 +3,5 @@ public enum ResourceCard {
     ORE,
     SHEEP,
     WHEAT,
-    WOOD
+    WOOD,
 }
