@@ -22,7 +22,7 @@ public class playersPanel extends JPanel implements MouseListener {
 
     }
 
-    public void paint(Graphics g) {
+    /*public void paint(Graphics g) {
         int x = 30;
         int y = 30;
         for (Player p: main.players) {
@@ -40,7 +40,7 @@ public class playersPanel extends JPanel implements MouseListener {
                     img = forest;
             }
         }
-    }
+    }*/
 
 
     public void mousePressed(MouseEvent e) {}

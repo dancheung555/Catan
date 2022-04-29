@@ -12,9 +12,9 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage[] pips = new BufferedImage[13];
     private Stack<BufferedImage> tiles = new Stack<>();
 
-    final int HEIGHT = 1080;
-    private int h = (HEIGHT - 120) / 17;
-    private int w = (int) ((HEIGHT - 120) * 1.12 / 11);
+    final int HEIGHT = 540;
+    private int h = (HEIGHT - 60) / 17;
+    private int w = (int) ((HEIGHT - 60) * 1.12 / 11);
 
     public mainPanel()
     {
@@ -76,7 +76,6 @@ public class mainPanel extends JPanel implements MouseListener {
     {
         g.setColor(new Color(0, 140, 240));
         g.fillRect(0,0, WIDTH, HEIGHT);
-        /*
         g.setColor(Color.BLUE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Settler 1", 0,40);
@@ -84,21 +83,21 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,50,0,60);
         g.drawLine(10,50,20,60);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,50,26,39,null);
+            g.drawImage(clayCard, i*13+30,50,52,78,null);
         g.setColor(Color.RED);
         g.drawString("Settler 2", 0,175);
         g.drawLine(10,185,10,215);
         g.drawLine(10,185,0,195);
         g.drawLine(10,185,20,195);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,185,26,39,null);
+            g.drawImage(clayCard, i*13+30,185,52,78,null);
         g.setColor(Color.GREEN);
         g.drawString("Settler 3", 0,310);
         g.drawLine(10,320,10,350);
         g.drawLine(10,320,0,330);
         g.drawLine(10,320,20,330);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,320,26,39,null);
+            g.drawImage(clayCard, i*13+30,320,52,78,null);
         g.setColor(Color.YELLOW);
         g.drawString("Settler 4", 0,445);
         g.drawLine(10,455,10,485);
@@ -106,8 +105,8 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawLine(10,455,20,465);
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
-            g.drawImage(clayCard, i*13+30,455,26,39,null);
-        for(int i = 0; i<3; i++)
+            g.drawImage(clayCard, i*13+30,455,52,78,null);
+        /*for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
             g.drawImage(tiles.pop(), i*90+570,374, 90,104,null);
@@ -121,10 +120,10 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(tiles.pop(), i*90+480,218, 90,104,null);
         g.fillRect(885,450,60,20);
         g.fillRect(885, 480,60,20);
-        g.fillRect(885, 510,60,20);*/
+        g.fillRect(885, 510,60,20);
 
 
-        //g.drawImage(background, 0, 0, 1080, 1080, null);
+        g.drawImage(background, 0, 0, 1080, 1080, null);*/
 
         int x, y;
         Tile temp = null;
@@ -152,10 +151,10 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 60, y * h - 2 * h + 60, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 420, y * h - 2 * h + 60, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 20, y * h + 20, 80, 80, null);
+                g.drawImage(pips[pip], x * w + 400, y * h + 40, 40, 40, null);
             }
         }
 
