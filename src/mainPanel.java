@@ -151,10 +151,10 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 480, y * h - 2 * h + 30, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 450, y * h - 2 * h + 30, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 460, y * h + 10, 40, 40, null);
+                g.drawImage(pips[pip], x * w + 430, y * h + 10, 40, 40, null);
             }
         }
 
