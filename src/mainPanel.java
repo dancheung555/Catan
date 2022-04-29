@@ -126,7 +126,7 @@ public class mainPanel extends JPanel implements MouseListener {
 
         //g.drawImage(background, 0, 0, 1080, 1080, null);
 
-        /*int x, y;
+        int x, y;
         Tile temp = null;
         Image img = null;
         ResourceCard res;
@@ -157,7 +157,7 @@ public class mainPanel extends JPanel implements MouseListener {
                 pip = temp.getPipNumber();
                 g.drawImage(pips[pip], x * w + 20, y * h + 20, 80, 80, null);
             }
-        }*/
+        }
 
 
     }
