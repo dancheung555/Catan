@@ -19,7 +19,9 @@ public class Intersection extends Tile {
 
     public Settlement getSettlement() { return settlement; }
 
+    public void addPort() {
 
+    }
 
 
 }
