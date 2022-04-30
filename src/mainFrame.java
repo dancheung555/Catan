@@ -13,7 +13,6 @@ public class mainFrame extends JFrame
         super(title);
         setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mp.setBounds(780, 0, 1920, 1080);
         add(mp);
         setVisible(true);
     }
