@@ -8,6 +8,7 @@ public class main {
     static ArrayList<Port> ports = new ArrayList<Port>();
     static ArrayList<Player> players = new ArrayList<Player>();
 
+    static int robberx, robbery;
 
 
     public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class main {
         */
 
 
-        int robberx, robbery;
+
 
 
         createBoard();

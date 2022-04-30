@@ -9,12 +9,14 @@ import java.util.Stack;
 import java.util.Collections;
 public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat, background, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
+    private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
     private BufferedImage[] pips = new BufferedImage[13];
     private Stack<BufferedImage> tiles = new Stack<>();
 
-    final int HEIGHT = 1080;
-    private int h = (HEIGHT - 120) / 17;
-    private int w = (int) ((HEIGHT - 120) * 1.12 / 11);
+    final int HEIGHT = 540;
+    final int marg = 60;
+    private int h = (HEIGHT - marg) / 16;
+    private int w = (int) ((HEIGHT - marg) * 1.0825 / 10);
 
     public mainPanel()
     {
@@ -61,8 +63,11 @@ public class mainPanel extends JPanel implements MouseListener {
             sheepCard = ImageIO.read(new File("Sheep Card.png"));
             buildingCost = ImageIO.read(new File("Building Costs.png"));
 
-
-
+            brickicon = ImageIO.read(new File("icon brick.png"));
+            oreicon = ImageIO.read(new File("icon ore.png"));
+            sheepicon = ImageIO.read(new File("icon sheep.png"));
+            wheaticon = ImageIO.read(new File("icon wheat.png"));
+            woodicon = ImageIO.read(new File("icon wood.png"));
 
         }
         catch (Exception E)
@@ -74,9 +79,11 @@ public class mainPanel extends JPanel implements MouseListener {
     }
     public void paint(Graphics g)
     {
-        g.setColor(new Color(0, 140, 240));
-        g.fillRect(0,0, WIDTH, HEIGHT);
-        /*
+        g.setColor(Color.black);
+        g.drawLine(0, 540, 960, 540);
+        //g.setColor(new Color(0, 140, 240));
+        //g.fillRect(0,0, WIDTH, HEIGHT);
+
         g.setColor(Color.BLUE);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Settler 1", 0,40);
@@ -107,6 +114,8 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
             g.drawImage(clayCard, i*13+30,455,26,39,null);
+
+        /*
         for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
@@ -121,10 +130,11 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(tiles.pop(), i*90+480,218, 90,104,null);
         g.fillRect(885,450,60,20);
         g.fillRect(885, 480,60,20);
-        g.fillRect(885, 510,60,20);*/
+        g.fillRect(885, 510,60,20);
+        */
 
 
-        //g.drawImage(background, 0, 0, 1080, 1080, null);
+        g.drawImage(background, 345, 0, 600, 540, null);
 
         int x, y;
         Tile temp = null;
@@ -152,15 +162,63 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 60, y * h - 2 * h + 60, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 390, y * h - 2 * h + 30, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 20, y * h + 20, 80, 80, null);
+                g.drawImage(pips[pip], x * w + 370, y * h + 10, 40, 40, null);
             }
         }
 
+        int portpos[] = {
+                500, 20,
+                685, 20,
+                843, 110,
+                930, 270,
+                843, 430,
+                685, 520,
+                500, 520,
+                410, 360,
+                410, 180};
+        int portposI = 0;
+        int portx, porty;
+        Font portFont = new Font("Times New Roman", 0, 20);
+        FontMetrics portFontMetrics = getFontMetrics(portFont);
+        int portFontWidth;
+        Color portBrown = new Color(118, 80, 6);
+        g.setColor(Color.white);
+
+        for (Port p: main.ports) {
+            portx = portpos[portposI++];
+            porty = portpos[portposI++];
+            if (p.getSpecialty() == null) {
+                portFontWidth = portFontMetrics.stringWidth("3");
+                g.setColor(portBrown);
+                g.fillOval(portx - 10, porty - 10, 20, 20);
+                g.setColor(Color.white);
+                g.drawString("3", portx - portFontWidth / 2, porty + 2);
+            }
+            else {
+                portFontWidth = portFontMetrics.stringWidth("2");
+                if (p.getSpecialty().equals(ResourceCard.BRICK))
+                    g.drawImage(brickicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.ORE))
+                    g.drawImage(oreicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.SHEEP))
+                    g.drawImage(sheepicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.WHEAT))
+                    g.drawImage(wheaticon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.WOOD))
+                    g.drawImage(woodicon, portx - 10, porty - 10, 20, 20, null);
+                g.drawString("2", portx - portFontWidth / 2, porty + 2);
+            }
+        }
 
     }
+
+    public void repaint() {
+
+    }
+
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
