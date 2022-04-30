@@ -7,36 +7,29 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 import java.util.Collections;
+
+import static java.lang.System.out;
+
 public class mainPanel extends JPanel implements MouseListener {
-    private BufferedImage clay, forest, desert, mountains, grassland, wheat, background, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost;
+    private BufferedImage clay, forest, desert, mountains, grassland, wheat, background, clayCard, wheatCard, woodCard, oreCard, sheepCard, buildingCost, robber;
+    private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
     private BufferedImage[] pips = new BufferedImage[13];
-    private Stack<BufferedImage> tiles = new Stack<>();
 
     final int HEIGHT = 540;
-    private int h = (HEIGHT - 60) / 17;
-    private int w = (int) ((HEIGHT - 60) * 1.12 / 11);
+    final int marg = 60;
+    private int h = (HEIGHT - marg) / 16;
+    private int w = (int) ((HEIGHT - marg) * 1.0825 / 10);
 
     public mainPanel()
     {
         try
         {
             clay = ImageIO.read(new File("Clay.png"));
-            for(int i = 0; i<3; i++)
-                tiles.push(clay);
             forest = ImageIO.read(new File("Forest.png"));
-            for(int i = 0; i<4; i++)
-                tiles.push(forest);
             desert = ImageIO.read(new File("Desert.png"));
-            tiles.push(desert);
             mountains = ImageIO.read(new File("Mountains.png"));
-            for(int i = 0; i<3; i++)
-                tiles.push(mountains);
             grassland = ImageIO.read(new File("Grassland.png"));
-            for(int i = 0; i<4; i++)
-                tiles.push(grassland);
             wheat = ImageIO.read(new File("Wheat.png"));
-            for(int i = 0; i<4; i++)
-                tiles.push(wheat);
 
             pips[0] = null;
             pips[1] = null;
@@ -59,21 +52,57 @@ public class mainPanel extends JPanel implements MouseListener {
             woodCard = ImageIO.read(new File("Wood Card.png"));
             oreCard = ImageIO.read(new File("Ore Card.png"));
             sheepCard = ImageIO.read(new File("Sheep Card.png"));
-            buildingCost = ImageIO.read(new File("Building Costs.png"));
+            //buildingCost = ImageIO.read(new File("Building Costs.png"));
 
+            brickicon = ImageIO.read(new File("icon brick.png"));
+            oreicon = ImageIO.read(new File("icon ore.png"));
+            sheepicon = ImageIO.read(new File("icon sheep.png"));
+            wheaticon = ImageIO.read(new File("icon wheat.png"));
+            woodicon = ImageIO.read(new File("icon wood.png"));
 
-
+            robber = ImageIO.read(new File("robber.png"));
 
         }
         catch (Exception E)
         {
-            System.out.println("error");
+            out.println("error");
         }
-        Collections.shuffle(tiles);
+
         addMouseListener(this);
     }
+
     public void paint(Graphics g)
     {
+        g.setColor(Color.black);
+        g.drawLine(0, 540, 960, 540);
+
+        int cardx;
+        g.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+        for (int i = 0; i < 4; i++) {
+            g.setColor(main.players.get(i).getColor());
+            g.drawString("Settler " + (i + 1), 30, 40 + i * 135);
+
+            g.drawLine(10,50 + i * 135,10,80 + i * 135);
+            g.drawLine(10,50 + i * 135,0,60 + i * 135);
+            g.drawLine(10,50 + i * 135,20,60 + i * 135);
+
+            cardx = 0;
+            for (ResourceCard rc: main.players.get(i).resourceHand) {
+                if (rc.equals(ResourceCard.BRICK))
+                    g.drawImage(clayCard, cardx * 15 + 30,i * 135 + 50,35,52,null);
+                else if (rc.equals(ResourceCard.ORE))
+                    g.drawImage(oreCard, cardx * 15 + 30,i * 135 + 50,35,52,null);
+                else if (rc.equals(ResourceCard.SHEEP))
+                    g.drawImage(sheepCard, cardx * 15 + 30,i * 135 + 50,35,52,null);
+                else if (rc.equals(ResourceCard.WHEAT))
+                    g.drawImage(wheatCard, cardx * 15 + 30,i * 135 + 50,35,52,null);
+                else if (rc.equals(ResourceCard.WOOD))
+                    g.drawImage(woodCard, cardx * 15 + 30,i * 135 + 50,35,52,null);
+                cardx++;
+            }
+        }
+
+        /*
         g.setColor(new Color(0, 140, 240));
         g.fillRect(0,0, WIDTH, HEIGHT);
         g.setColor(Color.BLUE);
@@ -106,7 +135,12 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawImage(buildingCost,310,340,160,200,null);
         for(int i = 0; i<3; i++)
             g.drawImage(clayCard, i*13+30,455,52,78,null);
-        /*for(int i = 0; i<3; i++)
+        */
+
+        //g.drawImage(buildingCost,310,340,160,200,null);
+
+        /*
+        for(int i = 0; i<3; i++)
         {
             g.drawImage(tiles.pop(), i*90+570,62, 90,104,null);
             g.drawImage(tiles.pop(), i*90+570,374, 90,104,null);
@@ -121,9 +155,10 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885,450,60,20);
         g.fillRect(885, 480,60,20);
         g.fillRect(885, 510,60,20);
+        */
 
 
-        g.drawImage(background, 0, 0, 1080, 1080, null);*/
+        g.drawImage(background, 345, 0, 600, 540, null);
 
         int x, y;
         Tile temp = null;
@@ -151,18 +186,113 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 450, y * h - 2 * h + 30, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 390, y * h - 2 * h + 30, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 430, y * h + 10, 40, 40, null);
+                g.drawImage(pips[pip], x * w + 370, y * h + 10, 40, 40, null);
             }
         }
 
+        g.drawImage(robber, main.robberx * w + 370, main.robbery * h + 10, 40, 40, null);
+
+        int portpos[] = {
+                500, 20,
+                685, 20,
+                843, 110,
+                930, 270,
+                843, 430,
+                685, 520,
+                500, 520,
+                410, 360,
+                410, 180};
+        int portposI = 0;
+        int portx, porty;
+        Font portFont = new Font("Times New Roman", 0, 20);
+        g.setFont(portFont);
+        FontMetrics portFontMetrics = getFontMetrics(portFont);
+        int portFontWidth;
+        Color portBrown = new Color(118, 80, 6);
+        g.setColor(Color.white);
+
+        for (Port p: main.ports) {
+            portx = portpos[portposI++];
+            porty = portpos[portposI++];
+            if (p.getSpecialty() == null) {
+                portFontWidth = portFontMetrics.stringWidth("3");
+                g.setColor(portBrown);
+                g.fillOval(portx - 10, porty - 10, 20, 20);
+                g.setColor(Color.white);
+                g.drawString("3", portx - portFontWidth / 2, porty + 4);
+            }
+            else {
+                portFontWidth = portFontMetrics.stringWidth("2");
+                if (p.getSpecialty().equals(ResourceCard.BRICK))
+                    g.drawImage(brickicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.ORE))
+                    g.drawImage(oreicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.SHEEP))
+                    g.drawImage(sheepicon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.WHEAT))
+                    g.drawImage(wheaticon, portx - 10, porty - 10, 20, 20, null);
+                else if (p.getSpecialty().equals(ResourceCard.WOOD))
+                    g.drawImage(woodicon, portx - 10, porty - 10, 20, 20, null);
+                g.drawString("2", portx - portFontWidth / 2, porty + 4);
+            }
+        }
+
+        int r1, c1;
+        //to highlight open and eligible settlement intersections
+
+        Intersection itemp;
+        for (int i = 3; i < 184; i += 2) {
+            r1 = i % 11;
+            c1 = i / 11;
+            if (c1 % 3 != 2 && main.inter[r1][c1] != null) {
+                itemp = main.inter[r1][c1];
+                if (itemp.getSettlement() != null) {
+                    g.setColor(itemp.getSettlement().getOwner().getColor());
+                    if (itemp.getSettlement().getTier() == 1) {
+                        g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+                    }
+                    else
+                        g.fillRect(r1 * w + 380, c1 * h + 20, 20, 20);
+                }
+            }
+        }
+
+        g.setColor(new Color(85, 255, 59, 172));
+        for (int i = 3; i < 184; i += 2) {
+            r1 = i % 11;
+            c1 = i / 11;
+            if (c1 % 3 != 2 && main.inter[r1][c1] != null) {
+                if (main.inter[r1][c1].isOpen()) {
+                    g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+                }
+            }
+        }
 
     }
+
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
+        int closestTilex = ((int) ((x - 390) / w - 1)) * w + w + 390;
+        int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
+
+        out.println(x + " " + closestTilex);
+        out.println(y + " " + closestTiley);
+        out.println(Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2));
+
+        if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 400) {
+            main.robberx = (int) ((x - 390) / w - 1) + 1;
+            main.robbery = (int) ((y - 30) / (3 * h)) * 3 + 2;
+            out.println("success " + main.robberx + " " + main.robbery);
+        }
+        repaint();
+    }
 }
