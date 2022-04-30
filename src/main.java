@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.*;
 
 import static java.lang.System.*;
@@ -5,9 +6,11 @@ import static java.lang.System.*;
 public class main {
 
     static Tile[][] board = new Tile[11][17];
+    static Intersection[][] inter = new Intersection[11][17];
     static ArrayList<Port> ports = new ArrayList<Port>();
     static ArrayList<Player> players = new ArrayList<Player>();
 
+    static int robberx, robbery;
 
 
     public static void main(String[] args) {
@@ -28,11 +31,23 @@ public class main {
         */
 
 
-        int robberx, robbery;
+
 
 
         createBoard();
         tempdisplayshittyboard();
+
+        players.add(new Player(new Color(246, 149, 60)));
+        players.add(new Player(new Color(255, 255, 255)));
+        players.add(new Player(new Color(0, 160, 224)));
+        players.add(new Player(new Color(239, 65, 64)));
+
+        players.get(0).addResourceCard(ResourceCard.ORE,2);
+        players.get(1).addResourceCard(ResourceCard.ORE,4);
+        players.get(2).addResourceCard(ResourceCard.BRICK, 10);
+
+        inter[3][4].addSettlement(new Settlement(main.players.get(0), 3, 4));
+        inter[1][12].addSettlement(new Settlement(main.players.get(1), 1, 12));
 
         mainFrame main = new mainFrame("Catan");
 
@@ -195,6 +210,22 @@ public class main {
             }
             out.println("");
         }
+
+        out.println("\n");
+
+        Intersection itemp;
+        for (int y = 0; y < 17; y++) {
+            for (int x = 0; x < 11; x++) {
+                itemp = inter[x][y];
+                if (itemp == null) {
+                    out.print(" •• ");
+                }
+                else {
+                    out.print(" II ");
+                }
+            }
+            out.println("");
+        }
     }
 
     public static void createBoard() {
@@ -244,6 +275,38 @@ public class main {
         board[7][8] = tiles.remove(0);
         board[6][5] = tiles.remove(0);
         board[5][8] = tiles.remove(0);
+
+        int x, y;
+        for (int i = 2; i < 43; i += 2) {
+            y = 3 * (i / 9) + 2;
+            x = i % 9 + 1;
+            if (board[x][y] != null && board[x][y].getPipNumber() == 0) {
+                robberx = x;
+                robbery = y;
+                break;
+            }
+        }
+
+        for (int i = 2; i < 87; i += 2) {
+            y = 2 * (i / 10);
+            x = i % 10 + 1;
+            if (y % 3 != 2)
+                inter[x][y] = new Intersection(x, y);
+            inter[9][0] = null;
+            inter[1][16] = null;
+        }
+        for (int i = 0; i < 63; i+= 2) {
+            y = 2 * (i / 8) + 1;
+            x = i % 8 + 2;
+            if (y % 3 != 2)
+                inter[x][y] = new Intersection(x, y);
+        }
+        inter[0][7] = new Intersection(0, 7);
+        inter[0][9] = new Intersection(0, 9);
+        inter[10][7] = new Intersection(10, 7);
+        inter[10][9] = new Intersection(10, 9);
+
+
 
         ports.add(new Port(null, 3));
         ports.add(new Port(null, 3));

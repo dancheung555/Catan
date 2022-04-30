@@ -1,15 +1,18 @@
 import java.util.ArrayList;
+import java.awt.Color;
+
 public class Player {
-    String color;
+    Color color;
     ArrayList<ResourceCard> resourceHand;
     ArrayList<DevelopmentCard> developmentCardHand;
     ArrayList<Settlement> settlements;
     int victoryPoints;
     int longestRoadLength;
     int knightsPlayed;
-    public Player(String c)
+    public Player(Color c)
     {
         color = c;
+        resourceHand = new ArrayList<ResourceCard>();
     }
 
     public void addResourceCard(ResourceCard type, int count) {
@@ -45,7 +48,7 @@ public class Player {
             knightsPlayed++;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 

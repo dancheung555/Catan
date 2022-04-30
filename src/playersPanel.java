@@ -1,4 +1,4 @@
-import java.awt.*;
+/*import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,9 +29,9 @@ public class playersPanel extends JPanel implements MouseListener {
             x = 30;
             for (ResourceCard card: p.resourceHand) {
                 if (card.equals(ResourceCard.BRICK))
-                    g.drawImage(brick);
+                    g.drawImage(brick, x, y, 30, 60, null);
                 else if (card.equals(ResourceCard.ORE))
-                    img = mountains;
+                    g.drawImage(ore, x, y, );
                 else if (card.equals(ResourceCard.SHEEP))
                     img = grassland;
                 else if (card.equals(ResourceCard.WHEAT))
@@ -48,4 +48,4 @@ public class playersPanel extends JPanel implements MouseListener {
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
-}
+}*/
