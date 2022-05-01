@@ -16,6 +16,7 @@ public class Settlement {
 
     public Player getOwner() { return owner; }
     public int getTier() { return tier; }
+    public void upgrade() { tier = 2; }
 
     public int compareTo(Object o) {
         return 0;

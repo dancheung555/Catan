@@ -12,6 +12,8 @@ public class main {
 
     static int robberx, robbery;
 
+    //gamestates
+    static boolean movingRobber, buildingSettlement, buildingCity, buildingRoad;
 
     public static void main(String[] args) {
 
@@ -49,9 +51,16 @@ public class main {
         inter[3][4].addSettlement(new Settlement(main.players.get(0), 3, 4));
         inter[1][12].addSettlement(new Settlement(main.players.get(1), 1, 12));
 
+        inter[3][4].buildLeftRoad(main.players.get(0));
+        inter[3][4].buildMiddleRoad(main.players.get(0));
+        inter[1][12].buildMiddleRoad(main.players.get(1));
+
         mainFrame main = new mainFrame("Catan");
 
-
+        movingRobber = false;
+        buildingSettlement = false;
+        buildingCity = false;
+        buildingRoad = true;
 
         boolean running = false;
 
