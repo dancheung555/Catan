@@ -8,8 +8,8 @@ public class Intersection {
     Settlement settlement;
     boolean open;
 
-    //for r % 3 == 0, LEFT road goes DOWN, MIDDLE goes UP, RIGHT goes DOWN
-    //for r % 3 == 1, LEFT road goes UP, MIDDLE goes DOWN, RIGHT goes UP
+    //for c % 3 == 0, LEFT road goes DOWN, MIDDLE goes UP, RIGHT goes DOWN
+    //for c % 3 == 1, LEFT road goes UP, MIDDLE goes DOWN, RIGHT goes UP
     Road leftRoad, middleRoad, rightRoad;
 
     Port p;
@@ -23,6 +23,7 @@ public class Intersection {
 
     public void addSettlement(Settlement s) {
         settlement = s;
+        main.players.get(main.turn).addSettlement(s);
         updateOpen();
     }
 
@@ -68,7 +69,7 @@ public class Intersection {
 
     //returns if the road has been successfully built
     public boolean buildLeftRoad(Player p) {
-        if (r % 3 == 1) {
+        if (c % 3 == 0) {
             try {
                 leftRoad = new Road(r, c, r - 1, c + 1, p);
                 main.inter[r - 1][c + 1].setRightRoad(leftRoad);
@@ -82,11 +83,12 @@ public class Intersection {
                 return true;
             } catch (Exception e) { System.out.println("l2 error"); }
         }
+        p.updateEligibleRoads();
         return false;
     }
 
     public boolean buildMiddleRoad(Player p) {
-        if (r % 3 == 1) {
+        if (c % 3 == 0) {
             try {
                 middleRoad = new Road(r, c, r, c - 2, p);
                 main.inter[r][c - 2].setMiddleRoad(middleRoad);
@@ -100,11 +102,12 @@ public class Intersection {
                 return true;
             } catch (Exception e) { System.out.println("m2 error");}
         }
+        p.updateEligibleRoads();
         return false;
     }
 
     public boolean buildRightRoad(Player p) {
-        if (r % 3 == 1) {
+        if (c % 3 == 0) {
             try {
                 rightRoad = new Road(r, c, r + 1, c + 1, p);
                 main.inter[r + 1][c + 1].setLeftRoad(rightRoad);
@@ -118,6 +121,7 @@ public class Intersection {
                 return true;
             } catch (Exception e) { System.out.println("r2 error"); }
         }
+        p.updateEligibleRoads();
         return false;
     }
 
@@ -128,4 +132,34 @@ public class Intersection {
     public Road getMiddleRoad() { return middleRoad; }
     public Road getRightRoad() { return rightRoad; }
 
+    public void obtainStartingResources() {
+        if (c % 3 == 0) {
+            try {
+                settlement.owner.addResourceCard(main.board[r - 1][c - 1].getResourceType(), 1);
+                main.removeFromBank(main.board[r - 1][c - 1].getResourceType(), 1);
+            } catch (Exception e) {}
+            try {
+                settlement.owner.addResourceCard(main.board[r][c + 2].getResourceType(), 1);
+                main.removeFromBank(main.board[r][c + 2].getResourceType(), 1);
+            } catch (Exception e) {}
+            try {
+                settlement.owner.addResourceCard(main.board[r + 1][c - 1].getResourceType(), 1);
+                main.removeFromBank(main.board[r + 1][c - 1].getResourceType(), 1);
+            } catch (Exception e) {}
+        }
+        else {
+            try {
+                settlement.owner.addResourceCard(main.board[r - 1][c + 1].getResourceType(), 1);
+                main.removeFromBank(main.board[r - 1][c + 1].getResourceType(), 1);
+            } catch (Exception e) {}
+            try {
+                settlement.owner.addResourceCard(main.board[r][c - 2].getResourceType(), 1);
+                main.removeFromBank(main.board[r][c - 2].getResourceType(), 1);
+            } catch (Exception e) {}
+            try {
+                settlement.owner.addResourceCard(main.board[r + 1][c + 1].getResourceType(), 1);
+                main.removeFromBank(main.board[r - 1][c + 1].getResourceType(), 1);
+            } catch (Exception e) {}
+        }
+    }
 }
