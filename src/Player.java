@@ -5,10 +5,15 @@ public class Player {
     Color color;
     ArrayList<ResourceCard> resourceHand;
     ArrayList<DevelopmentCard> developmentCardHand;
-    ArrayList<Settlement> settlements;
+    ArrayList<Settlement> settlements = new ArrayList<Settlement>();
+    ArrayList<Road> eligibleRoads = new ArrayList<Road>();
+
     int victoryPoints;
     int longestRoadLength;
     int knightsPlayed;
+
+
+
     public Player(Color c)
     {
         color = c;
@@ -46,6 +51,73 @@ public class Player {
         resourceHand.remove(type);
         if (type.equals(DevelopmentCard.KNIGHT))
             knightsPlayed++;
+    }
+
+    public void addSettlement(Settlement s) {
+        settlements.add(s);
+        updateEligibleRoads();
+    }
+
+    public void updateEligibleRoads() {
+        eligibleRoads = new ArrayList<Road>();
+        for (Settlement s: settlements) {
+            roadCounter(s.row, s.col, 0);
+        }
+    }
+
+    private void roadCounter(int r, int c, int fromDirection) {
+        if (c % 3 == 0) {
+            if (fromDirection != 3) {
+                try {
+                    if (main.inter[r][c].getLeftRoad() != null)
+                        roadCounter(r - 1, c + 1, 1);
+                    else if (main.inter[r - 1][c + 1] != null)
+                        eligibleRoads.add(new Road(r, c, r - 1, c + 1, this));
+                } catch (Exception e) { System.out.println("error roadCounter 0 3"); }
+            }
+            if (fromDirection != 2) {
+                try {
+                    if (main.inter[r][c].getMiddleRoad() != null)
+                        roadCounter(r, c - 2, 2);
+                    else if (main.inter[r][c - 2] != null)
+                        eligibleRoads.add(new Road(r, c, r, c - 2, this));
+                } catch (Exception e) { System.out.println("error roadCounter 0 2"); }
+            }
+            if (fromDirection != 1) {
+                try {
+                    if (main.inter[r][c].getRightRoad() != null)
+                        roadCounter(r + 1, c + 1, 3);
+                    else if (main.inter[r + 1][c + 1] != null)
+                        eligibleRoads.add(new Road(r, c, r + 1, c + 1, this));
+                } catch (Exception e) { System.out.println("error roadCounter 0 1"); }
+            }
+        }
+        else {
+            if (fromDirection != 3) {
+                try {
+                    if (main.inter[r][c].getLeftRoad() != null)
+                        roadCounter(r - 1, c - 1, 1);
+                    else if (main.inter[r - 1][c - 1] != null)
+                        eligibleRoads.add(new Road(r, c, r - 1, c - 1, this));
+                } catch (Exception e) { System.out.println("error roadCounter 1 3"); }
+            }
+            if (fromDirection != 2) {
+                try {
+                    if (main.inter[r][c].getMiddleRoad() != null)
+                        roadCounter(r, c + 2, 2);
+                    else if (main.inter[r][c + 2] != null)
+                        eligibleRoads.add(new Road(r, c, r, c + 2, this));
+                } catch (Exception e) { System.out.println("error roadCounter 1 2"); }
+            }
+            if (fromDirection != 1) {
+                try {
+                    if (main.inter[r][c].getRightRoad() != null)
+                        roadCounter(r + 1, c - 1, 3);
+                    else if (main.inter[r + 1][c - 1] != null)
+                        eligibleRoads.add(new Road(r, c, r + 1, c - 1, this));
+                } catch (Exception e) { System.out.println("error roadCounter 1 1"); }
+            }
+        }
     }
 
     public Color getColor() {

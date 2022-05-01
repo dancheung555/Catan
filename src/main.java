@@ -8,59 +8,60 @@ public class main {
     static Tile[][] board = new Tile[11][17];
     static Intersection[][] inter = new Intersection[11][17];
     static ArrayList<Port> ports = new ArrayList<Port>();
+
+    static HashMap<ResourceCard, Integer> bank = new HashMap<ResourceCard, Integer>();
+
     static ArrayList<Player> players = new ArrayList<Player>();
+    static int turn = 0;
+    static int[] startingTurnOrder = {0, 1, 2, 3, 3, 2, 1, 0};
 
     static int robberx, robbery;
+    static int dice1, dice2;
 
     //gamestates
-    static boolean movingRobber, buildingSettlement, buildingCity, buildingRoad;
+    static boolean
+            startingSetup,
+            movingRobber,
+            buildingSettlement,
+            buildingCity,
+            buildingRoad,
+            canRollDie,
+            canEndTurn;
+
+    //for highlighting when building
+    static boolean
+            highlightEligibleSettlements,
+            highlightEligibleCities,
+            highlightEligibleRoads;
 
     public static void main(String[] args) {
 
 
-        /* For testing roll die distributions
-        int roll = 0;
-        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-        for (int i = 0; i < 10000; i++) {
-            roll = rollDie();
-            if (!map.containsKey(roll)) {
-                map.put(roll, 0);
-            }
-            map.put(roll, map.get(roll) + 1);
-        }
-
-        System.out.println(map);
-        */
-
-
-
-
-
         createBoard();
-        tempdisplayshittyboard();
+        fillBank();
+        //tempdisplayshittyboard();
 
         players.add(new Player(new Color(246, 149, 60)));
         players.add(new Player(new Color(255, 255, 255)));
         players.add(new Player(new Color(0, 160, 224)));
         players.add(new Player(new Color(239, 65, 64)));
 
-        players.get(0).addResourceCard(ResourceCard.ORE,2);
-        players.get(1).addResourceCard(ResourceCard.ORE,4);
-        players.get(2).addResourceCard(ResourceCard.BRICK, 10);
 
-        inter[3][4].addSettlement(new Settlement(main.players.get(0), 3, 4));
-        inter[1][12].addSettlement(new Settlement(main.players.get(1), 1, 12));
+        startingSetup = true;
+        //for settler 1
+        buildingSettlement = true;
+        highlightEligibleSettlements = true;
+        //
 
-        inter[3][4].buildLeftRoad(main.players.get(0));
-        inter[3][4].buildMiddleRoad(main.players.get(0));
-        inter[1][12].buildMiddleRoad(main.players.get(1));
+        rollDie();
+        canRollDie = true;
 
         mainFrame main = new mainFrame("Catan");
 
-        movingRobber = false;
-        buildingSettlement = false;
-        buildingCity = false;
-        buildingRoad = true;
+
+
+
+
 
         boolean running = false;
 
@@ -69,6 +70,7 @@ public class main {
 
 
 
+            turn = (turn + 1) % 4;
         }
 
 
@@ -82,7 +84,9 @@ public class main {
 
 
     public static int rollDie() {
-        return (int) (6 * Math.random() + 1) + (int) (6 * Math.random() + 1);
+        dice1 = (int) (6 * Math.random() + 1);
+        dice2 = (int) (6 * Math.random() + 1);
+        return dice1 + dice2;
     }
 
     public static void distributeResources(int roll) {
@@ -90,7 +94,7 @@ public class main {
         for (int i = 2; i < 43; i += 2) {
             c = 3 * (i / 9) + 2;
             r = i % 9 + 1;
-            if (board[r][c].getPipNumber() == roll)
+            if (board[r][c] != null && board[r][c].getPipNumber() == roll)
                 board[r][c].distributeResources();
         }
     }
@@ -289,10 +293,12 @@ public class main {
         for (int i = 2; i < 43; i += 2) {
             y = 3 * (i / 9) + 2;
             x = i % 9 + 1;
-            if (board[x][y] != null && board[x][y].getPipNumber() == 0) {
-                robberx = x;
-                robbery = y;
-                break;
+            if (board[x][y] != null) {
+                board[x][y].setCoords(x, y);
+                if (board[x][y].getPipNumber() == 0) {
+                    robberx = x;
+                    robbery = y;
+                }
             }
         }
 
@@ -339,6 +345,22 @@ public class main {
 
 
 
+    }
+
+    public static void fillBank() {
+        bank.put(ResourceCard.BRICK, 19);
+        bank.put(ResourceCard.ORE, 19);
+        bank.put(ResourceCard.SHEEP, 19);
+        bank.put(ResourceCard.WHEAT, 19);
+        bank.put(ResourceCard.WOOD, 19);
+    }
+
+    public static void removeFromBank(ResourceCard type, int count) {
+        bank.replace(type, bank.get(type) - count);
+    }
+
+    public static void addToBank(ResourceCard type, int count) {
+        bank.replace(type, bank.get(type) + count);
     }
 
 }

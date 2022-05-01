@@ -47,4 +47,10 @@ public class Road {
         }
     }
 
+    public boolean equals(Road r) {
+        return r.owner == owner &&
+                ((r.x1 == x1 && r.y1 == y1 && r.x2 == x2 && r.y2 == y2) ||
+                (r.x1 == x2 && r.y1 == y2 && r.x2 == x1 && r.y2 == y1));
+    }
+
 }
