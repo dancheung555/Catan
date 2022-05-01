@@ -241,9 +241,11 @@ public class mainPanel extends JPanel implements MouseListener {
         }
 
         int r1, c1;
-        //to highlight open and eligible settlement intersections
+
+
 
         Intersection itemp;
+        //to display settlements and cities on the board
         for (int i = 3; i < 184; i += 2) {
             r1 = i % 11;
             c1 = i / 11;
@@ -259,7 +261,28 @@ public class mainPanel extends JPanel implements MouseListener {
                 }
             }
         }
+        //to display roads on the board
+        for (int i = 3; i < 64; i += 2) {
+            r1 = i % 11;
+            c1 = (i / 11) * 3;
+            if (main.inter[r1][c1] != null) {
+                itemp = main.inter[r1][c1];
+                if (itemp.getLeftRoad() != null) {
+                    g.setColor(itemp.getLeftRoad().color);
+                    g.fillPolygon(itemp.getLeftRoad().p);
+                }
+                if (itemp.getMiddleRoad() != null) {
+                    g.setColor(itemp.getMiddleRoad().color);
+                    g.fillPolygon(itemp.getMiddleRoad().p);
+                }
+                if (itemp.getRightRoad() != null) {
+                    g.setColor(itemp.getRightRoad().color);
+                    g.fillPolygon(itemp.getRightRoad().p);
+                }
+            }
+        }
 
+        //to highlight open and eligible settlement intersections
         g.setColor(new Color(85, 255, 59, 172));
         for (int i = 3; i < 184; i += 2) {
             r1 = i % 11;
@@ -271,6 +294,9 @@ public class mainPanel extends JPanel implements MouseListener {
             }
         }
 
+        //g.fillRect(100, 100, 10, 40);
+
+
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -281,18 +307,91 @@ public class mainPanel extends JPanel implements MouseListener {
         int x = e.getX();
         int y = e.getY();
 
-        int closestTilex = ((int) ((x - 390) / w - 1)) * w + w + 390;
-        int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
 
-        out.println(x + " " + closestTilex);
-        out.println(y + " " + closestTiley);
-        out.println(Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2));
+        if (main.buildingSettlement) {
+            int closestInterx = ((int) ((x - 390 + w / 2) / w)) * w + 390;
+            int closestIntery = ((int) ((y - 30 + h / 2) / h)) * h + 30;
+            int closestInterBoardx = ((int) ((x - 390 + w / 2) / w));
+            int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
 
-        if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 400) {
-            main.robberx = (int) ((x - 390) / w - 1) + 1;
-            main.robbery = (int) ((y - 30) / (3 * h)) * 3 + 2;
-            out.println("success " + main.robberx + " " + main.robbery);
+            out.println(x + " " + closestInterx);
+            out.println(y + " " + closestIntery);
+            out.println(Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2));
+
+            if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                if (main.inter[closestInterBoardx][closestInterBoardy].isOpen()) {
+                    main.inter[closestInterBoardx][closestInterBoardy].addSettlement(new Settlement(main.players.get(0), closestInterBoardx, closestInterBoardy));
+                    out.println("success");
+                    main.buildingSettlement = false;
+                    repaint();
+                }
+            }
         }
-        repaint();
+
+        else if (main.buildingCity) {
+            int closestInterx = ((int) ((x - 390 + w / 2) / w)) * w + 390;
+            int closestIntery = ((int) ((y - 30 + h / 2) / h)) * h + 30;
+            int closestInterBoardx = ((int) ((x - 390 + w / 2) / w));
+            int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
+
+            out.println(x + " " + closestInterx);
+            out.println(y + " " + closestIntery);
+            out.println(Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2));
+
+            if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                if (main.inter[closestInterBoardx][closestInterBoardy].getSettlement() != null &&main.inter[closestInterBoardx][closestInterBoardy].getSettlement().getTier() == 1) {
+                    main.inter[closestInterBoardx][closestInterBoardy].upgradeSettlement();
+                    out.println("success");
+                    main.buildingCity = false;
+                    repaint();
+                }
+            }
+        }
+
+        else if (main.buildingRoad) {
+
+            int groupedFivey = (y + h / 2 + 30) / (3 * h);
+            int closestIntery1 = (y + h / 2 + 30) / (3 * h) * (3 * h) - h + 30;
+
+            if (Math.abs(y - closestIntery1) < 20) {
+                out.println("y on 3");
+                out.println(x);
+
+                int closestInterBoardx = (x + w / 2 - 390) / w;
+                int closestInterx = (x + w / 2 - 390) / w * w + 390;
+                out.println(closestInterx + " " + closestInterBoardx);
+                if (main.inter[closestInterBoardx][3 * groupedFivey] != null) {
+                    out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery1 - y, 2));
+                    if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery1 - y, 2) < 400 && main.inter[closestInterBoardx][3 * groupedFivey].getMiddleRoad() == null) {
+                        main.inter[closestInterBoardx][3 * groupedFivey].buildMiddleRoad(main.players.get(0));
+                        main.inter[closestInterBoardx][3 * groupedFivey - 2].buildMiddleRoad(main.players.get(0));
+                        out.println("success");
+                        repaint();
+                    }
+                }
+            }
+            out.println("");
+        }
+
+        else if (main.movingRobber) {
+            int closestTilex = ((int) ((x - 390 + w / 2) / w - 1)) * w + w + 390;
+            int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
+            int closestTileBoardx = (int) ((x - 390 + w / 2) / w - 1) + 1;
+            int closestTileBoardy = ((y - 30) / (3 * h)) * 3 + 2;
+
+            out.println(x + " " + closestTilex);
+            out.println(y + " " + closestTiley);
+            out.println(Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2));
+
+            if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 900 && main.board[closestTileBoardx][closestTileBoardy] != null) {
+                if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
+                    main.robberx = closestTileBoardx;
+                    main.robbery = closestTileBoardy;
+                    out.println("success " + main.robberx + " " + main.robbery);
+                    main.movingRobber = false;
+                    repaint();
+                }
+            }
+        }
     }
 }
