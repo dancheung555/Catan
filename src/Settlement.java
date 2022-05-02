@@ -12,11 +12,11 @@ public class Settlement {
         row = r;
         col = c;
         tier = 1;
-        //main.board[r][c].addSettlement(this);
     }
 
     public Player getOwner() { return owner; }
     public int getTier() { return tier; }
+    public void upgrade() { tier = 2; }
 
     public int compareTo(Object o) {
         return 0;

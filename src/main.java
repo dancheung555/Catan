@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.*;
 
 import static java.lang.System.*;
@@ -5,36 +6,64 @@ import static java.lang.System.*;
 public class main {
 
     static Tile[][] board = new Tile[11][17];
+    static Intersection[][] inter = new Intersection[11][17];
     static ArrayList<Port> ports = new ArrayList<Port>();
+
+    static HashMap<ResourceCard, Integer> bank = new HashMap<ResourceCard, Integer>();
+
     static ArrayList<Player> players = new ArrayList<Player>();
+    static int turn = 0;
+    static int[] startingTurnOrder = {0, 1, 2, 3, 3, 2, 1, 0};
 
+    static int robberx, robbery;
+    static int dice1, dice2;
 
+    //gamestates
+    static boolean
+            startingSetup,
+            movingRobber,
+            buildingSettlement,
+            buildingCity,
+            buildingRoad,
+            canRollDie,
+            canEndTurn,
+            canSelectCards,
+            tradingBuilding;
+
+    //for highlighting when building
+    static boolean
+            highlightEligibleSettlements,
+            highlightEligibleCities,
+            highlightEligibleRoads;
 
     public static void main(String[] args) {
 
 
-        /* For testing roll die distributions
-        int roll = 0;
-        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-        for (int i = 0; i < 10000; i++) {
-            roll = rollDie();
-            if (!map.containsKey(roll)) {
-                map.put(roll, 0);
-            }
-            map.put(roll, map.get(roll) + 1);
-        }
-
-        System.out.println(map);
-        */
-
-
-        int robberx, robbery;
-
-
         createBoard();
-        tempdisplayshittyboard();
+        fillBank();
+        //tempdisplayshittyboard();
+
+        players.add(new Player(new Color(246, 149, 60)));
+        players.add(new Player(new Color(255, 255, 255)));
+        players.add(new Player(new Color(0, 160, 224)));
+        players.add(new Player(new Color(239, 65, 64)));
+
+
+        startingSetup = true;
+        //for settler 1
+        buildingSettlement = true;
+        highlightEligibleSettlements = true;
+        //
+
+        canSelectCards = true;
+        tradingBuilding = true;
+
+        rollDie();
 
         mainFrame main = new mainFrame("Catan");
+
+
+
 
 
 
@@ -45,6 +74,7 @@ public class main {
 
 
 
+            turn = (turn + 1) % 4;
         }
 
 
@@ -58,7 +88,9 @@ public class main {
 
 
     public static int rollDie() {
-        return (int) (6 * Math.random() + 1) + (int) (6 * Math.random() + 1);
+        dice1 = (int) (6 * Math.random() + 1);
+        dice2 = (int) (6 * Math.random() + 1);
+        return dice1 + dice2;
     }
 
     public static void distributeResources(int roll) {
@@ -66,12 +98,42 @@ public class main {
         for (int i = 2; i < 43; i += 2) {
             c = 3 * (i / 9) + 2;
             r = i % 9 + 1;
-            if (board[r][c].getPipNumber() == roll)
+            if (board[r][c] != null && board[r][c].getPipNumber() == roll)
                 board[r][c].distributeResources();
         }
     }
 
-    public static void tradePlayers(Player a, Player b, ArrayList<ResourceCard> aOffer, ArrayList<ResourceCard> bOffer) {
+    public static void tradePlayers() {
+        Player a = null;
+        Player b = null;
+        int pindex = 0;
+        for (Player p: players) {
+            if (p.hasResourceCardsSelected()) {
+                if (a == null) {
+                    a = p;
+                    out.println("a chosen" + pindex);
+                }
+                else if (b == null) {
+                    b = p;
+                    out.println("b chosen" + pindex);
+                }
+                pindex++;
+            }
+        }
+        if (a == null || b == null)
+            return;
+
+        ArrayList<ResourceCard> aOffer = new ArrayList<ResourceCard>();
+        ArrayList<ResourceCard> bOffer = new ArrayList<ResourceCard>();
+        for (int i = 0; i < a.selectedResources.length; i++) {
+            if (a.selectedResources[i])
+                aOffer.add(a.resourceHand.get(i));
+        }
+        for (int i = 0; i < b.selectedResources.length; i++) {
+            if (b.selectedResources[i])
+                bOffer.add(b.resourceHand.get(i));
+        }
+
         for (ResourceCard rc: aOffer) {
             a.removeResourceCard(rc, 1);
             b.addResourceCard(rc, 1);
@@ -80,6 +142,7 @@ public class main {
             b.removeResourceCard(rc, 1);
             a.addResourceCard(rc, 1);
         }
+
     }
 
     public static void tradeBank(Player p, ArrayList<ResourceCard> offer, ResourceCard receipt) {
@@ -195,6 +258,22 @@ public class main {
             }
             out.println("");
         }
+
+        out.println("\n");
+
+        Intersection itemp;
+        for (int y = 0; y < 17; y++) {
+            for (int x = 0; x < 11; x++) {
+                itemp = inter[x][y];
+                if (itemp == null) {
+                    out.print(" •• ");
+                }
+                else {
+                    out.print(" II ");
+                }
+            }
+            out.println("");
+        }
     }
 
     public static void createBoard() {
@@ -245,6 +324,40 @@ public class main {
         board[6][5] = tiles.remove(0);
         board[5][8] = tiles.remove(0);
 
+        int x, y;
+        for (int i = 2; i < 43; i += 2) {
+            y = 3 * (i / 9) + 2;
+            x = i % 9 + 1;
+            if (board[x][y] != null) {
+                board[x][y].setCoords(x, y);
+                if (board[x][y].getPipNumber() == 0) {
+                    robberx = x;
+                    robbery = y;
+                }
+            }
+        }
+
+        for (int i = 2; i < 87; i += 2) {
+            y = 2 * (i / 10);
+            x = i % 10 + 1;
+            if (y % 3 != 2)
+                inter[x][y] = new Intersection(x, y);
+            inter[9][0] = null;
+            inter[1][16] = null;
+        }
+        for (int i = 0; i < 63; i+= 2) {
+            y = 2 * (i / 8) + 1;
+            x = i % 8 + 2;
+            if (y % 3 != 2)
+                inter[x][y] = new Intersection(x, y);
+        }
+        inter[0][7] = new Intersection(0, 7);
+        inter[0][9] = new Intersection(0, 9);
+        inter[10][7] = new Intersection(10, 7);
+        inter[10][9] = new Intersection(10, 9);
+
+
+
         ports.add(new Port(null, 3));
         ports.add(new Port(null, 3));
         ports.add(new Port(null, 3));
@@ -267,6 +380,22 @@ public class main {
 
 
 
+    }
+
+    public static void fillBank() {
+        bank.put(ResourceCard.BRICK, 19);
+        bank.put(ResourceCard.ORE, 19);
+        bank.put(ResourceCard.SHEEP, 19);
+        bank.put(ResourceCard.WHEAT, 19);
+        bank.put(ResourceCard.WOOD, 19);
+    }
+
+    public static void removeFromBank(ResourceCard type, int count) {
+        bank.replace(type, bank.get(type) - count);
+    }
+
+    public static void addToBank(ResourceCard type, int count) {
+        bank.replace(type, bank.get(type) + count);
     }
 
 }
