@@ -142,7 +142,7 @@ public class Player {
                         roadCounter(r + 1, c + 1, 3);
                     else if (main.inter[r + 1][c + 1] != null)
                         eligibleRoads.add(new Road(r, c, r + 1, c + 1, this));
-                } catch (Exception e) { System.out.println("error roadCounter 0 1"); }
+                } catch (Exception fuckYouStroudGoddamnTreesWereAss) { System.out.println("error roadCounter 0 1"); }
             }
         }
         else {

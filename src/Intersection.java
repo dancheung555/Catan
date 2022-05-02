@@ -27,6 +27,10 @@ public class Intersection {
         updateOpen();
     }
 
+    public boolean hasSettlement() {
+        return settlement != null;
+    }
+
     public Settlement getSettlement() { return settlement; }
 
     public void upgradeSettlement() {
