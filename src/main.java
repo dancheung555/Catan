@@ -26,7 +26,9 @@ public class main {
             buildingCity,
             buildingRoad,
             canRollDie,
-            canEndTurn;
+            canEndTurn,
+            canSelectCards,
+            tradingBuilding;
 
     //for highlighting when building
     static boolean
@@ -53,8 +55,10 @@ public class main {
         highlightEligibleSettlements = true;
         //
 
+        canSelectCards = true;
+        tradingBuilding = true;
+
         rollDie();
-        canRollDie = true;
 
         mainFrame main = new mainFrame("Catan");
 
@@ -99,7 +103,37 @@ public class main {
         }
     }
 
-    public static void tradePlayers(Player a, Player b, ArrayList<ResourceCard> aOffer, ArrayList<ResourceCard> bOffer) {
+    public static void tradePlayers() {
+        Player a = null;
+        Player b = null;
+        int pindex = 0;
+        for (Player p: players) {
+            if (p.hasResourceCardsSelected()) {
+                if (a == null) {
+                    a = p;
+                    out.println("a chosen" + pindex);
+                }
+                else if (b == null) {
+                    b = p;
+                    out.println("b chosen" + pindex);
+                }
+                pindex++;
+            }
+        }
+        if (a == null || b == null)
+            return;
+
+        ArrayList<ResourceCard> aOffer = new ArrayList<ResourceCard>();
+        ArrayList<ResourceCard> bOffer = new ArrayList<ResourceCard>();
+        for (int i = 0; i < a.selectedResources.length; i++) {
+            if (a.selectedResources[i])
+                aOffer.add(a.resourceHand.get(i));
+        }
+        for (int i = 0; i < b.selectedResources.length; i++) {
+            if (b.selectedResources[i])
+                bOffer.add(b.resourceHand.get(i));
+        }
+
         for (ResourceCard rc: aOffer) {
             a.removeResourceCard(rc, 1);
             b.addResourceCard(rc, 1);
@@ -108,6 +142,7 @@ public class main {
             b.removeResourceCard(rc, 1);
             a.addResourceCard(rc, 1);
         }
+
     }
 
     public static void tradeBank(Player p, ArrayList<ResourceCard> offer, ResourceCard receipt) {

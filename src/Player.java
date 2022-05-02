@@ -3,7 +3,10 @@ import java.awt.Color;
 
 public class Player {
     Color color;
+
     ArrayList<ResourceCard> resourceHand;
+    boolean[] selectedResources;
+
     ArrayList<DevelopmentCard> developmentCardHand;
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
     ArrayList<Road> eligibleRoads = new ArrayList<Road>();
@@ -25,6 +28,7 @@ public class Player {
             resourceHand.add(type);
             count--;
         }
+        selectedResources = new boolean[resourceHand.size()];
     }
 
     public int countResources(ResourceCard type) {
@@ -41,6 +45,22 @@ public class Player {
             resourceHand.remove(type);
             count--;
         }
+        selectedResources = new boolean[resourceHand.size()];
+    }
+
+    public void selectResourceCard(int i) {
+        if (selectedResources[i])
+            selectedResources[i] = false;
+        else
+            selectedResources[i] = true;
+    }
+
+    public boolean hasResourceCardsSelected() {
+        for (boolean b: selectedResources) {
+            if (b)
+                return true;
+        }
+        return false;
     }
 
     public void addDevelopmentCard(ResourceCard type) {
@@ -55,7 +75,40 @@ public class Player {
 
     public void addSettlement(Settlement s) {
         settlements.add(s);
-        updateEligibleRoads();
+        if (!main.startingSetup)
+            updateEligibleRoads();
+    }
+
+    public void updateStartingEligibleRoads(int r, int c) {
+        eligibleRoads = new ArrayList<Road>();
+        if (c % 3 == 0) {
+            try {
+                if (main.inter[r - 1][c + 1] != null)
+                    eligibleRoads.add(new Road(r, c, r - 1, c + 1, this));
+            } catch (Exception e) {}
+            try {
+                if (main.inter[r][c - 2] != null)
+                    eligibleRoads.add(new Road(r, c, r, c - 2, this));
+            } catch (Exception e) {}
+            try {
+                if (main.inter[r + 1][c + 1] != null)
+                    eligibleRoads.add(new Road(r, c, r + 1, c + 1, this));
+            } catch (Exception e) {}
+        }
+        else {
+            try {
+                if (main.inter[r - 1][c - 1] != null)
+                    eligibleRoads.add(new Road(r, c, r - 1, c - 1, this));
+            } catch (Exception e) {}
+            try {
+                if (main.inter[r][c + 2] != null)
+                    eligibleRoads.add(new Road(r, c, r, c + 2, this));
+            } catch (Exception e) {}
+            try {
+                if (main.inter[r + 1][c - 1] != null)
+                    eligibleRoads.add(new Road(r, c, r + 1, c - 1, this));
+            } catch (Exception e) {}
+        }
     }
 
     public void updateEligibleRoads() {
@@ -118,6 +171,24 @@ public class Player {
                 } catch (Exception e) { System.out.println("error roadCounter 1 1"); }
             }
         }
+    }
+
+    public boolean canBuildRoad(int x, int y, int direction) {
+        Road temp = null;
+        if (direction == 1)
+            temp = new Road(x, y, x + 1, y + 1, this);
+        else if (direction == 2)
+            temp = new Road(x, y, x, y - 2, this);
+        else if (direction == 3)
+            temp = new Road(x, y, x + 1, y - 1, this);
+        for (Road r: eligibleRoads) {
+            if (r.equals(temp)) {
+                System.out.println("canpring");
+                return true;
+            }
+        }
+        System.out.println("cannotpring");
+        return false;
     }
 
     public Color getColor() {
