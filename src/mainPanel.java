@@ -119,17 +119,39 @@ public class mainPanel extends JPanel implements MouseListener {
         }
 
         g.setColor(Color.white);
-        g.fillRoundRect(30, 400, 30, 30, 5, 5);
-        g.fillRoundRect(65, 400, 30, 30, 5, 5);
+        g.fillRoundRect(230, 400, 30, 30, 5, 5);
+        g.fillRoundRect(265, 400, 30, 30, 5, 5);
         g.setColor(Color.black);
         Font dieFont = new Font("Times New Roman", Font.PLAIN, 20);
         g.setFont(dieFont);
         FontMetrics dieFontMetrics = getFontMetrics(dieFont);
-        g.drawString("" + main.dice1, 45 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 425);
-        g.drawString("" + main.dice2, 80 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 425);
+        g.drawString("" + main.dice1, 245 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 425);
+        g.drawString("" + main.dice2, 280 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 425);
 
         g.setColor(Color.red);
-        g.fillRect(30, 450, 200, 30);
+        g.fillRect(30, 450, 60, 30);
+
+        g.setColor(Color.orange);
+        g.fillRect(100, 450, 60, 30);
+
+        //display bank
+        g.setColor(Color.black);
+        Font bankFont = new Font("Times New Roman", Font.PLAIN, 10);
+        g.setFont(bankFont);
+        FontMetrics bankFontMetrics = getFontMetrics(bankFont);
+        g.drawImage(clayCard, 30, 380, 35, 52, null);
+        g.drawString("" + main.bank.get(ResourceCard.BRICK), 47 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.BRICK)) / 2, 440);
+        g.drawImage(oreCard, 70, 380, 35, 52, null);
+        g.drawString("" + main.bank.get(ResourceCard.ORE), 87 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.ORE)) / 2, 440);
+        g.drawImage(sheepCard, 110, 380, 35, 52, null);
+        g.drawString("" + main.bank.get(ResourceCard.SHEEP), 127 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.SHEEP)) / 2, 440);
+        g.drawImage(wheatCard, 150, 380, 35, 52, null);
+        g.drawString("" + main.bank.get(ResourceCard.WHEAT), 167 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WHEAT)) / 2, 440);
+        g.drawImage(woodCard, 190, 380, 35, 52, null);
+        g.drawString("" + main.bank.get(ResourceCard.WOOD), 207 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 440);
+
+        g.setColor(Color.cyan);
+        g.fillRect(30, 490, 60, 30);
 
         /*
         g.setColor(new Color(0, 140, 240));
@@ -438,15 +460,30 @@ public class mainPanel extends JPanel implements MouseListener {
                     main.startingSetup = false;
                     main.buildingSettlement = false;
                     main.highlightEligibleSettlements = false;
+                    main.canRollDie = true;
                 }
             } catch (Exception fuckyoujava) {}
         }
 
         else if (main.canRollDie) {
-            if (x > 30 && x < 95 && y > 400 && y < 430) {
+            if (x > 230 && x < 295 && y > 400 && y < 430) {
                 main.distributeResources(main.rollDie());
+                main.canRollDie = false;
+                main.canSelectCards = true;
+                main.tradingBuilding = true;
                 repaint();
             }
+        }
+
+        else if (main.tradingMaritime) {
+            if (y > 380 && y < 422 && x > 30 && x < 230) {
+                int clickedCard = (x - 30) / 40;
+                if (x - clickedCard * 40 < 35) {
+                    main.maritimeTrade(main.rco[clickedCard]);
+                }
+            }
+            main.tradingMaritime = false;
+            repaint();
         }
 
         else if (main.canSelectCards) {
@@ -467,11 +504,21 @@ public class mainPanel extends JPanel implements MouseListener {
                 repaint();
             }
             if (main.tradingBuilding) {
-                if (x > 30 && x < 230 && y > 450 && y < 480) {
-                    out.println("trade called");
-                    main.tradePlayers();
+                if (x > 30 && x < 90 && y > 450 && y < 480) {
+                    out.println("domestic trade called");
+                    main.domesticTrade();
                     repaint();
                 }
+                else if (x > 100 && x < 160 && y > 450 && y < 480) {
+                    out.println("maritime trade claled");
+                    main.tradingMaritime = true;
+                    repaint();
+                }
+            }
+            if (x > 30 && x < 90 && y > 490 && y < 520) {
+                main.endTurn();
+                out.println("turn ended");
+                repaint();
             }
         }
 

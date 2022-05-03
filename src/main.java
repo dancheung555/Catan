@@ -10,6 +10,7 @@ public class main {
     static ArrayList<Port> ports = new ArrayList<Port>();
 
     static HashMap<ResourceCard, Integer> bank = new HashMap<ResourceCard, Integer>();
+    static ResourceCard[] rco = {ResourceCard.BRICK, ResourceCard.ORE, ResourceCard.SHEEP, ResourceCard.WHEAT, ResourceCard.WOOD};
 
     static ArrayList<Player> players = new ArrayList<Player>();
     static int turn = 0;
@@ -36,6 +37,10 @@ public class main {
             highlightEligibleCities,
             highlightEligibleRoads;
 
+    //other
+    static boolean
+            tradingMaritime;
+
     public static void main(String[] args) {
 
 
@@ -55,8 +60,6 @@ public class main {
         highlightEligibleSettlements = true;
         //
 
-        canSelectCards = true;
-        tradingBuilding = true;
 
         rollDie();
 
@@ -103,7 +106,7 @@ public class main {
         }
     }
 
-    public static void tradePlayers() {
+    public static void domesticTrade() {
         Player a = null;
         Player b = null;
         int pindex = 0;
@@ -145,28 +148,22 @@ public class main {
 
     }
 
-    public static void tradeBank(Player p, ArrayList<ResourceCard> offer, ResourceCard receipt) {
-        ResourceCard type = offer.get(0);
-        int count = 0;
-        for (ResourceCard rc: offer) {
-            if (rc.equals(type)) {
-                count++;
-            }
-        }
-        for (Port port: ports) {
-            if (port.getIntersection().getSettlement().getOwner().equals(p)) {
-                if (port.getSpecialty().equals(type) && count > 1) {
-                    p.removeResourceCard(type, 2);
-                    return;
-                }
-                else if (port.getSpecialty() == null && count > 2) {
-                    p.removeResourceCard(type, 3);
-                    return;
+    //FINISH THIS METHOD MOTHERFUCKER YOU STUPID ASS BITCH FUCK YOU KALE
+    public static void maritimeTrade(ResourceCard rc) {
+        ArrayList<ResourceCard> offer = new ArrayList<ResourceCard>();
+        if (main.players.get(main.turn).hasResourceCardsSelected()) {
+            for (Port porn: ports) {
+                if (porn.intersection.hasSettlement() && porn.intersection.settlement.owner == main.players.get(main.turn)) {
+
                 }
             }
+            for (ResourceCard rc1: rco) {
+                for (int i = 0; i < main.players.get(main.turn).selectedResources.length; i++) {
+                    if (main.players.get(main.turn).selectedResources[i] && main.players.get(main.turn).resourceHand.get(i).equals(rc1))
+                        offer.add(main.players.get(main.turn).resourceHand.get(i));
+                    }
+            }
         }
-        if (count > 3)
-            p.removeResourceCard(type, 4);
     }
 
     //(1) check resources, (2) check roads, (3) displaying it
@@ -383,11 +380,9 @@ public class main {
     }
 
     public static void fillBank() {
-        bank.put(ResourceCard.BRICK, 19);
-        bank.put(ResourceCard.ORE, 19);
-        bank.put(ResourceCard.SHEEP, 19);
-        bank.put(ResourceCard.WHEAT, 19);
-        bank.put(ResourceCard.WOOD, 19);
+        for (ResourceCard rc: rco) {
+            bank.put(rc, 19);
+        }
     }
 
     public static void removeFromBank(ResourceCard type, int count) {
@@ -396,6 +391,13 @@ public class main {
 
     public static void addToBank(ResourceCard type, int count) {
         bank.replace(type, bank.get(type) + count);
+    }
+
+    public static void endTurn() {
+        canRollDie = true;
+        canSelectCards = false;
+        tradingBuilding = false;
+        turn = (turn + 1) % 4;
     }
 
 }
