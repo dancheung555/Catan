@@ -166,4 +166,12 @@ public class Intersection {
             } catch (Exception e) {}
         }
     }
+
+    public void setPort(Port porn) {
+        p = porn;
+    }
+
+    public boolean hasPort() {
+        return p != null;
+    }
 }

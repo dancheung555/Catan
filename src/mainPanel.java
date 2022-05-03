@@ -475,23 +475,11 @@ public class mainPanel extends JPanel implements MouseListener {
             }
         }
 
-        else if (main.tradingMaritime) {
-            if (y > 380 && y < 422 && x > 30 && x < 230) {
-                int clickedCard = (x - 30) / 40;
-                if (x - clickedCard * 40 < 35) {
-                    main.maritimeTrade(main.rco[clickedCard]);
-                }
-            }
-            main.tradingMaritime = false;
-            repaint();
-        }
-
         else if (main.canSelectCards) {
+
             int clickedSettler = (y - 30) / 80;
-            out.println(clickedSettler);
             int clickedCard = (x - 50) / 15;
-            out.println(clickedCard);
-            out.println(y - clickedSettler * 80 + 30);
+
             if (clickedSettler > 3) {}
             else if (y - clickedSettler * 80 - 30 < 60) {
                 try {
@@ -503,23 +491,32 @@ public class mainPanel extends JPanel implements MouseListener {
                 }
                 repaint();
             }
+
             if (main.tradingBuilding) {
+
                 if (x > 30 && x < 90 && y > 450 && y < 480) {
                     out.println("domestic trade called");
                     main.domesticTrade();
                     repaint();
                 }
-                else if (x > 100 && x < 160 && y > 450 && y < 480) {
-                    out.println("maritime trade claled");
-                    main.tradingMaritime = true;
-                    repaint();
+
+                if (y > 380 && y < 422 && x > 30 && x < 230) {
+                    clickedCard = (x - 30) / 40;
+                    out.println("maritime trade called");
+                    out.println(clickedCard);
+                    if (x - clickedCard * 40 < 35) {
+                        main.maritimeTrade(main.rco[clickedCard]);
+                        repaint();
+                    }
                 }
             }
+
             if (x > 30 && x < 90 && y > 490 && y < 520) {
                 main.endTurn();
                 out.println("turn ended");
                 repaint();
             }
+
         }
 
         else if (main.buildingSettlement) {

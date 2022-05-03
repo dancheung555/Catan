@@ -11,6 +11,8 @@ public class Player {
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
     ArrayList<Road> eligibleRoads = new ArrayList<Road>();
 
+    ArrayList<Port> accessiblePorts = new ArrayList<Port>();
+
     int victoryPoints;
     int longestRoadLength;
     int knightsPlayed;
@@ -63,6 +65,15 @@ public class Player {
         return false;
     }
 
+    public ArrayList<ResourceCard> getSelectedCards() {
+        ArrayList<ResourceCard> sel = new ArrayList<ResourceCard>();
+        for (int i = 0; i < selectedResources.length; i++) {
+            if (selectedResources[i])
+                sel.add(resourceHand.get(i));
+        }
+        return sel;
+    }
+
     public void addDevelopmentCard(ResourceCard type) {
         resourceHand.add(type);
     }
@@ -75,6 +86,9 @@ public class Player {
 
     public void addSettlement(Settlement s) {
         settlements.add(s);
+        if (main.inter[s.row][s.col].hasPort()) {
+            accessiblePorts.add(main.inter[s.row][s.col].p);
+        }
         if (!main.startingSetup)
             updateEligibleRoads();
     }

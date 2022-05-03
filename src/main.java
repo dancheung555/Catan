@@ -38,8 +38,7 @@ public class main {
             highlightEligibleRoads;
 
     //other
-    static boolean
-            tradingMaritime;
+    static boolean fuckme;
 
     public static void main(String[] args) {
 
@@ -126,16 +125,8 @@ public class main {
         if (a == null || b == null)
             return;
 
-        ArrayList<ResourceCard> aOffer = new ArrayList<ResourceCard>();
-        ArrayList<ResourceCard> bOffer = new ArrayList<ResourceCard>();
-        for (int i = 0; i < a.selectedResources.length; i++) {
-            if (a.selectedResources[i])
-                aOffer.add(a.resourceHand.get(i));
-        }
-        for (int i = 0; i < b.selectedResources.length; i++) {
-            if (b.selectedResources[i])
-                bOffer.add(b.resourceHand.get(i));
-        }
+        ArrayList<ResourceCard> aOffer = a.getSelectedCards();
+        ArrayList<ResourceCard> bOffer = b.getSelectedCards();
 
         for (ResourceCard rc: aOffer) {
             a.removeResourceCard(rc, 1);
@@ -150,19 +141,38 @@ public class main {
 
     //FINISH THIS METHOD MOTHERFUCKER YOU STUPID ASS BITCH FUCK YOU KALE
     public static void maritimeTrade(ResourceCard rc) {
-        ArrayList<ResourceCard> offer = new ArrayList<ResourceCard>();
-        if (main.players.get(main.turn).hasResourceCardsSelected()) {
-            for (Port porn: ports) {
-                if (porn.intersection.hasSettlement() && porn.intersection.settlement.owner == main.players.get(main.turn)) {
+        ArrayList<ResourceCard> offer = players.get(turn).getSelectedCards();
+        int tradeRate = 4;
 
+        if (players.get(turn).hasResourceCardsSelected()) {
+            out.println("has cards selected");
+            //check if all resourceCards in selectedHand are the same, doesn't work otherwise
+            ResourceCard firstRc = null;
+            for (ResourceCard rcFUCK: offer) {
+                if (firstRc == null)
+                    firstRc = rcFUCK;
+                else if (rcFUCK != firstRc || firstRc == rc);
+                    return;
+            }
+            out.println("offer is single carded");
+            //check player's accessiblePorts for potential better trades
+            for (Port porn: players.get(turn).accessiblePorts) {
+                if (porn.getSpecialty() == null) {
+                    tradeRate = 3;
+                    out.println("found neutral port");
+                }
+                else if (porn.getSpecialty().equals(firstRc)) {
+                    tradeRate = 2;
+                    out.println("found specific");
+                    break;
                 }
             }
-            for (ResourceCard rc1: rco) {
-                for (int i = 0; i < main.players.get(main.turn).selectedResources.length; i++) {
-                    if (main.players.get(main.turn).selectedResources[i] && main.players.get(main.turn).resourceHand.get(i).equals(rc1))
-                        offer.add(main.players.get(main.turn).resourceHand.get(i));
-                    }
-            }
+
+            //finally perform trade
+            players.get(turn).removeResourceCard(firstRc, tradeRate);
+            addToBank(firstRc, tradeRate);
+            players.get(turn).addResourceCard(rc, 1);
+            removeFromBank(rc, 1);
         }
     }
 
@@ -367,14 +377,14 @@ public class main {
         Collections.shuffle(ports);
 
         ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(2, 1, 3, 0);
-
+        ports.get(0).setCoords(5, 0, 6, 1);
+        ports.get(0).setCoords(8, 3, 9, 4);
+        ports.get(0).setCoords(10, 7, 10, 9);
+        ports.get(0).setCoords(9, 12, 8, 13);
+        ports.get(0).setCoords(6, 15, 5, 16);
+        ports.get(0).setCoords(3, 16, 2, 15);
+        ports.get(0).setCoords(1, 12, 1, 10);
+        ports.get(0).setCoords(1, 6, 1, 4);
 
 
     }
