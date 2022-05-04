@@ -18,7 +18,7 @@ public class main {
     static int[] startingTurnOrder = {0, 1, 2, 3, 3, 2, 1, 0};
 
     static int robberx, robbery;
-    static int dice1, dice2;
+    static int dice1 = 6, dice2 = 6;
 
     //gamestates
     static boolean
@@ -64,7 +64,6 @@ public class main {
         //
 
 
-        rollDie();
 
         mainFrame main = new mainFrame("Catan");
 
@@ -78,8 +77,14 @@ public class main {
     public static int rollDie() {
         dice1 = (int) (6 * Math.random() + 1);
         dice2 = (int) (6 * Math.random() + 1);
-        if (dice1 + dice2 == 7)
-            halving = true;
+        if (dice1 + dice2 == 7) {
+            for (Player p: players) {
+                if (p.resourceHand.size() > 8)
+                    halving = true;
+            }
+            if (!halving)
+                movingRobber = true;
+        }
         else
             distributeResources(dice1 + dice1);
         canRollDie = false;
@@ -127,6 +132,8 @@ public class main {
     }
 
     //FINISH THIS METHOD MOTHERFUCKER YOU STUPID ASS BITCH FUCK YOU KALE
+    //you're gay as fuck bitchass SUCK MY DICK WHORE - Derrek
+
     public static void maritimeTrade(ResourceCard rc) {
         out.println("maritimeTrade method called");
         ArrayList<ResourceCard> offer = players.get(turn).getSelectedCards();
@@ -149,7 +156,7 @@ public class main {
                     tradeRate = 3;
                     out.println("found neutral port");
                 }
-                else if (porn.getSpecialty().equals(firstRc)) {
+                if (porn.getSpecialty().equals(firstRc)) {
                     tradeRate = 2;
                     out.println("found specific");
                     break;
@@ -368,14 +375,14 @@ public class main {
         Collections.shuffle(ports);
 
         ports.get(0).setCoords(2, 1, 3, 0);
-        ports.get(0).setCoords(5, 0, 6, 1);
-        ports.get(0).setCoords(8, 3, 9, 4);
-        ports.get(0).setCoords(10, 7, 10, 9);
-        ports.get(0).setCoords(9, 12, 8, 13);
-        ports.get(0).setCoords(6, 15, 5, 16);
-        ports.get(0).setCoords(3, 16, 2, 15);
-        ports.get(0).setCoords(1, 12, 1, 10);
-        ports.get(0).setCoords(1, 6, 1, 4);
+        ports.get(1).setCoords(5, 0, 6, 1);
+        ports.get(2).setCoords(8, 3, 9, 4);
+        ports.get(3).setCoords(10, 7, 10, 9);
+        ports.get(4).setCoords(9, 12, 8, 13);
+        ports.get(5).setCoords(6, 15, 5, 16);
+        ports.get(6).setCoords(3, 16, 2, 15);
+        ports.get(7).setCoords(1, 12, 1, 10);
+        ports.get(8).setCoords(1, 6, 1, 4);
 
 
     }

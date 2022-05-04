@@ -74,6 +74,15 @@ public class Player {
         return sel;
     }
 
+    public void removeSelectedCards() {
+        for (int i = selectedResources.length - 1; i >= 0; i--) {
+            if (selectedResources[i]) {
+                main.addToBank(resourceHand.remove(i), 1);
+            }
+        }
+        selectedResources = new boolean[resourceHand.size()];
+    }
+
     public void addDevelopmentCard(ResourceCard type) {
         resourceHand.add(type);
     }

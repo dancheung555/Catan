@@ -162,7 +162,7 @@ public class Intersection {
             } catch (Exception e) {}
             try {
                 settlement.owner.addResourceCard(main.board[r + 1][c + 1].getResourceType(), 1);
-                main.removeFromBank(main.board[r - 1][c + 1].getResourceType(), 1);
+                main.removeFromBank(main.board[r + 1][c + 1].getResourceType(), 1);
             } catch (Exception e) {}
         }
     }
