@@ -90,9 +90,11 @@ public class mainPanel extends JPanel implements MouseListener {
             g.setColor(main.players.get(i).getColor());
             g.drawString("" + (i + 1), 30, 80 + i * 80);
 
-            g.drawLine(10,50 + i * 90,10,80 + i * 90);
-            g.drawLine(10,50 + i * 90,0,60 + i * 90);
-            g.drawLine(10,50 + i * 90,20,60 + i * 90);
+            if (i == main.turn) {
+                g.drawLine(10, 50 + i * 90, 10, 80 + i * 90);
+                g.drawLine(10, 50 + i * 90, 0, 60 + i * 90);
+                g.drawLine(10, 50 + i * 90, 20, 60 + i * 90);
+            }
 
             cardx = 0;
             BufferedImage img = cardBack;
@@ -118,6 +120,8 @@ public class mainPanel extends JPanel implements MouseListener {
             }
         }
 
+
+
         g.setColor(Color.white);
         g.fillRoundRect(230, 400, 30, 30, 5, 5);
         g.fillRoundRect(265, 400, 30, 30, 5, 5);
@@ -128,11 +132,9 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawString("" + main.dice1, 245 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 425);
         g.drawString("" + main.dice2, 280 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 425);
 
+        //trade button
         g.setColor(Color.red);
         g.fillRect(30, 450, 60, 30);
-
-        g.setColor(Color.orange);
-        g.fillRect(100, 450, 60, 30);
 
         //display bank
         g.setColor(Color.black);
@@ -150,8 +152,20 @@ public class mainPanel extends JPanel implements MouseListener {
         g.drawImage(woodCard, 190, 380, 35, 52, null);
         g.drawString("" + main.bank.get(ResourceCard.WOOD), 207 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 440);
 
+        //end turn button
         g.setColor(Color.cyan);
         g.fillRect(30, 490, 60, 30);
+
+        //build road button
+        g.setColor(Color.yellow);
+        g.fillRect(100, 450, 30, 30);
+
+        //build settlement button
+        g.fillRect(140, 450, 30, 30);
+
+        //build city button
+        g.fillRect(180, 450, 30, 30);
+
 
         /*
         g.setColor(new Color(0, 140, 240));
@@ -467,31 +481,75 @@ public class mainPanel extends JPanel implements MouseListener {
 
         else if (main.canRollDie) {
             if (x > 230 && x < 295 && y > 400 && y < 430) {
-                main.distributeResources(main.rollDie());
-                main.canRollDie = false;
-                main.canSelectCards = true;
-                main.tradingBuilding = true;
+                main.rollDie();
                 repaint();
             }
         }
 
-        else if (main.tradingMaritime) {
-            if (y > 380 && y < 422 && x > 30 && x < 230) {
-                int clickedCard = (x - 30) / 40;
-                if (x - clickedCard * 40 < 35) {
-                    main.maritimeTrade(main.rco[clickedCard]);
+        else if (main.halving) {
+            i = 0;
+            for (int j = i; j < 4; j++) {
+                if (main.players.get(j).resourceHand.size() > 7) {
+                    int clickedCard = (x - 50) / 15;
+                    int numCardsToBeDiscarded = main.players.get(i).resourceHand.size() / 2;
+
+                    if (y - i * 80 - 30 < 60) {
+                        try {
+                            main.players.get(i).selectResourceCard(clickedCard);
+                        }
+                        catch (Exception fuckoff) {
+                            if (clickedCard == main.players.get(i).resourceHand.size())
+                                main.players.get(i).selectResourceCard(clickedCard - 1);
+                        }
+                        if (main.players.get(i).getSelectedCards().size() == numCardsToBeDiscarded) {
+                            main.players.get(i).resourceHand.removeAll(main.players.get(i).getSelectedCards());
+                            i++;
+                            out.println("1 halving next plaer");
+                        }
+                        repaint();
+                    }
+                }
+                else {
+                    i++;
+                    out.println("2 halving next player");
                 }
             }
-            main.tradingMaritime = false;
-            repaint();
+            if (i > 3) {
+                main.halving = false;
+                main.movingRobber = true;
+            }
+        }
+
+        else if (main.movingRobber) {
+            int closestTilex = ((int) ((x - 390 + w / 2) / w - 1)) * w + w + 390;
+            int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
+            int closestTileBoardx = (int) ((x - 390 + w / 2) / w - 1) + 1;
+            int closestTileBoardy = ((y - 30) / (3 * h)) * 3 + 2;
+
+            if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 900 && main.board[closestTileBoardx][closestTileBoardy] != null) {
+                if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
+                    main.moveRobber(closestTileBoardx, closestTileBoardy);
+                    out.println("success " + main.robberx + " " + main.robbery);
+                    main.movingRobber = false;
+                    repaint();
+                }
+            }
+        }
+
+        else if (main.stealing) {
+            int clickedSettler = (y - 30) / 80;
+            out.println("stealing clicked on bitchass");
+            if (x > 30 && x < 390) {
+                main.steal(main.players.get(main.turn), main.players.get(clickedSettler));
+                repaint();
+            }
         }
 
         else if (main.canSelectCards) {
+
             int clickedSettler = (y - 30) / 80;
-            out.println(clickedSettler);
             int clickedCard = (x - 50) / 15;
-            out.println(clickedCard);
-            out.println(y - clickedSettler * 80 + 30);
+
             if (clickedSettler > 3) {}
             else if (y - clickedSettler * 80 - 30 < 60) {
                 try {
@@ -503,22 +561,31 @@ public class mainPanel extends JPanel implements MouseListener {
                 }
                 repaint();
             }
+
             if (main.tradingBuilding) {
+
                 if (x > 30 && x < 90 && y > 450 && y < 480) {
                     out.println("domestic trade called");
                     main.domesticTrade();
                     repaint();
                 }
-                else if (x > 100 && x < 160 && y > 450 && y < 480) {
-                    out.println("maritime trade claled");
-                    main.tradingMaritime = true;
-                    repaint();
+
+                if (y > 380 && y < 422 && x > 30 && x < 230) {
+                    clickedCard = (x - 30) / 40;
+                    out.println("maritime trade called");
+                    out.println(clickedCard);
+                    if (x - (clickedCard * 40 + 30) < 35) {
+                        main.maritimeTrade(main.rco[clickedCard]);
+                        repaint();
+                    }
                 }
             }
-            if (x > 30 && x < 90 && y > 490 && y < 520) {
-                main.endTurn();
-                out.println("turn ended");
-                repaint();
+            if (main.canEndTurn) {
+                if (x > 30 && x < 90 && y > 490 && y < 520) {
+                    main.endTurn();
+                    out.println("turn ended");
+                    repaint();
+                }
             }
         }
 
@@ -598,23 +665,6 @@ public class mainPanel extends JPanel implements MouseListener {
                         main.buildingRoad = false;
                         repaint();
                     }
-                }
-            }
-        }
-
-        else if (main.movingRobber) {
-            int closestTilex = ((int) ((x - 390 + w / 2) / w - 1)) * w + w + 390;
-            int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
-            int closestTileBoardx = (int) ((x - 390 + w / 2) / w - 1) + 1;
-            int closestTileBoardy = ((y - 30) / (3 * h)) * 3 + 2;
-
-            if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 900 && main.board[closestTileBoardx][closestTileBoardy] != null) {
-                if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
-                    main.robberx = closestTileBoardx;
-                    main.robbery = closestTileBoardy;
-                    out.println("success " + main.robberx + " " + main.robbery);
-                    main.movingRobber = false;
-                    repaint();
                 }
             }
         }
