@@ -486,10 +486,12 @@ public class mainPanel extends JPanel implements MouseListener {
             }
         }
 
+        //FUCK YOU KALE FINISH THIS MOTHERFUCKer
         else if (main.halving) {
             i = 0;
             for (int j = i; j < 4; j++) {
                 if (main.players.get(j).resourceHand.size() > 7) {
+                    out.println("halving player j");
                     int clickedCard = (x - 50) / 15;
                     int numCardsToBeDiscarded = main.players.get(i).resourceHand.size() / 2;
 
@@ -502,7 +504,7 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.players.get(i).selectResourceCard(clickedCard - 1);
                         }
                         if (main.players.get(i).getSelectedCards().size() == numCardsToBeDiscarded) {
-                            main.players.get(i).resourceHand.removeAll(main.players.get(i).getSelectedCards());
+                            main.players.get(i).removeSelectedCards();
                             i++;
                             out.println("1 halving next plaer");
                         }
