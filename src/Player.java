@@ -205,6 +205,53 @@ public class Player {
         return false;
     }
 
+    public boolean hasResourcesForRoad() {
+        return countResources(ResourceCard.BRICK) >= 1 &&
+                countResources(ResourceCard.WOOD) >= 1;
+    }
+
+    public void buyRoad() {
+        removeResourceCard(ResourceCard.BRICK, 1);
+        removeResourceCard(ResourceCard.WOOD, 1);
+    }
+
+    public boolean hasResourcesForSettlement() {
+        return countResources(ResourceCard.BRICK) >= 1 &&
+                countResources(ResourceCard.WOOD) >= 1 &&
+                countResources(ResourceCard.WHEAT) >= 1 &&
+                countResources(ResourceCard.SHEEP) >= 1;
+    }
+
+    public void buySettlement() {
+        removeResourceCard(ResourceCard.BRICK, 1);
+        removeResourceCard(ResourceCard.WOOD, 1);
+        removeResourceCard(ResourceCard.WHEAT, 1);
+        removeResourceCard(ResourceCard.SHEEP, 1);
+    }
+
+    public boolean hasResourcesForCity() {
+        return countResources(ResourceCard.WHEAT) >= 2 &&
+                countResources(ResourceCard.ORE) >= 3;
+    }
+
+    public void buyCity() {
+        removeResourceCard(ResourceCard.WOOD, 2);
+        removeResourceCard(ResourceCard.ORE, 3);
+    }
+
+    public boolean hasResourcesForDevelopmentCard() {
+        return countResources(ResourceCard.SHEEP) >= 1 &&
+                countResources(ResourceCard.WHEAT) >= 1 &&
+                countResources(ResourceCard.ORE) >= 1;
+    }
+
+    public void buyDevelopmentCard() {
+        removeResourceCard(ResourceCard.SHEEP, 1);
+        removeResourceCard(ResourceCard.WHEAT, 1);
+        removeResourceCard(ResourceCard.ORE, 1);
+    }
+
+
     public Color getColor() {
         return color;
     }

@@ -9,6 +9,7 @@ public class main {
     static Intersection[][] inter = new Intersection[11][17];
     static ArrayList<Port> ports = new ArrayList<Port>();
 
+    static Stack<DevelopmentCard> daStack = new Stack<DevelopmentCard>();
     static HashMap<ResourceCard, Integer> bank = new HashMap<ResourceCard, Integer>();
     static ResourceCard[] rco = {ResourceCard.BRICK, ResourceCard.ORE, ResourceCard.SHEEP, ResourceCard.WHEAT, ResourceCard.WOOD};
 
@@ -22,7 +23,9 @@ public class main {
     //gamestates
     static boolean
             startingSetup,
+            halving,
             movingRobber,
+            stealing,
             buildingSettlement,
             buildingCity,
             buildingRoad,
@@ -44,6 +47,7 @@ public class main {
 
 
         createBoard();
+        createDevelopmentCardStack();
         fillBank();
         //tempdisplayshittyboard();
 
@@ -64,24 +68,6 @@ public class main {
 
         mainFrame main = new mainFrame("Catan");
 
-
-
-
-
-
-        boolean running = false;
-
-        while (running) {
-
-
-
-
-            turn = (turn + 1) % 4;
-        }
-
-
-
-
     }
 
 
@@ -92,6 +78,15 @@ public class main {
     public static int rollDie() {
         dice1 = (int) (6 * Math.random() + 1);
         dice2 = (int) (6 * Math.random() + 1);
+        if (dice1 + dice2 == 7)
+            halving = true;
+        else
+            distributeResources(dice1 + dice1);
+        canRollDie = false;
+        canSelectCards = true;
+        tradingBuilding = true;
+        canEndTurn = true;
+
         return dice1 + dice2;
     }
 
@@ -106,41 +101,34 @@ public class main {
     }
 
     public static void domesticTrade() {
-        Player a = null;
         Player b = null;
-        int pindex = 0;
-        for (Player p: players) {
-            if (p.hasResourceCardsSelected()) {
-                if (a == null) {
-                    a = p;
-                    out.println("a chosen" + pindex);
-                }
-                else if (b == null) {
+        if (players.get(turn).hasResourceCardsSelected()) {
+            for (Player p: players) {
+                if (p != players.get(turn) && p.hasResourceCardsSelected()){
                     b = p;
-                    out.println("b chosen" + pindex);
                 }
-                pindex++;
             }
         }
-        if (a == null || b == null)
+        if (b == null)
             return;
 
-        ArrayList<ResourceCard> aOffer = a.getSelectedCards();
+        ArrayList<ResourceCard> aOffer = players.get(turn).getSelectedCards();
         ArrayList<ResourceCard> bOffer = b.getSelectedCards();
 
         for (ResourceCard rc: aOffer) {
-            a.removeResourceCard(rc, 1);
+            players.get(turn).removeResourceCard(rc, 1);
             b.addResourceCard(rc, 1);
         }
         for (ResourceCard rc: bOffer) {
             b.removeResourceCard(rc, 1);
-            a.addResourceCard(rc, 1);
+            players.get(turn).addResourceCard(rc, 1);
         }
 
     }
 
     //FINISH THIS METHOD MOTHERFUCKER YOU STUPID ASS BITCH FUCK YOU KALE
     public static void maritimeTrade(ResourceCard rc) {
+        out.println("maritimeTrade method called");
         ArrayList<ResourceCard> offer = players.get(turn).getSelectedCards();
         int tradeRate = 4;
 
@@ -151,7 +139,7 @@ public class main {
             for (ResourceCard rcFUCK: offer) {
                 if (firstRc == null)
                     firstRc = rcFUCK;
-                else if (rcFUCK != firstRc || firstRc == rc);
+                else if (rcFUCK != firstRc || firstRc == rc)
                     return;
             }
             out.println("offer is single carded");
@@ -169,10 +157,12 @@ public class main {
             }
 
             //finally perform trade
-            players.get(turn).removeResourceCard(firstRc, tradeRate);
-            addToBank(firstRc, tradeRate);
-            players.get(turn).addResourceCard(rc, 1);
-            removeFromBank(rc, 1);
+            if (offer.size() >= tradeRate) {
+                players.get(turn).removeResourceCard(firstRc, tradeRate);
+                addToBank(firstRc, tradeRate);
+                players.get(turn).addResourceCard(rc, 1);
+                removeFromBank(rc, 1);
+            }
         }
     }
 
@@ -199,11 +189,6 @@ public class main {
         return false;
     }
 
-    public static boolean checkRoads(Player p, int x, int y) {
-
-        return false;
-    }
-
     public static void buildSettlement(Player p, int x, int y) {
 
     }
@@ -217,12 +202,18 @@ public class main {
     }
 
 
-    public static void moveRobber(Player p, int x, int y) {
-
+    public static void moveRobber(int x, int y) {
+        robberx = x;
+        robbery = y;
+        movingRobber = false;
+        stealing = true;
     }
 
     public static void steal(Player stealer, Player victim) {
+        out.println("steal method called");
         stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
+        stealing = false;
+
     }
 
     public static void halveResources() {
@@ -387,6 +378,21 @@ public class main {
         ports.get(0).setCoords(1, 6, 1, 4);
 
 
+    }
+
+    public static void createDevelopmentCardStack() {
+        for (int i = 0; i < 14; i++) {
+            daStack.push(DevelopmentCard.KNIGHT);
+        }
+        for (int i = 0; i < 2; i++) {
+            daStack.push(DevelopmentCard.MONOPOLY);
+            daStack.push(DevelopmentCard.ROADBUILDING);
+            daStack.push(DevelopmentCard.YEAROFPLENTY);
+        }
+        for (int i = 0; i < 5; i++) {
+            daStack.push(DevelopmentCard.VICTORYPOINT);
+        }
+        Collections.shuffle(daStack);
     }
 
     public static void fillBank() {
