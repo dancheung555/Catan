@@ -14,12 +14,19 @@ public class Settlement {
         tier = 1;
     }
 
+    public Settlement(int r, int c) {
+        row = r;
+        col = c;
+    }
+
     public Player getOwner() { return owner; }
     public int getTier() { return tier; }
     public void upgrade() { tier = 2; }
 
-    public int compareTo(Object o) {
-        return 0;
+    public boolean equals(Settlement s) {
+        if (s.row == row && s.col == col)
+            return true;
+        return false;
     }
 
 

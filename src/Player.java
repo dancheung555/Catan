@@ -9,7 +9,9 @@ public class Player {
 
     ArrayList<DevelopmentCard> developmentCardHand = new ArrayList<DevelopmentCard>();
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
+
     ArrayList<Road> eligibleRoads = new ArrayList<Road>();
+    ArrayList<Settlement> eligibleSettlements = new ArrayList<Settlement>();
 
     ArrayList<Port> accessiblePorts = new ArrayList<Port>();
 
@@ -17,10 +19,11 @@ public class Player {
     int longestRoadLength;
     int knightsPlayed;
 
+    boolean longestRoad;
+    boolean largestArmy;
 
 
-    public Player(Color c)
-    {
+    public Player(Color c) {
         color = c;
         resourceHand = new ArrayList<ResourceCard>();
     }
@@ -36,7 +39,7 @@ public class Player {
     public int countResources(ResourceCard type) {
         int count = 0;
         for (ResourceCard card: resourceHand) {
-            if (card.equals(type))
+            if (card != null && card.equals(type))
                 count++;
         }
         return count;
@@ -81,6 +84,18 @@ public class Player {
             }
         }
         selectedResources = new boolean[resourceHand.size()];
+    }
+
+    public void addDevelopmentCard(DevelopmentCard dc) {
+        developmentCardHand.add(dc);
+    }
+
+    public boolean hasDevelopmentCard(DevelopmentCard dc) {
+        for (DevelopmentCard dcFUCK: developmentCardHand) {
+            if (dcFUCK == dc)
+                return true;
+        }
+        return false;
     }
 
     public void playDevelopmentCard(ResourceCard type) {
@@ -210,6 +225,70 @@ public class Player {
         return false;
     }
 
+    public void updateEligibleSettlements() {
+        eligibleSettlements = new ArrayList<Settlement>();
+        for (Settlement s: settlements) {
+            settlementCounter(s.row, s.col, 0);
+        }
+    }
+
+    public void settlementCounter(int r, int c, int fromDirection) {
+        if (main.inter[r][c].isOpen()) {
+            eligibleSettlements.add(new Settlement(r, c));
+        }
+        if (c % 3 == 0) {
+            if (fromDirection != 3) {
+                try {
+                    if (main.inter[r][c].getLeftRoad() != null)
+                        settlementCounter(r - 1, c + 1, 1);
+                } catch (Exception e) { System.out.println("error settlementCounter 0 3"); }
+            }
+            if (fromDirection != 2) {
+                try {
+                    if (main.inter[r][c].getMiddleRoad() != null)
+                        settlementCounter(r, c - 2, 2);
+                } catch (Exception e) { System.out.println("error settlementCounter 0 2"); }
+            }
+            if (fromDirection != 1) {
+                try {
+                    if (main.inter[r][c].getRightRoad() != null)
+                        settlementCounter(r + 1, c + 1, 3);
+                } catch (Exception e) { System.out.println("error settlementCounter 0 1"); }
+            }
+        }
+        else {
+            if (fromDirection != 3) {
+                try {
+                    if (main.inter[r][c].getLeftRoad() != null)
+                        settlementCounter(r - 1, c - 1, 1);
+                } catch (Exception e) { System.out.println("error settlementCounter 1 3"); }
+            }
+            if (fromDirection != 2) {
+                try {
+                    if (main.inter[r][c].getMiddleRoad() != null)
+                        settlementCounter(r, c + 2, 2);
+                } catch (Exception e) { System.out.println("error settlementCounter 1 2"); }
+            }
+            if (fromDirection != 1) {
+                try {
+                    if (main.inter[r][c].getRightRoad() != null)
+                        settlementCounter(r + 1, c - 1, 3);
+                } catch (Exception e) { System.out.println("error settlementCounter 1 1"); }
+            }
+        }
+    }
+
+    public boolean canBuildSettlement(int x, int y) {
+        for (Settlement s: eligibleSettlements) {
+            if (s.equals(new Settlement(x, y))) {
+                System.out.println("canpring set");
+                return true;
+            }
+        }
+        System.out.println("cannotpring set");
+        return false;
+    }
+
     public boolean hasResourcesForRoad() {
         return countResources(ResourceCard.BRICK) >= 1 &&
                 countResources(ResourceCard.WOOD) >= 1;
@@ -240,7 +319,7 @@ public class Player {
     }
 
     public void buyCity() {
-        removeResourceCard(ResourceCard.WOOD, 2);
+        removeResourceCard(ResourceCard.WHEAT, 2);
         removeResourceCard(ResourceCard.ORE, 3);
     }
 
@@ -257,7 +336,6 @@ public class Player {
         developmentCardHand.add(main.daStack.pop());
     }
 
-
     public Color getColor() {
         return color;
     }
@@ -266,17 +344,40 @@ public class Player {
         return victoryPoints;
     }
 
+    public void updateVictoryPoints() {
+        for (Settlement s: settlements) {
+            victoryPoints += s.tier;
+        }
+
+    }
+
     public int getLongestRoadLength() {
         return longestRoadLength;
     }
 
+    /*
+    FINISH THIS METHOD YOU FUCKING CUNT SO FUCKING LAZY YOU CAN'T FINISH IN ONE NIGHT GODDAMN
     public void updateLongestRoad() {
+        for (Settlement s: settlements) {
+            longestRoadLength = Math.max(updateLongestRoadHelper(s.row, s.col, 0), longestRoadLength);
+        }
     }
+
+    private int updateLongestRoadHelper(int r, int c, int fromDirection) {
+        int max = 0;
+        if (c % 3 == 0) {
+            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3) {
+                max = 1 + updateLongestRoadHelper(r - 1)(c + 1)
+            }
+        }
+        return max;
+    }
+
+     */
 
     public int getKnightsPlayed() {
         return knightsPlayed;
     }
-
 
 
 }

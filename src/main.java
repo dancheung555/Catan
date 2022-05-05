@@ -11,7 +11,11 @@ public class main {
 
     static Stack<DevelopmentCard> daStack = new Stack<DevelopmentCard>();
     static HashMap<ResourceCard, Integer> bank = new HashMap<ResourceCard, Integer>();
+
     static ResourceCard[] rco = {ResourceCard.BRICK, ResourceCard.ORE, ResourceCard.SHEEP, ResourceCard.WHEAT, ResourceCard.WOOD};
+    static DevelopmentCard[] dco = {DevelopmentCard.KNIGHT, DevelopmentCard.VICTORYPOINT, DevelopmentCard.MONOPOLY, DevelopmentCard.ROADBUILDING, DevelopmentCard.YEAROFPLENTY};
+
+    static mainFrame mf;
 
     static ArrayList<Player> players = new ArrayList<Player>();
     static int turn = 0;
@@ -67,7 +71,7 @@ public class main {
 
 
 
-        mainFrame main = new mainFrame("Catan");
+        mf = new mainFrame("Catan");
 
     }
 
@@ -81,8 +85,10 @@ public class main {
         dice2 = (int) (6 * Math.random() + 1);
         if (dice1 + dice2 == 7) {
             for (Player p: players) {
-                if (p.resourceHand.size() > 7)
+                if (p.resourceHand.size() > 7) {
                     halving = true;
+                    mf.mp.resetHalvingIndex();
+                }
             }
             if (!halving)
                 movingRobber = true;
@@ -200,6 +206,8 @@ public class main {
 
     public static void buildSettlement(Player p, int x, int y) {
         main.inter[x][y].addSettlement(new Settlement(p, x, y));
+        p.updateEligibleSettlements();
+        p.updateEligibleRoads();
         p.buySettlement();
         highlightEligibleSettlements = false;
         buildingSettlement = false;
@@ -219,11 +227,12 @@ public class main {
         else {
             main.inter[x][y].buildRightRoad(p);
         }
+        p.updateEligibleSettlements();
+        p.updateEligibleRoads();
         p.buyRoad();
         main.highlightEligibleRoads = false;
         main.buildingRoad = false;
     }
-
 
     public static void moveRobber(int x, int y) {
         robberx = x;
@@ -236,22 +245,6 @@ public class main {
         out.println("steal method called");
         stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
         stealing = false;
-
-    }
-
-    public static void halveResources() {
-
-    }
-
-    public static void developmentCardFunction(Player p, String type) {
-
-    }
-
-    public static void longestRoad() {
-
-    }
-
-    public static void largestArmy() {
 
     }
 

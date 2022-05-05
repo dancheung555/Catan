@@ -13,6 +13,7 @@ import static java.lang.System.out;
 public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
+            knight, victorypoint, monopoly, roadbuilding, yearofplenty,
             developmentCosts, background, robber;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
     private BufferedImage[] pips = new BufferedImage[13];
@@ -24,6 +25,8 @@ public class mainPanel extends JPanel implements MouseListener {
 
     //index i for general usage
     int i = 0;
+
+    int halvingIndex = 0;
 
     public mainPanel()
     {
@@ -59,6 +62,12 @@ public class mainPanel extends JPanel implements MouseListener {
             sheepCard = ImageIO.read(new File("Sheep Card.png"));
             cardBack = ImageIO.read(new File("Development Card.png"));
             developmentCosts = ImageIO.read(new File("developmentcosts.png"));
+
+            knight = ImageIO.read(new File("Knight.png"));
+            victorypoint = ImageIO.read(new File("Chapel.png"));
+            monopoly = ImageIO.read(new File("Monopoly.png"));
+            roadbuilding = ImageIO.read(new File("Road Building.png"));
+            yearofplenty = ImageIO.read(new File("Year of Plenty.png"));
 
             brickicon = ImageIO.read(new File("icon brick.png"));
             oreicon = ImageIO.read(new File("icon ore.png"));
@@ -122,6 +131,24 @@ public class mainPanel extends JPanel implements MouseListener {
                         cardx++;
                     }
                 }
+                cardx = 0;
+                for (DevelopmentCard dc : main.players.get(i).developmentCardHand) {
+                    if (dc != null) {
+                        if (dc == DevelopmentCard.KNIGHT)
+                            img = knight;
+                        else if (dc == DevelopmentCard.VICTORYPOINT)
+                            img = victorypoint;
+                        else if (dc == DevelopmentCard.MONOPOLY)
+                            img = monopoly;
+                        else if (dc == DevelopmentCard.ROADBUILDING)
+                            img = roadbuilding;
+                        else if (dc == DevelopmentCard.YEAROFPLENTY)
+                            img = yearofplenty;
+
+                        g.drawImage(img, cardx * 15 + (300 - main.players.get(i).developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        cardx++;
+                    }
+                }
             }
             else {
                 for (ResourceCard rc : main.players.get(i).resourceHand) {
@@ -136,7 +163,8 @@ public class mainPanel extends JPanel implements MouseListener {
                 cardx = 0;
                 for (DevelopmentCard dc : main.players.get(i).developmentCardHand) {
                     if (dc != null) {
-                        g.drawImage(cardBack, cardx * 15 + (355 - main.players.get(i).developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        g.drawImage(cardBack, cardx * 15 + (300 - main.players.get(i).developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        cardx++;
                     }
                 }
             }
@@ -360,26 +388,33 @@ public class mainPanel extends JPanel implements MouseListener {
         }
 
         //to highlight open and eligible settlement, city, or road intersections/edges
+        g.setColor(new Color(85, 255, 59, 172));
         if (main.highlightEligibleSettlements) {
-            g.setColor(new Color(85, 255, 59, 172));
-            for (int i = 3; i < 184; i += 2) {
-                r1 = i % 11;
-                c1 = i / 11;
-                if (c1 % 3 != 2 && main.inter[r1][c1] != null) {
-                    if (main.inter[r1][c1].isOpen()) {
-                        g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+            if (main.startingSetup) {
+                for (int i = 3; i < 184; i += 2) {
+                    r1 = i % 11;
+                    c1 = i / 11;
+                    if (c1 % 3 != 2 && main.inter[r1][c1] != null) {
+                        if (main.inter[r1][c1].isOpen()) {
+                            g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+                        }
                     }
+                }
+            }
+            else {
+                for (Settlement s: main.players.get(main.turn).eligibleSettlements) {
+                    g.fillOval(s.row * w + 380, s.col * h + 20, 20, 20);
                 }
             }
         }
         else if (main.highlightEligibleCities) {
-            g.setColor(new Color(85, 255, 59, 172));
-            for (Settlement s: main.players.get(main.turn).settlements) {
+
+            for (Settlement s : main.players.get(main.turn).settlements) {
                 g.fillRect(s.row * w + 380, s.col * h + 20, 20, 20);
             }
+
         }
         else if (main.highlightEligibleRoads) {
-            g.setColor(new Color(85, 255, 59, 172));
             for (Road r: main.players.get(main.turn).eligibleRoads) {
                 g.fillPolygon(r.p);
             }
@@ -519,32 +554,31 @@ public class mainPanel extends JPanel implements MouseListener {
 
         //FUCK YOU KALE FINISH THIS MOTHERFUCKer
         else if (main.halving) {
-            i = 0;
-            for (int j = i; j < 4; j++) {
+            for (int j = halvingIndex; j < 4; j++) {
                 if (main.players.get(j).resourceHand.size() > 7) {
-                    i = j;
+                    halvingIndex = j;
                     break;
                 }
             }
-            if (main.players.get(i).resourceHand.size() > 7) {
-                out.println("halving player " + i);
+            if (main.players.get(halvingIndex).resourceHand.size() > 7) {
+                out.println("halving player " + halvingIndex);
                 int clickedCard = (x - 50) / 15;
-                int numCardsToBeDiscarded = main.players.get(i).resourceHand.size() / 2;
-                if (y - i * 80 - 30 < 60) {
+                int numCardsToBeDiscarded = main.players.get(halvingIndex).resourceHand.size() / 2;
+                if (y - halvingIndex * 80 - 30 < 60) {
                     try {
-                        main.players.get(i).selectResourceCard(clickedCard);
+                        main.players.get(halvingIndex).selectResourceCard(clickedCard);
                     }
                     catch (Exception fuckoff) {
-                        if (clickedCard == main.players.get(i).resourceHand.size())
-                            main.players.get(i).selectResourceCard(clickedCard - 1);
+                        if (clickedCard == main.players.get(halvingIndex).resourceHand.size())
+                            main.players.get(halvingIndex).selectResourceCard(clickedCard - 1);
                     }
-                    if (main.players.get(i).getSelectedCards().size() == numCardsToBeDiscarded) {
-                        main.players.get(i).removeSelectedCards();
-                        i++;
+                    if (main.players.get(halvingIndex).getSelectedCards().size() == numCardsToBeDiscarded) {
+                        main.players.get(halvingIndex).removeSelectedCards();
+                        halvingIndex++;
                         out.println("1 halving next plaer");
-                        for (int j = i; j < 4; j++) {
+                        for (int j = halvingIndex; j < 4; j++) {
                             if (main.players.get(j).resourceHand.size() > 7) {
-                                i = j;
+                                halvingIndex = j;
                                 break;
                             }
                         }
@@ -553,10 +587,10 @@ public class mainPanel extends JPanel implements MouseListener {
                 }
             }
             else {
-                i++;
+                halvingIndex++;
                 out.println("2 halving next player");
             }
-            if (i > 3) {
+            if (halvingIndex > 3) {
                 main.halving = false;
                 main.movingRobber = true;
             }
@@ -682,7 +716,7 @@ public class mainPanel extends JPanel implements MouseListener {
             int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
 
             if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
-                if (main.inter[closestInterBoardx][closestInterBoardy].isOpen()) {
+                if (main.players.get(main.turn).canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
                     main.buildSettlement(main.players.get(main.turn), closestInterBoardx, closestInterBoardy);
                     repaint();
                 }
@@ -749,4 +783,9 @@ public class mainPanel extends JPanel implements MouseListener {
         }
 
     }
+
+    public void resetHalvingIndex() {
+        halvingIndex = 0;
+    }
+
 }

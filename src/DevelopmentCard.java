@@ -1,7 +1,7 @@
 public enum DevelopmentCard {
     KNIGHT,
-    ROADBUILDING,
+    VICTORYPOINT,
     MONOPOLY,
-    YEAROFPLENTY,
-    VICTORYPOINT
+    ROADBUILDING,
+    YEAROFPLENTY
 }
