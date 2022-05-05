@@ -90,32 +90,46 @@ public class mainPanel extends JPanel implements MouseListener {
             g.setColor(main.players.get(i).getColor());
             g.drawString("" + (i + 1), 30, 80 + i * 80);
 
+            g.setColor(Color.darkGray);
             if (i == main.turn) {
-                g.drawLine(10, 50 + i * 90, 10, 80 + i * 90);
-                g.drawLine(10, 50 + i * 90, 0, 60 + i * 90);
-                g.drawLine(10, 50 + i * 90, 20, 60 + i * 90);
+                g.fillPolygon(new int[]{5, 5, 25}, new int[]{50 + i * 80, 60 + i * 80, 55 + i * 80}, 3);
             }
+            g.setColor(Color.gray);
+            g.fillRect(5, 65 + i * 80, 20, 20);
 
             cardx = 0;
-            BufferedImage img = cardBack;
-            for (ResourceCard rc: main.players.get(i).resourceHand) {
-                if (rc != null) {
-                    if (rc.equals(ResourceCard.BRICK))
-                        img = clayCard;
-                    else if (rc.equals(ResourceCard.ORE))
-                        img = oreCard;
-                    else if (rc.equals(ResourceCard.SHEEP))
-                        img = sheepCard;
-                    else if (rc.equals(ResourceCard.WHEAT))
-                        img = wheatCard;
-                    else if (rc.equals(ResourceCard.WOOD))
-                        img = woodCard;
+            if (main.displayHands[i]) {
+                BufferedImage img = cardBack;
+                for (ResourceCard rc : main.players.get(i).resourceHand) {
+                    if (rc != null) {
+                        if (rc.equals(ResourceCard.BRICK))
+                            img = clayCard;
+                        else if (rc.equals(ResourceCard.ORE))
+                            img = oreCard;
+                        else if (rc.equals(ResourceCard.SHEEP))
+                            img = sheepCard;
+                        else if (rc.equals(ResourceCard.WHEAT))
+                            img = wheatCard;
+                        else if (rc.equals(ResourceCard.WOOD))
+                            img = woodCard;
 
-                    if (!main.players.get(i).selectedResources[cardx])
-                        g.drawImage(img, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
-                    else
-                        g.drawImage(img, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
-                    cardx++;
+                        if (!main.players.get(i).selectedResources[cardx])
+                            g.drawImage(img, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
+                        else
+                            g.drawImage(img, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
+                        cardx++;
+                    }
+                }
+            }
+            else {
+                for (ResourceCard rc : main.players.get(i).resourceHand) {
+                    if (rc != null) {
+                        if (!main.players.get(i).selectedResources[cardx])
+                            g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
+                        else
+                            g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
+                        cardx++;
+                    }
                 }
             }
         }
@@ -385,6 +399,21 @@ public class mainPanel extends JPanel implements MouseListener {
         int x = e.getX();
         int y = e.getY();
 
+        for (int i = 0; i < 4; i++) {
+            if (x > 5 && x < 25 && y > 65 + i * 80 && y < 85 + i * 80) {
+                if (main.displayHands[i]) {
+                    main.displayHands[i] = false;
+                }
+                else {
+                    main.displayHands[i] = true;
+                }
+                repaint();
+                break;
+            }
+        }
+
+
+
         if (main.startingSetup) {
             try {
                 main.turn = main.startingTurnOrder[i];
@@ -476,6 +505,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     main.highlightEligibleSettlements = false;
                     main.canRollDie = true;
                 }
+                main.turn = main.startingTurnOrder[i];
             } catch (Exception fuckyoujava) {}
         }
 
@@ -491,30 +521,39 @@ public class mainPanel extends JPanel implements MouseListener {
             i = 0;
             for (int j = i; j < 4; j++) {
                 if (main.players.get(j).resourceHand.size() > 7) {
-                    out.println("halving player j");
-                    int clickedCard = (x - 50) / 15;
-                    int numCardsToBeDiscarded = main.players.get(i).resourceHand.size() / 2;
-
-                    if (y - i * 80 - 30 < 60) {
-                        try {
-                            main.players.get(i).selectResourceCard(clickedCard);
-                        }
-                        catch (Exception fuckoff) {
-                            if (clickedCard == main.players.get(i).resourceHand.size())
-                                main.players.get(i).selectResourceCard(clickedCard - 1);
-                        }
-                        if (main.players.get(i).getSelectedCards().size() == numCardsToBeDiscarded) {
-                            main.players.get(i).removeSelectedCards();
-                            i++;
-                            out.println("1 halving next plaer");
-                        }
-                        repaint();
+                    i = j;
+                    break;
+                }
+            }
+            if (main.players.get(i).resourceHand.size() > 7) {
+                out.println("halving player " + i);
+                int clickedCard = (x - 50) / 15;
+                int numCardsToBeDiscarded = main.players.get(i).resourceHand.size() / 2;
+                if (y - i * 80 - 30 < 60) {
+                    try {
+                        main.players.get(i).selectResourceCard(clickedCard);
                     }
+                    catch (Exception fuckoff) {
+                        if (clickedCard == main.players.get(i).resourceHand.size())
+                            main.players.get(i).selectResourceCard(clickedCard - 1);
+                    }
+                    if (main.players.get(i).getSelectedCards().size() == numCardsToBeDiscarded) {
+                        main.players.get(i).removeSelectedCards();
+                        i++;
+                        out.println("1 halving next plaer");
+                        for (int j = i; j < 4; j++) {
+                            if (main.players.get(j).resourceHand.size() > 7) {
+                                i = j;
+                                break;
+                            }
+                        }
+                    }
+                    repaint();
                 }
-                else {
-                    i++;
-                    out.println("2 halving next player");
-                }
+            }
+            else {
+                i++;
+                out.println("2 halving next player");
             }
             if (i > 3) {
                 main.halving = false;

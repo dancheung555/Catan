@@ -41,7 +41,7 @@ public class main {
             highlightEligibleRoads;
 
     //other
-    static boolean fuckme;
+    static boolean[] displayHands = new boolean[]{false, false, false, false};
 
     public static void main(String[] args) {
 
@@ -79,7 +79,7 @@ public class main {
         dice2 = (int) (6 * Math.random() + 1);
         if (dice1 + dice2 == 7) {
             for (Player p: players) {
-                if (p.resourceHand.size() > 8)
+                if (p.resourceHand.size() > 7)
                     halving = true;
             }
             if (!halving)
