@@ -7,7 +7,7 @@ public class Player {
     ArrayList<ResourceCard> resourceHand;
     boolean[] selectedResources;
 
-    ArrayList<DevelopmentCard> developmentCardHand;
+    ArrayList<DevelopmentCard> developmentCardHand = new ArrayList<DevelopmentCard>();
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
     ArrayList<Road> eligibleRoads = new ArrayList<Road>();
 
@@ -81,10 +81,6 @@ public class Player {
             }
         }
         selectedResources = new boolean[resourceHand.size()];
-    }
-
-    public void addDevelopmentCard(ResourceCard type) {
-        resourceHand.add(type);
     }
 
     public void playDevelopmentCard(ResourceCard type) {
@@ -258,6 +254,7 @@ public class Player {
         removeResourceCard(ResourceCard.SHEEP, 1);
         removeResourceCard(ResourceCard.WHEAT, 1);
         removeResourceCard(ResourceCard.ORE, 1);
+        developmentCardHand.add(main.daStack.pop());
     }
 
 

@@ -41,7 +41,9 @@ public class main {
             highlightEligibleRoads;
 
     //other
-    static boolean fuckme;
+    static boolean[] displayHands = new boolean[]{false, false, false, false};
+
+    static String guide = "";
 
     public static void main(String[] args) {
 
@@ -79,7 +81,7 @@ public class main {
         dice2 = (int) (6 * Math.random() + 1);
         if (dice1 + dice2 == 7) {
             for (Player p: players) {
-                if (p.resourceHand.size() > 8)
+                if (p.resourceHand.size() > 7)
                     halving = true;
             }
             if (!halving)
@@ -197,15 +199,29 @@ public class main {
     }
 
     public static void buildSettlement(Player p, int x, int y) {
-
+        main.inter[x][y].addSettlement(new Settlement(p, x, y));
+        p.buySettlement();
+        highlightEligibleSettlements = false;
+        buildingSettlement = false;
     }
 
     public static void buildCity(Player p, int x, int y) {
-
+        main.inter[x][y].upgradeSettlement();
+        p.buyCity();
+        main.highlightEligibleCities = false;
+        main.buildingCity = false;
     }
 
-    public static void buildRoad(Player p, int x1, int y1, int x2, int y2) {
-
+    public static void buildRoad(Player p, int x, int y, int direction) {
+        if (direction == 2) {
+            main.inter[x][y].buildMiddleRoad(p);
+        }
+        else {
+            main.inter[x][y].buildRightRoad(p);
+        }
+        p.buyRoad();
+        main.highlightEligibleRoads = false;
+        main.buildingRoad = false;
     }
 
 
