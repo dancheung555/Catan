@@ -165,7 +165,7 @@ public class main {
                     tradeRate = 3;
                     out.println("found neutral port");
                 }
-                if (porn.getSpecialty().equals(firstRc)) {
+                if (porn.getSpecialty() != null && porn.getSpecialty().equals(firstRc)) {
                     tradeRate = 2;
                     out.println("found specific");
                     break;
@@ -416,8 +416,10 @@ public class main {
             else if (plaer > -1 && players[i].getLongestRoadLength() > players[plaer].getLongestRoadLength())
                 plaer = i;
         }
-        if (plaer > -1)
+        if (plaer > -1) {
             players[plaer].rewardLongestRoad();
+            players[plaer].updateVisibleVictoryPoints();
+        }
     }
 
     public static void assignLargestArmy() {

@@ -170,7 +170,12 @@ public class mainPanel extends JPanel implements MouseListener {
                 }
                 g.drawString("VP: " + main.players[i].visibleVictoryPoints, 30, i * 80 + 100);
             }
+            if (main.players[i].longestRoad)
+                g.setColor(new Color(252, 227, 3));
             g.drawString("LR: " + main.players[i].longestRoadLength, 80, i * 80 + 100);
+            g.setColor(Color.black);
+            if (main.players[i].largestArmy)
+                g.setColor(new Color(252, 227, 3));
             g.drawString("LA: " + main.players[i].knightsPlayed, 130, i * 80 + 100);
         }
 
@@ -503,7 +508,6 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
@@ -524,7 +528,6 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
@@ -537,7 +540,6 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
