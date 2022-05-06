@@ -23,7 +23,7 @@ public class Intersection {
 
     public void addSettlement(Settlement s) {
         settlement = s;
-        main.players.get(main.turn).addSettlement(s);
+        main.players[main.turn].addSettlement(s);
         updateOpen();
     }
 
@@ -77,6 +77,7 @@ public class Intersection {
             try {
                 leftRoad = new Road(r, c, r - 1, c + 1, p);
                 main.inter[r - 1][c + 1].setRightRoad(leftRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("l1 error"); }
         }
@@ -84,6 +85,7 @@ public class Intersection {
             try {
                 leftRoad = new Road(r, c, r - 1, c - 1, p);
                 main.inter[r - 1][c - 1].setRightRoad(leftRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("l2 error"); }
         }
@@ -96,6 +98,7 @@ public class Intersection {
             try {
                 middleRoad = new Road(r, c, r, c - 2, p);
                 main.inter[r][c - 2].setMiddleRoad(middleRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("m1 error"); }
         }
@@ -103,6 +106,7 @@ public class Intersection {
             try {
                 middleRoad = new Road(r, c, r, c + 2, p);
                 main.inter[r][c + 2].setMiddleRoad(middleRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("m2 error");}
         }
@@ -115,6 +119,7 @@ public class Intersection {
             try {
                 rightRoad = new Road(r, c, r + 1, c + 1, p);
                 main.inter[r + 1][c + 1].setLeftRoad(rightRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("r1 error"); }
         }
@@ -122,6 +127,7 @@ public class Intersection {
             try {
                 rightRoad = new Road(r, c, r + 1, c - 1, p);
                 main.inter[r + 1][c - 1].setLeftRoad(rightRoad);
+                p.updateLongestRoad();
                 return true;
             } catch (Exception e) { System.out.println("r2 error"); }
         }

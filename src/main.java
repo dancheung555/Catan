@@ -17,7 +17,12 @@ public class main {
 
     static mainFrame mf;
 
-    static ArrayList<Player> players = new ArrayList<Player>();
+    static Player[] players = new Player[]{
+            new Player(new Color(246, 149, 60)),
+            new Player(new Color(255, 255, 255)),
+            new Player(new Color(0, 160, 224)),
+            new Player(new Color(239, 65, 64))
+    };
     static int turn = 0;
     static int[] startingTurnOrder = {0, 1, 2, 3, 3, 2, 1, 0};
 
@@ -47,7 +52,7 @@ public class main {
     //other
     static boolean[] displayHands = new boolean[]{false, false, false, false};
 
-    static String guide = "";
+    static String guide = "fuck you";
 
     public static void main(String[] args) {
 
@@ -56,12 +61,6 @@ public class main {
         createDevelopmentCardStack();
         fillBank();
         //tempdisplayshittyboard();
-
-        players.add(new Player(new Color(246, 149, 60)));
-        players.add(new Player(new Color(255, 255, 255)));
-        players.add(new Player(new Color(0, 160, 224)));
-        players.add(new Player(new Color(239, 65, 64)));
-
 
         startingSetup = true;
         //for settler 1
@@ -93,8 +92,10 @@ public class main {
             if (!halving)
                 movingRobber = true;
         }
-        else
+        else {
             distributeResources(dice1 + dice1);
+            guide = "Player " + turn + ": trade and build!";
+        }
         canRollDie = false;
         canSelectCards = true;
         tradingBuilding = true;
@@ -115,9 +116,9 @@ public class main {
 
     public static void domesticTrade() {
         Player b = null;
-        if (players.get(turn).hasResourceCardsSelected()) {
+        if (players[turn].hasResourceCardsSelected()) {
             for (Player p: players) {
-                if (p != players.get(turn) && p.hasResourceCardsSelected()){
+                if (p != players[turn] && p.hasResourceCardsSelected()){
                     b = p;
                 }
             }
@@ -125,16 +126,16 @@ public class main {
         if (b == null)
             return;
 
-        ArrayList<ResourceCard> aOffer = players.get(turn).getSelectedCards();
+        ArrayList<ResourceCard> aOffer = players[turn].getSelectedCards();
         ArrayList<ResourceCard> bOffer = b.getSelectedCards();
 
         for (ResourceCard rc: aOffer) {
-            players.get(turn).removeResourceCard(rc, 1);
+            players[turn].removeResourceCard(rc, 1);
             b.addResourceCard(rc, 1);
         }
         for (ResourceCard rc: bOffer) {
             b.removeResourceCard(rc, 1);
-            players.get(turn).addResourceCard(rc, 1);
+            players[turn].addResourceCard(rc, 1);
         }
 
     }
@@ -144,10 +145,10 @@ public class main {
 
     public static void maritimeTrade(ResourceCard rc) {
         out.println("maritimeTrade method called");
-        ArrayList<ResourceCard> offer = players.get(turn).getSelectedCards();
+        ArrayList<ResourceCard> offer = players[turn].getSelectedCards();
         int tradeRate = 4;
 
-        if (players.get(turn).hasResourceCardsSelected()) {
+        if (players[turn].hasResourceCardsSelected()) {
             out.println("has cards selected");
             //check if all resourceCards in selectedHand are the same, doesn't work otherwise
             ResourceCard firstRc = null;
@@ -159,7 +160,7 @@ public class main {
             }
             out.println("offer is single carded");
             //check player's accessiblePorts for potential better trades
-            for (Port porn: players.get(turn).accessiblePorts) {
+            for (Port porn: players[turn].accessiblePorts) {
                 if (porn.getSpecialty() == null) {
                     tradeRate = 3;
                     out.println("found neutral port");
@@ -173,35 +174,12 @@ public class main {
 
             //finally perform trade
             if (offer.size() >= tradeRate) {
-                players.get(turn).removeResourceCard(firstRc, tradeRate);
+                players[turn].removeResourceCard(firstRc, tradeRate);
                 addToBank(firstRc, tradeRate);
-                players.get(turn).addResourceCard(rc, 1);
+                players[turn].addResourceCard(rc, 1);
                 removeFromBank(rc, 1);
             }
         }
-    }
-
-    //(1) check resources, (2) check roads, (3) displaying it
-    //tier = 0 means road, tier = 1 means settlement, tier = 2 means city
-    public static boolean checkResources(Player p, int tier) {
-        int BrickCount = p.countResources(ResourceCard.BRICK);
-        int WoodCount = p.countResources(ResourceCard.WOOD);
-        int SheepCount = p.countResources(ResourceCard.SHEEP);
-        int WheatCount = p.countResources(ResourceCard.WHEAT);
-        int OreCount = p.countResources(ResourceCard.ORE);
-        //check roads
-        if(tier == 0) {
-            if(BrickCount>=1 && WoodCount>=1) { return true; } else { return false; }
-        }
-        //check settlement
-        if(tier == 0) {
-            if(BrickCount>=1 && WoodCount>=1 && SheepCount>=1 && WheatCount>=1) { return true; } else { return false; }
-        }
-        //check city
-        if(tier == 0) {
-            if(OreCount >= 3 && WheatCount>=2) { return true; } else { return false; }
-        }
-        return false;
     }
 
     public static void buildSettlement(Player p, int x, int y) {
@@ -209,6 +187,7 @@ public class main {
         p.updateEligibleSettlements();
         p.updateEligibleRoads();
         p.buySettlement();
+        p.updateVisibleVictoryPoints();
         highlightEligibleSettlements = false;
         buildingSettlement = false;
     }
@@ -216,6 +195,7 @@ public class main {
     public static void buildCity(Player p, int x, int y) {
         main.inter[x][y].upgradeSettlement();
         p.buyCity();
+        p.updateVisibleVictoryPoints();
         main.highlightEligibleCities = false;
         main.buildingCity = false;
     }
@@ -230,6 +210,8 @@ public class main {
         p.updateEligibleSettlements();
         p.updateEligibleRoads();
         p.buyRoad();
+        p.updateLongestRoad();
+        main.assignLongestRoad();
         main.highlightEligibleRoads = false;
         main.buildingRoad = false;
     }
@@ -423,6 +405,31 @@ public class main {
 
     public static void addToBank(ResourceCard type, int count) {
         bank.replace(type, bank.get(type) + count);
+    }
+
+    public static void assignLongestRoad() {
+        int plaer = -1;
+        for (int i = 0; i < 4; i++) {
+            players[i].removeLongestRoad();
+            if (players[i].getLongestRoadLength() > 4 && plaer == -1)
+                plaer = i;
+            else if (plaer > -1 && players[i].getLongestRoadLength() > players[plaer].getLongestRoadLength())
+                plaer = i;
+        }
+        if (plaer > -1)
+            players[plaer].rewardLongestRoad();
+    }
+
+    public static void assignLargestArmy() {
+        int plaer = -1;
+        for (int i = 0; i < 4; i++) {
+            players[plaer].removeLargestArmy();
+            if (players[i].getKnightsPlayed() > 2 && plaer == -1)
+                plaer = i;
+            else if (players[i].getKnightsPlayed() > players[plaer].getKnightsPlayed())
+                plaer = i;
+        }
+        players[plaer].rewardLargestArmy();
     }
 
     public static void endTurn() {

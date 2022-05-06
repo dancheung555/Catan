@@ -15,7 +15,8 @@ public class Player {
 
     ArrayList<Port> accessiblePorts = new ArrayList<Port>();
 
-    int victoryPoints;
+    int visibleVictoryPoints;
+    int hiddenVictoryPoints;
     int longestRoadLength;
     int knightsPlayed;
 
@@ -340,44 +341,79 @@ public class Player {
         return color;
     }
 
-    public int getVictoryPoints() {
-        return victoryPoints;
+    public int getVisibleVictoryPoints() { return visibleVictoryPoints; }
+
+    public void updateVisibleVictoryPoints() {
+        visibleVictoryPoints = 0;
+        for (Settlement s: settlements) {
+            visibleVictoryPoints += s.tier;
+        }
+        if (longestRoad)
+            visibleVictoryPoints += 2;
+        if (largestArmy)
+            visibleVictoryPoints += 2;
     }
 
-    public void updateVictoryPoints() {
-        for (Settlement s: settlements) {
-            victoryPoints += s.tier;
-        }
+    public int getHiddenVictoryPoints() { return hiddenVictoryPoints; }
 
+    public void updateHiddenVictoryPoints() {
+        int victoryPointCards = 0;
+        for (DevelopmentCard dc: developmentCardHand) {
+            if (dc == DevelopmentCard.VICTORYPOINT)
+                victoryPointCards++;
+        }
+        hiddenVictoryPoints = visibleVictoryPoints + victoryPointCards;
     }
 
     public int getLongestRoadLength() {
         return longestRoadLength;
     }
 
-    /*
-    FINISH THIS METHOD YOU FUCKING CUNT SO FUCKING LAZY YOU CAN'T FINISH IN ONE NIGHT GODDAMN
+
+    //FINISH THIS METHOD YOU FUCKING CUNT SO FUCKING LAZY YOU CAN'T FINISH IN ONE NIGHT GODDAMN
     public void updateLongestRoad() {
+        System.out.println("updateLingestRoad claled");
         for (Settlement s: settlements) {
             longestRoadLength = Math.max(updateLongestRoadHelper(s.row, s.col, 0), longestRoadLength);
         }
     }
 
     private int updateLongestRoadHelper(int r, int c, int fromDirection) {
-        int max = 0;
+        int max = 0, leftLength = 0, middleLength = 0, rightLength = 0;
         if (c % 3 == 0) {
             if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3) {
-                max = 1 + updateLongestRoadHelper(r - 1)(c + 1)
+                leftLength = 1 + updateLongestRoadHelper(r - 1, c + 1, 1);
+            }
+            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2) {
+                middleLength = 1 + updateLongestRoadHelper(r, c - 2, 2);
+            }
+            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1) {
+                rightLength = 1 + updateLongestRoadHelper(r + 1, c + 1, 3);
             }
         }
+        else {
+            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3) {
+                leftLength = 1 + updateLongestRoadHelper(r - 1, c - 1, 1);
+            }
+            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2) {
+                middleLength = 1 + updateLongestRoadHelper(r, c + 2, 2);
+            }
+            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1) {
+                rightLength = 1 + updateLongestRoadHelper(r + 1, c - 1, 3);
+            }
+        }
+        max = Math.max(leftLength + middleLength, middleLength + rightLength);
+        max = Math.max(max, leftLength + rightLength);
         return max;
     }
-
-     */
 
     public int getKnightsPlayed() {
         return knightsPlayed;
     }
 
+    public void rewardLongestRoad() { longestRoad = true; }
+    public void removeLongestRoad() { longestRoad = false; }
+    public void rewardLargestArmy() { largestArmy = true; }
+    public void removeLargestArmy() { largestArmy = false; }
 
 }
