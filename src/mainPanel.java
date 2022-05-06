@@ -90,15 +90,13 @@ public class mainPanel extends JPanel implements MouseListener {
     {
         g.setColor(Color.black);
         g.drawLine(0, 540, 960, 540);
-        g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        g.drawString(main.guide, 5, 5);
         g.setColor(new Color(191, 191, 191));
         g.fillRect(0, 0, 960, 540);
 
         int cardx;
-        g.setFont(new Font("Times New Roman", Font.PLAIN, 40));
         for (int i = 0; i < 4; i++) {
-            g.setColor(main.players.get(i).getColor());
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+            g.setColor(main.players[i].getColor());
             g.drawString("" + (i + 1), 30, 80 + i * 80);
 
             g.setColor(Color.darkGray);
@@ -108,10 +106,12 @@ public class mainPanel extends JPanel implements MouseListener {
             g.setColor(Color.gray);
             g.fillRect(5, 65 + i * 80, 20, 20);
 
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 10));
+            g.setColor(Color.black);
             cardx = 0;
             if (main.displayHands[i]) {
                 BufferedImage img = null;
-                for (ResourceCard rc : main.players.get(i).resourceHand) {
+                for (ResourceCard rc : main.players[i].resourceHand) {
                     if (rc != null) {
                         if (rc.equals(ResourceCard.BRICK))
                             img = clayCard;
@@ -124,7 +124,7 @@ public class mainPanel extends JPanel implements MouseListener {
                         else if (rc.equals(ResourceCard.WOOD))
                             img = woodCard;
 
-                        if (!main.players.get(i).selectedResources[cardx])
+                        if (!main.players[i].selectedResources[cardx])
                             g.drawImage(img, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
                         else
                             g.drawImage(img, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
@@ -132,7 +132,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     }
                 }
                 cardx = 0;
-                for (DevelopmentCard dc : main.players.get(i).developmentCardHand) {
+                for (DevelopmentCard dc : main.players[i].developmentCardHand) {
                     if (dc != null) {
                         if (dc == DevelopmentCard.KNIGHT)
                             img = knight;
@@ -145,15 +145,16 @@ public class mainPanel extends JPanel implements MouseListener {
                         else if (dc == DevelopmentCard.YEAROFPLENTY)
                             img = yearofplenty;
 
-                        g.drawImage(img, cardx * 15 + (300 - main.players.get(i).developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        g.drawImage(img, cardx * 15 + (300 - main.players[i].developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
                         cardx++;
                     }
                 }
+                g.drawString("VP: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 30, i * 80 + 100);
             }
             else {
-                for (ResourceCard rc : main.players.get(i).resourceHand) {
+                for (ResourceCard rc : main.players[i].resourceHand) {
                     if (rc != null) {
-                        if (!main.players.get(i).selectedResources[cardx])
+                        if (!main.players[i].selectedResources[cardx])
                             g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
                         else
                             g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
@@ -161,13 +162,16 @@ public class mainPanel extends JPanel implements MouseListener {
                     }
                 }
                 cardx = 0;
-                for (DevelopmentCard dc : main.players.get(i).developmentCardHand) {
+                for (DevelopmentCard dc : main.players[i].developmentCardHand) {
                     if (dc != null) {
-                        g.drawImage(cardBack, cardx * 15 + (300 - main.players.get(i).developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        g.drawImage(cardBack, cardx * 15 + (300 - main.players[i].developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
                         cardx++;
                     }
                 }
+                g.drawString("VP: " + main.players[i].visibleVictoryPoints, 30, i * 80 + 100);
             }
+            g.drawString("LR: " + main.players[i].longestRoadLength, 80, i * 80 + 100);
+            g.drawString("LA: " + main.players[i].knightsPlayed, 130, i * 80 + 100);
         }
 
         //dice
@@ -180,6 +184,8 @@ public class mainPanel extends JPanel implements MouseListener {
         FontMetrics dieFontMetrics = getFontMetrics(dieFont);
         g.drawString("" + main.dice1, 255 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 400);
         g.drawString("" + main.dice2, 310 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 400);
+        if (main.canRollDie)
+            main.guide = "Roll the die!";
 
         //trade button
         g.setColor(Color.red);
@@ -241,9 +247,6 @@ public class mainPanel extends JPanel implements MouseListener {
         for(int i = 0; i<3; i++)
             g.drawImage(clayCard, i*13+30,455,52,78,null);
         */
-
-        //g.drawImage(buildingCost,310,340,160,200,null);
-
         /*
         for(int i = 0; i<3; i++)
         {
@@ -261,7 +264,6 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885, 480,60,20);
         g.fillRect(885, 510,60,20);
         */
-
 
         g.drawImage(background, 345, 0, 600, 540, null);
 
@@ -400,28 +402,34 @@ public class mainPanel extends JPanel implements MouseListener {
                         }
                     }
                 }
+                main.guide = "Player " + (main.turn + 1) + ": choose a location to build a settlement";
             }
             else {
-                for (Settlement s: main.players.get(main.turn).eligibleSettlements) {
+                for (Settlement s: main.players[main.turn].eligibleSettlements) {
                     g.fillOval(s.row * w + 380, s.col * h + 20, 20, 20);
                 }
             }
         }
         else if (main.highlightEligibleCities) {
 
-            for (Settlement s : main.players.get(main.turn).settlements) {
+            for (Settlement s : main.players[main.turn].settlements) {
                 g.fillRect(s.row * w + 380, s.col * h + 20, 20, 20);
             }
 
         }
         else if (main.highlightEligibleRoads) {
-            for (Road r: main.players.get(main.turn).eligibleRoads) {
+            for (Road r: main.players[main.turn].eligibleRoads) {
                 g.fillPolygon(r.p);
             }
+            main.guide = "Player " + (main.turn + 1) + ": choose a location to build a road";
         }
 
 
 
+        //print guide
+        g.setColor(Color.black);
+        g.setFont(new Font("Times New Roman", Font.PLAIN, 10));
+        g.drawString(main.guide, 5, 15);
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -459,12 +467,13 @@ public class mainPanel extends JPanel implements MouseListener {
 
                     if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 100 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
                         if (main.inter[closestInterBoardx][closestInterBoardy].isOpen()) {
-                            main.inter[closestInterBoardx][closestInterBoardy].addSettlement(new Settlement(main.players.get(main.turn), closestInterBoardx, closestInterBoardy));
-                            main.players.get(main.turn).updateStartingEligibleRoads(closestInterBoardx, closestInterBoardy);
+                            main.inter[closestInterBoardx][closestInterBoardy].addSettlement(new Settlement(main.players[main.turn], closestInterBoardx, closestInterBoardy));
+                            main.players[main.turn].updateStartingEligibleRoads(closestInterBoardx, closestInterBoardy);
                             main.highlightEligibleSettlements = false;
                             main.buildingSettlement = false;
                             main.highlightEligibleRoads = true;
                             main.buildingRoad = true;
+                            main.players[main.turn].updateVisibleVictoryPoints();
                             if (i > 3) {
                                 main.inter[closestInterBoardx][closestInterBoardy].obtainStartingResources();
                             }
@@ -488,12 +497,13 @@ public class mainPanel extends JPanel implements MouseListener {
                             out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
                             if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
                                     main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null &&
-                                    main.players.get(main.turn).canBuildRoad(closestInterBoardx, 3 * ygroup, 2)) {
-                                main.inter[closestInterBoardx][3 * ygroup].buildMiddleRoad(main.players.get(main.turn));
+                                    main.players[main.turn].canBuildRoad(closestInterBoardx, 3 * ygroup, 2)) {
+                                main.inter[closestInterBoardx][3 * ygroup].buildMiddleRoad(main.players[main.turn]);
                                 main.highlightEligibleRoads = false;
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
+                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
@@ -508,24 +518,26 @@ public class mainPanel extends JPanel implements MouseListener {
 
                         if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
                             if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
-                                    main.players.get(main.turn).canBuildRoad(closestInterBoardx, closestInterBoardy, 1)) {
-                                main.inter[closestInterBoardx][closestInterBoardy].buildRightRoad(main.players.get(main.turn));
+                                    main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy, 1)) {
+                                main.inter[closestInterBoardx][closestInterBoardy].buildRightRoad(main.players[main.turn]);
                                 main.highlightEligibleRoads = false;
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
+                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
                         }
                         else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
                             if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
-                                    main.players.get(main.turn).canBuildRoad(closestInterBoardx, closestInterBoardy + 1, 3)) {
-                                main.inter[closestInterBoardx][closestInterBoardy + 1].buildRightRoad(main.players.get(main.turn));
+                                    main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy + 1, 3)) {
+                                main.inter[closestInterBoardx][closestInterBoardy + 1].buildRightRoad(main.players[main.turn]);
                                 main.highlightEligibleRoads = false;
                                 main.buildingRoad = false;
                                 main.highlightEligibleSettlements = true;
                                 main.buildingSettlement = true;
+                                //main.players[main.turn].updateLongestRoad();
                                 i++;
                                 repaint();
                             }
@@ -555,29 +567,29 @@ public class mainPanel extends JPanel implements MouseListener {
         //FUCK YOU KALE FINISH THIS MOTHERFUCKer
         else if (main.halving) {
             for (int j = halvingIndex; j < 4; j++) {
-                if (main.players.get(j).resourceHand.size() > 7) {
+                if (main.players[j].resourceHand.size() > 7) {
                     halvingIndex = j;
                     break;
                 }
             }
-            if (main.players.get(halvingIndex).resourceHand.size() > 7) {
+            if (main.players[halvingIndex].resourceHand.size() > 7) {
                 out.println("halving player " + halvingIndex);
                 int clickedCard = (x - 50) / 15;
-                int numCardsToBeDiscarded = main.players.get(halvingIndex).resourceHand.size() / 2;
+                int numCardsToBeDiscarded = main.players[halvingIndex].resourceHand.size() / 2;
                 if (y - halvingIndex * 80 - 30 < 60) {
                     try {
-                        main.players.get(halvingIndex).selectResourceCard(clickedCard);
+                        main.players[halvingIndex].selectResourceCard(clickedCard);
                     }
                     catch (Exception fuckoff) {
-                        if (clickedCard == main.players.get(halvingIndex).resourceHand.size())
-                            main.players.get(halvingIndex).selectResourceCard(clickedCard - 1);
+                        if (clickedCard == main.players[halvingIndex].resourceHand.size())
+                            main.players[halvingIndex].selectResourceCard(clickedCard - 1);
                     }
-                    if (main.players.get(halvingIndex).getSelectedCards().size() == numCardsToBeDiscarded) {
-                        main.players.get(halvingIndex).removeSelectedCards();
+                    if (main.players[halvingIndex].getSelectedCards().size() == numCardsToBeDiscarded) {
+                        main.players[halvingIndex].removeSelectedCards();
                         halvingIndex++;
                         out.println("1 halving next plaer");
                         for (int j = halvingIndex; j < 4; j++) {
-                            if (main.players.get(j).resourceHand.size() > 7) {
+                            if (main.players[j].resourceHand.size() > 7) {
                                 halvingIndex = j;
                                 break;
                             }
@@ -616,7 +628,7 @@ public class mainPanel extends JPanel implements MouseListener {
             int clickedSettler = (y - 30) / 80;
             out.println("stealing clicked on bitchass");
             if (x > 30 && x < 390) {
-                main.steal(main.players.get(main.turn), main.players.get(clickedSettler));
+                main.steal(main.players[main.turn], main.players[clickedSettler]);
                 repaint();
             }
         }
@@ -629,11 +641,11 @@ public class mainPanel extends JPanel implements MouseListener {
             if (clickedSettler > 3) {}
             else if (y - clickedSettler * 80 - 30 < 60) {
                 try {
-                    main.players.get(clickedSettler).selectResourceCard(clickedCard);
+                    main.players[clickedSettler].selectResourceCard(clickedCard);
                 }
                 catch (Exception fuckoff) {
-                    if (clickedCard == main.players.get(clickedSettler).resourceHand.size())
-                        main.players.get(clickedSettler).selectResourceCard(clickedCard - 1);
+                    if (clickedCard == main.players[clickedSettler].resourceHand.size())
+                        main.players[clickedSettler].selectResourceCard(clickedCard - 1);
                 }
                 repaint();
             }
@@ -660,7 +672,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     clickedCard = (x - 30) / 50;
                     out.println("called build");
                     if (clickedCard == 0) {
-                        if (main.players.get(main.turn).hasResourcesForRoad()) {
+                        if (main.players[main.turn].hasResourcesForRoad()) {
                             main.buildingRoad = true;
                             main.highlightEligibleRoads = true;
                             main.canSelectCards = false;
@@ -670,7 +682,7 @@ public class mainPanel extends JPanel implements MouseListener {
                         }
                     }
                     else if (clickedCard == 1) {
-                        if (main.players.get(main.turn).hasResourcesForSettlement()) {
+                        if (main.players[main.turn].hasResourcesForSettlement()) {
                             main.buildingSettlement = true;
                             main.highlightEligibleSettlements = true;
                             main.canSelectCards = false;
@@ -680,7 +692,7 @@ public class mainPanel extends JPanel implements MouseListener {
                         }
                     }
                     else if (clickedCard == 2) {
-                        if (main.players.get(main.turn).hasResourcesForCity()) {
+                        if (main.players[main.turn].hasResourcesForCity()) {
                             main.buildingCity = true;
                             main.highlightEligibleCities = true;
                             main.canSelectCards = false;
@@ -690,8 +702,8 @@ public class mainPanel extends JPanel implements MouseListener {
                         }
                     }
                     else {
-                        if (main.players.get(main.turn).hasResourcesForDevelopmentCard()) {
-                            main.players.get(main.turn).buyDevelopmentCard();
+                        if (main.players[main.turn].hasResourcesForDevelopmentCard()) {
+                            main.players[main.turn].buyDevelopmentCard();
                         }
                         else {
                             main.guide = "Insufficient resources for development card";
@@ -716,8 +728,8 @@ public class mainPanel extends JPanel implements MouseListener {
             int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
 
             if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
-                if (main.players.get(main.turn).canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
-                    main.buildSettlement(main.players.get(main.turn), closestInterBoardx, closestInterBoardy);
+                if (main.players[main.turn].canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
+                    main.buildSettlement(main.players[main.turn], closestInterBoardx, closestInterBoardy);
                     repaint();
                 }
             }
@@ -732,7 +744,7 @@ public class mainPanel extends JPanel implements MouseListener {
 
             if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
                 if (main.inter[closestInterBoardx][closestInterBoardy].getSettlement() != null && main.inter[closestInterBoardx][closestInterBoardy].getSettlement().getTier() == 1) {
-                    main.buildCity(main.players.get(main.turn), closestInterBoardx, closestInterBoardy);
+                    main.buildCity(main.players[main.turn], closestInterBoardx, closestInterBoardy);
                     repaint();
                 }
             }
@@ -754,7 +766,7 @@ public class mainPanel extends JPanel implements MouseListener {
                 if (main.inter[closestInterBoardx][3 * ygroup] != null) {
                     out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
                     if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400 && main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null) {
-                        main.buildRoad(main.players.get(main.turn), closestInterBoardx, 3 * ygroup, 2);
+                        main.buildRoad(main.players[main.turn], closestInterBoardx, 3 * ygroup, 2);
                         repaint();
                     }
                 }
@@ -768,13 +780,13 @@ public class mainPanel extends JPanel implements MouseListener {
 
                 if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
                     if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400) {
-                        main.buildRoad(main.players.get(main.turn), closestInterBoardx, closestInterBoardy, 1);
+                        main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy, 1);
                         repaint();
                     }
                 }
                 else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
                     if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400) {
-                        main.buildRoad(main.players.get(main.turn), closestInterBoardx, closestInterBoardy + 1, 1);
+                        main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy + 1, 1);
                         repaint();
                     }
                 }
