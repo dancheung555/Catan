@@ -8,6 +8,8 @@ public class Player {
     boolean[] selectedResources;
 
     ArrayList<DevelopmentCard> developmentCardHand = new ArrayList<DevelopmentCard>();
+    int selectedDevelopmentCard = -1;
+
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
 
     ArrayList<Road> eligibleRoads = new ArrayList<Road>();
@@ -87,10 +89,6 @@ public class Player {
         selectedResources = new boolean[resourceHand.size()];
     }
 
-    public void addDevelopmentCard(DevelopmentCard dc) {
-        developmentCardHand.add(dc);
-    }
-
     public boolean hasDevelopmentCard(DevelopmentCard dc) {
         for (DevelopmentCard dcFUCK: developmentCardHand) {
             if (dcFUCK == dc)
@@ -99,10 +97,22 @@ public class Player {
         return false;
     }
 
-    public void playDevelopmentCard(ResourceCard type) {
-        resourceHand.remove(type);
-        if (type.equals(DevelopmentCard.KNIGHT))
-            knightsPlayed++;
+    public void selectDevelopmentCard(int sel) {
+        selectedDevelopmentCard = sel;
+        developmentCardFunction();
+    }
+
+    public void developmentCardFunction() {
+        if (developmentCardHand.get(selectedDevelopmentCard) == DevelopmentCard.KNIGHT) {
+            main.movingRobber = true;
+        }
+        else if (developmentCardHand.get(selectedDevelopmentCard) == DevelopmentCard.MONOPOLY) {
+
+        }
+    }
+
+    public void removeDevelopmentCard() {
+        resourceHand.remove(selectedDevelopmentCard);
     }
 
     public void addSettlement(Settlement s) {
@@ -335,13 +345,12 @@ public class Player {
         removeResourceCard(ResourceCard.WHEAT, 1);
         removeResourceCard(ResourceCard.ORE, 1);
         developmentCardHand.add(main.daStack.pop());
+        updateHiddenVictoryPoints();
     }
 
     public Color getColor() {
         return color;
     }
-
-    public int getVisibleVictoryPoints() { return visibleVictoryPoints; }
 
     public void updateVisibleVictoryPoints() {
         visibleVictoryPoints = 0;
@@ -352,9 +361,8 @@ public class Player {
             visibleVictoryPoints += 2;
         if (largestArmy)
             visibleVictoryPoints += 2;
+        main.checkForWinner();
     }
-
-    public int getHiddenVictoryPoints() { return hiddenVictoryPoints; }
 
     public void updateHiddenVictoryPoints() {
         int victoryPointCards = 0;
@@ -362,7 +370,8 @@ public class Player {
             if (dc == DevelopmentCard.VICTORYPOINT)
                 victoryPointCards++;
         }
-        hiddenVictoryPoints = visibleVictoryPoints + victoryPointCards;
+        hiddenVictoryPoints = victoryPointCards;
+        main.checkForWinner();
     }
 
     public int getLongestRoadLength() {

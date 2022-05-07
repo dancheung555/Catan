@@ -9,8 +9,8 @@ public class Road {
     Color color;
     Polygon p;
 
-    final int HEIGHT = 540;
-    final int marg = 60;
+    final int HEIGHT = 810;
+    final int marg = 90;
     private int h = (HEIGHT - marg) / 16;
     private int w = (int) ((HEIGHT - marg) * 1.0825 / 10);
 
@@ -22,26 +22,26 @@ public class Road {
         owner = o;
         color = owner.getColor();
 
-        int xpos = (int) ((x1 + x2) * w / 2) + 390;
-        int ypos = (int) ((y1 + y2) * h / 2) + 30;
+        int xpos = (int) ((x1 + x2) * w / 2) + 608;
+        int ypos = (int) ((y1 + y2) * h / 2) + 45;
         if (x1 == x2) {
             p = new Polygon(
-                    new int[]{xpos - 5, xpos - 5, xpos + 5, xpos + 5},
-                    new int[]{ypos - 20, ypos + 20, ypos + 20, ypos - 20},
+                    new int[]{xpos - 8, xpos - 8, xpos + 8, xpos + 8},
+                    new int[]{ypos - 30, ypos + 30, ypos + 30, ypos - 30},
                     4
             );
         }
         else if ((x1 - x2) / (y1 - y2) == 1) {
             p = new Polygon(
-                    new int[]{xpos - 15, xpos - 20, xpos + 15, xpos + 20},
-                    new int[]{ypos - 14, ypos - 6, ypos + 14, ypos + 6},
+                    new int[]{xpos - 22, xpos - 30, xpos + 22, xpos + 30},
+                    new int[]{ypos - 21, ypos - 6, ypos + 21, ypos + 6},
                     4
             );
         }
         else {
             p = new Polygon(
-                    new int[]{xpos - 20, xpos - 15, xpos + 20, xpos + 15},
-                    new int[]{ypos + 6, ypos + 14, ypos - 6, ypos - 14},
+                    new int[]{xpos - 30, xpos - 22, xpos + 30, xpos + 22},
+                    new int[]{ypos + 6, ypos + 21, ypos - 6, ypos - 21},
                     4
             );
         }
