@@ -29,9 +29,13 @@ public class main {
     static int robberx, robbery;
     static int dice1 = 6, dice2 = 6;
 
+    static int winner = -1;
+
     //gamestates
     static boolean
             startingSetup,
+            playingDC,
+            monopolying,
             halving,
             movingRobber,
             stealing,
@@ -41,7 +45,8 @@ public class main {
             canRollDie,
             canEndTurn,
             canSelectCards,
-            tradingBuilding;
+            tradingBuilding,
+            gameEnded;
 
     //for highlighting when building
     static boolean
@@ -93,7 +98,7 @@ public class main {
                 movingRobber = true;
         }
         else {
-            distributeResources(dice1 + dice1);
+            distributeResources(dice1 + dice2);
             guide = "Player " + turn + ": trade and build!";
         }
         canRollDie = false;
@@ -165,7 +170,7 @@ public class main {
                     tradeRate = 3;
                     out.println("found neutral port");
                 }
-                if (porn.getSpecialty().equals(firstRc)) {
+                if (porn.getSpecialty() != null && porn.getSpecialty().equals(firstRc)) {
                     tradeRate = 2;
                     out.println("found specific");
                     break;
@@ -214,6 +219,19 @@ public class main {
         main.assignLongestRoad();
         main.highlightEligibleRoads = false;
         main.buildingRoad = false;
+    }
+
+    public static void developmentCardFunction() {
+
+    }
+
+    public static void monopoly(Player p, ResourceCard rc) {
+        int toBeTransferredButNotStolenBecauseItsMonopolyAndIfYoureSaltyFuckYou = 0;
+        for (Player pee: players) {
+            toBeTransferredButNotStolenBecauseItsMonopolyAndIfYoureSaltyFuckYou = pee.countResources(rc);
+            pee.removeResourceCard(rc, toBeTransferredButNotStolenBecauseItsMonopolyAndIfYoureSaltyFuckYou);
+            p.addResourceCard(rc, toBeTransferredButNotStolenBecauseItsMonopolyAndIfYoureSaltyFuckYou);
+        }
     }
 
     public static void moveRobber(int x, int y) {
@@ -416,8 +434,10 @@ public class main {
             else if (plaer > -1 && players[i].getLongestRoadLength() > players[plaer].getLongestRoadLength())
                 plaer = i;
         }
-        if (plaer > -1)
+        if (plaer > -1) {
             players[plaer].rewardLongestRoad();
+            players[plaer].updateVisibleVictoryPoints();
+        }
     }
 
     public static void assignLargestArmy() {
@@ -437,6 +457,15 @@ public class main {
         canSelectCards = false;
         tradingBuilding = false;
         turn = (turn + 1) % 4;
+    }
+
+    public static void checkForWinner() {
+        for (int i = 0; i < 4; i++) {
+            if (players[i].visibleVictoryPoints + players[i].hiddenVictoryPoints >= 10) {
+                winner = i;
+                gameEnded = true;
+            }
+        }
     }
 
 }

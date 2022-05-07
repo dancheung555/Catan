@@ -18,8 +18,8 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
     private BufferedImage[] pips = new BufferedImage[13];
 
-    final int HEIGHT = 540;
-    final int marg = 60;
+    final int HEIGHT = 810;
+    final int marg = 90;
     private int h = (HEIGHT - marg) / 16;
     private int w = (int) ((HEIGHT - marg) * 1.0825 / 10);
 
@@ -88,25 +88,23 @@ public class mainPanel extends JPanel implements MouseListener {
 
     public void paint(Graphics g)
     {
-        g.setColor(Color.black);
-        g.drawLine(0, 540, 960, 540);
         g.setColor(new Color(191, 191, 191));
-        g.fillRect(0, 0, 960, 540);
+        g.fillRect(0, 0, 1440, 810);
 
         int cardx;
         for (int i = 0; i < 4; i++) {
-            g.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
             g.setColor(main.players[i].getColor());
-            g.drawString("" + (i + 1), 30, 80 + i * 80);
+            g.drawString("" + (i + 1), 45, 120 + i * 120);
 
             g.setColor(Color.darkGray);
             if (i == main.turn) {
-                g.fillPolygon(new int[]{5, 5, 25}, new int[]{50 + i * 80, 60 + i * 80, 55 + i * 80}, 3);
+                g.fillPolygon(new int[]{8, 8, 38}, new int[]{75 + i * 120, 90 + i * 120, 83 + i * 120}, 3);
             }
             g.setColor(Color.gray);
-            g.fillRect(5, 65 + i * 80, 20, 20);
+            g.fillRect(8, 98 + i * 120, 30, 30);
 
-            g.setFont(new Font("Times New Roman", Font.PLAIN, 10));
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
             g.setColor(Color.black);
             cardx = 0;
             if (main.displayHands[i]) {
@@ -125,9 +123,9 @@ public class mainPanel extends JPanel implements MouseListener {
                             img = woodCard;
 
                         if (!main.players[i].selectedResources[cardx])
-                            g.drawImage(img, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
+                            g.drawImage(img, cardx * 23 + 75, i * 120 + 60, 53, 78, null);
                         else
-                            g.drawImage(img, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
+                            g.drawImage(img, cardx * 23 + 75, i * 120 + 45, 53, 78, null);
                         cardx++;
                     }
                 }
@@ -145,73 +143,73 @@ public class mainPanel extends JPanel implements MouseListener {
                         else if (dc == DevelopmentCard.YEAROFPLENTY)
                             img = yearofplenty;
 
-                        g.drawImage(img, cardx * 15 + (300 - main.players[i].developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        g.drawImage(img, cardx * 23 + (450 - main.players[i].developmentCardHand.size() * 23), i * 120 + 60, 53, 78, null);
                         cardx++;
                     }
                 }
-                g.drawString("VP: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 30, i * 80 + 100);
+                g.drawString("VP: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 45, i * 120 + 150);
             }
             else {
                 for (ResourceCard rc : main.players[i].resourceHand) {
                     if (rc != null) {
                         if (!main.players[i].selectedResources[cardx])
-                            g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 40, 35, 52, null);
+                            g.drawImage(cardBack, cardx * 23 + 75, i * 120 + 60, 53, 78, null);
                         else
-                            g.drawImage(cardBack, cardx * 15 + 50, i * 80 + 30, 35, 52, null);
+                            g.drawImage(cardBack, cardx * 23 + 75, i * 120 + 45, 53, 78, null);
                         cardx++;
                     }
                 }
                 cardx = 0;
                 for (DevelopmentCard dc : main.players[i].developmentCardHand) {
                     if (dc != null) {
-                        g.drawImage(cardBack, cardx * 15 + (300 - main.players[i].developmentCardHand.size() * 15), i * 80 + 40, 35, 52, null);
+                        g.drawImage(cardBack, cardx * 23 + (450 - main.players[i].developmentCardHand.size() * 23), i * 120 + 60, 53, 78, null);
                         cardx++;
                     }
                 }
-                g.drawString("VP: " + main.players[i].visibleVictoryPoints, 30, i * 80 + 100);
+                g.drawString("VP: " + main.players[i].visibleVictoryPoints, 45, i * 120 + 150);
             }
-            g.drawString("LR: " + main.players[i].longestRoadLength, 80, i * 80 + 100);
-            g.drawString("LA: " + main.players[i].knightsPlayed, 130, i * 80 + 100);
+            g.drawString("LR: " + main.players[i].longestRoadLength, 120, i * 120 + 150);
+            g.drawString("LA: " + main.players[i].knightsPlayed, 195, i * 120 + 150);
         }
 
         //dice
         g.setColor(Color.white);
-        g.fillRoundRect(230, 360, 50, 50, 10, 10);
-        g.fillRoundRect(285, 360, 50, 50, 10, 10);
+        g.fillRoundRect(345, 540, 75, 75, 15, 15);
+        g.fillRoundRect(428, 540, 75, 75, 15, 15);
         g.setColor(Color.black);
-        Font dieFont = new Font("Times New Roman", Font.PLAIN, 40);
+        Font dieFont = new Font("Times New Roman", Font.PLAIN, 60);
         g.setFont(dieFont);
         FontMetrics dieFontMetrics = getFontMetrics(dieFont);
-        g.drawString("" + main.dice1, 255 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 400);
-        g.drawString("" + main.dice2, 310 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 400);
+        g.drawString("" + main.dice1, 383 - dieFontMetrics.stringWidth("" + main.dice1) / 2, 600);
+        g.drawString("" + main.dice2, 465 - dieFontMetrics.stringWidth("" + main.dice2) / 2, 600);
         if (main.canRollDie)
             main.guide = "Roll the die!";
 
         //trade button
         g.setColor(Color.red);
-        g.fillRect(240, 430, 60, 30);
+        g.fillRect(360, 645, 90, 45);
 
         //display bank
         g.setColor(Color.black);
-        Font bankFont = new Font("Times New Roman", Font.PLAIN, 10);
+        Font bankFont = new Font("Times New Roman", Font.PLAIN, 15);
         g.setFont(bankFont);
         FontMetrics bankFontMetrics = getFontMetrics(bankFont);
-        g.drawImage(clayCard, 30, 360, 35, 52, null);
-        g.drawString("" + main.bank.get(ResourceCard.BRICK), 47 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.BRICK)) / 2, 420);
-        g.drawImage(oreCard, 70, 360, 35, 52, null);
-        g.drawString("" + main.bank.get(ResourceCard.ORE), 87 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.ORE)) / 2, 420);
-        g.drawImage(sheepCard, 110, 360, 35, 52, null);
-        g.drawString("" + main.bank.get(ResourceCard.SHEEP), 127 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.SHEEP)) / 2, 420);
-        g.drawImage(wheatCard, 150, 360, 35, 52, null);
-        g.drawString("" + main.bank.get(ResourceCard.WHEAT), 167 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WHEAT)) / 2, 420);
-        g.drawImage(woodCard, 190, 360, 35, 52, null);
-        g.drawString("" + main.bank.get(ResourceCard.WOOD), 207 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 420);
+        g.drawImage(clayCard, 45, 540, 53, 78, null);
+        g.drawString("" + main.bank.get(ResourceCard.BRICK), 70 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.BRICK)) / 2, 630);
+        g.drawImage(oreCard, 105, 540, 53, 78, null);
+        g.drawString("" + main.bank.get(ResourceCard.ORE), 130 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.ORE)) / 2, 630);
+        g.drawImage(sheepCard, 165, 540, 53, 78, null);
+        g.drawString("" + main.bank.get(ResourceCard.SHEEP), 190 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.SHEEP)) / 2, 630);
+        g.drawImage(wheatCard, 225, 540, 53, 78, null);
+        g.drawString("" + main.bank.get(ResourceCard.WHEAT), 250 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WHEAT)) / 2, 630);
+        g.drawImage(woodCard, 285, 540, 53, 78, null);
+        g.drawString("" + main.bank.get(ResourceCard.WOOD), 310 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 630);
 
         //end turn button
         g.setColor(Color.cyan);
-        g.fillRect(240, 470, 60, 30);
+        g.fillRect(360, 705, 90, 45);
 
-        g.drawImage(developmentCosts,30, 430, 200, 100, null);
+        g.drawImage(developmentCosts,45, 645, 300, 150, null);
 
         /*
         g.setColor(new Color(0, 140, 240));
@@ -265,7 +263,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885, 510,60,20);
         */
 
-        g.drawImage(background, 345, 0, 600, 540, null);
+        g.drawImage(background, 540, 0, 900, 810, null);
 
         int x, y;
         Tile temp = null;
@@ -293,28 +291,28 @@ public class mainPanel extends JPanel implements MouseListener {
                 else if (res.equals(ResourceCard.WOOD))
                     img = forest;
 
-                g.drawImage(img, x * w - w + 390, y * h - 2 * h + 30, 2 * w, 4 * h, null);
+                g.drawImage(img, x * w - w + 608, y * h - 2 * h + 45, 2 * w, 4 * h, null);
 
                 pip = temp.getPipNumber();
-                g.drawImage(pips[pip], x * w + 370, y * h + 10, 40, 40, null);
+                g.drawImage(pips[pip], x * w + 578, y * h + 15, 60, 60, null);
             }
         }
 
-        g.drawImage(robber, main.robberx * w + 370, main.robbery * h + 10, 40, 40, null);
+        g.drawImage(robber, main.robberx * w + 578, main.robbery * h + 15, 60, 60, null);
 
         int portpos[] = {
-                500, 20,
-                685, 20,
-                843, 110,
-                930, 270,
-                843, 430,
-                685, 520,
-                500, 520,
-                410, 360,
-                410, 180};
+                773, 30,
+                1050, 30,
+                1287, 165,
+                1418, 405,
+                1287, 645,
+                1050, 780,
+                773, 780,
+                638, 540,
+                638, 270};
         int portposI = 0;
         int portx, porty;
-        Font portFont = new Font("Times New Roman", 0, 20);
+        Font portFont = new Font("Times New Roman", 0, 30);
         g.setFont(portFont);
         FontMetrics portFontMetrics = getFontMetrics(portFont);
         int portFontWidth;
@@ -328,23 +326,23 @@ public class mainPanel extends JPanel implements MouseListener {
             if (p.getSpecialty() == null) {
                 portFontWidth = portFontMetrics.stringWidth("3");
                 g.setColor(portBrown);
-                g.fillOval(portx - 10, porty - 10, 20, 20);
+                g.fillOval(portx - 15, porty - 15, 30, 30);
                 g.setColor(Color.white);
-                g.drawString("3", portx - portFontWidth / 2, porty + 4);
+                g.drawString("3", portx - portFontWidth / 2, porty + 8);
             }
             else {
                 portFontWidth = portFontMetrics.stringWidth("2");
                 if (p.getSpecialty().equals(ResourceCard.BRICK))
-                    g.drawImage(brickicon, portx - 10, porty - 10, 20, 20, null);
+                    g.drawImage(brickicon, portx - 15, porty - 15, 30, 30, null);
                 else if (p.getSpecialty().equals(ResourceCard.ORE))
-                    g.drawImage(oreicon, portx - 10, porty - 10, 20, 20, null);
+                    g.drawImage(oreicon, portx - 15, porty - 15, 30, 30, null);
                 else if (p.getSpecialty().equals(ResourceCard.SHEEP))
-                    g.drawImage(sheepicon, portx - 10, porty - 10, 20, 20, null);
+                    g.drawImage(sheepicon, portx - 15, porty - 15, 30, 30, null);
                 else if (p.getSpecialty().equals(ResourceCard.WHEAT))
-                    g.drawImage(wheaticon, portx - 10, porty - 10, 20, 20, null);
+                    g.drawImage(wheaticon, portx - 15, porty - 15, 30, 30, null);
                 else if (p.getSpecialty().equals(ResourceCard.WOOD))
-                    g.drawImage(woodicon, portx - 10, porty - 10, 20, 20, null);
-                g.drawString("2", portx - portFontWidth / 2, porty + 4);
+                    g.drawImage(woodicon, portx - 15, porty - 15, 30, 30, null);
+                g.drawString("2", portx - portFontWidth / 2, porty + 10);
             }
         }
 
@@ -360,10 +358,10 @@ public class mainPanel extends JPanel implements MouseListener {
                 if (itemp.getSettlement() != null) {
                     g.setColor(itemp.getSettlement().getOwner().getColor());
                     if (itemp.getSettlement().getTier() == 1) {
-                        g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+                        g.fillOval(r1 * w + 593, c1 * h + 30, 30, 30);
                     }
                     else
-                        g.fillRect(r1 * w + 380, c1 * h + 20, 20, 20);
+                        g.fillRect(r1 * w + 593, c1 * h + 30, 30, 30);
                 }
             }
         }
@@ -398,7 +396,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     c1 = i / 11;
                     if (c1 % 3 != 2 && main.inter[r1][c1] != null) {
                         if (main.inter[r1][c1].isOpen()) {
-                            g.fillOval(r1 * w + 380, c1 * h + 20, 20, 20);
+                            g.fillOval(r1 * w + 593, c1 * h + 30, 30, 30);
                         }
                     }
                 }
@@ -406,14 +404,14 @@ public class mainPanel extends JPanel implements MouseListener {
             }
             else {
                 for (Settlement s: main.players[main.turn].eligibleSettlements) {
-                    g.fillOval(s.row * w + 380, s.col * h + 20, 20, 20);
+                    g.fillOval(s.row * w + 593, s.col * h + 30, 30, 30);
                 }
             }
         }
         else if (main.highlightEligibleCities) {
 
             for (Settlement s : main.players[main.turn].settlements) {
-                g.fillRect(s.row * w + 380, s.col * h + 20, 20, 20);
+                g.fillRect(s.row * w + 593, s.col * h + 30, 30, 30);
             }
 
         }
@@ -424,12 +422,20 @@ public class mainPanel extends JPanel implements MouseListener {
             main.guide = "Player " + (main.turn + 1) + ": choose a location to build a road";
         }
 
-
-
         //print guide
-        g.setColor(Color.black);
-        g.setFont(new Font("Times New Roman", Font.PLAIN, 10));
-        g.drawString(main.guide, 5, 15);
+        if (!main.gameEnded) {
+            g.setColor(Color.black);
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+            g.drawString(main.guide, 5, 15);
+        }
+        else {
+            g.setColor(new Color(63, 63, 63, 191));
+            g.fillRect(0, 0, 1440, 810);
+            Font endFont = new Font("Times New Roman", Font.PLAIN, 100);
+            g.setFont(endFont);
+            FontMetrics endFontMetrics = getFontMetrics(endFont);
+            g.drawString("Player " + main.winner + " wins!", 720 - endFontMetrics.stringWidth("Player " + main.winner + " wins!"), 455);
+        }
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -440,360 +446,334 @@ public class mainPanel extends JPanel implements MouseListener {
         int x = e.getX();
         int y = e.getY();
 
-        for (int i = 0; i < 4; i++) {
-            if (x > 5 && x < 25 && y > 65 + i * 80 && y < 85 + i * 80) {
-                if (main.displayHands[i]) {
-                    main.displayHands[i] = false;
+        if (!main.gameEnded) {
+            for (int i = 0; i < 4; i++) {
+                if (x > 8 && x < 38 && y > 98 + i * 120 && y < 128 + i * 120) {
+                    if (main.displayHands[i]) {
+                        main.displayHands[i] = false;
+                    } else {
+                        main.displayHands[i] = true;
+                    }
+                    repaint();
+                    break;
                 }
-                else {
-                    main.displayHands[i] = true;
-                }
-                repaint();
-                break;
             }
-        }
 
+            if (main.playingDC) {
 
+            }
 
-        if (main.startingSetup) {
-            try {
-                main.turn = main.startingTurnOrder[i];
+            else if (main.startingSetup) {
+                try {
+                    main.turn = main.startingTurnOrder[i];
 
-                if (main.buildingSettlement) {
-                    int closestInterx = ((int) ((x - 390 + w / 2) / w)) * w + 390;
-                    int closestIntery = ((int) ((y - 30 + h / 2) / h)) * h + 30;
-                    int closestInterBoardx = ((int) ((x - 390 + w / 2) / w));
-                    int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
+                    if (main.buildingSettlement) {
+                        int closestInterx = ((int) ((x - 608 + w / 2) / w)) * w + 608;
+                        int closestIntery = ((int) ((y - 45 + h / 2) / h)) * h + 45;
+                        int closestInterBoardx = ((int) ((x - 608 + w / 2) / w));
+                        int closestInterBoardy = ((int) ((y - 45 + h / 2) / h));
 
-                    if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 100 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
-                        if (main.inter[closestInterBoardx][closestInterBoardy].isOpen()) {
-                            main.inter[closestInterBoardx][closestInterBoardy].addSettlement(new Settlement(main.players[main.turn], closestInterBoardx, closestInterBoardy));
-                            main.players[main.turn].updateStartingEligibleRoads(closestInterBoardx, closestInterBoardy);
-                            main.highlightEligibleSettlements = false;
-                            main.buildingSettlement = false;
-                            main.highlightEligibleRoads = true;
-                            main.buildingRoad = true;
-                            main.players[main.turn].updateVisibleVictoryPoints();
-                            if (i > 3) {
-                                main.inter[closestInterBoardx][closestInterBoardy].obtainStartingResources();
+                        if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 225 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                            if (main.inter[closestInterBoardx][closestInterBoardy].isOpen()) {
+                                main.inter[closestInterBoardx][closestInterBoardy].addSettlement(new Settlement(main.players[main.turn], closestInterBoardx, closestInterBoardy));
+                                main.players[main.turn].updateStartingEligibleRoads(closestInterBoardx, closestInterBoardy);
+                                main.highlightEligibleSettlements = false;
+                                main.buildingSettlement = false;
+                                main.highlightEligibleRoads = true;
+                                main.buildingRoad = true;
+                                main.players[main.turn].updateVisibleVictoryPoints();
+                                if (i > 3) {
+                                    main.inter[closestInterBoardx][closestInterBoardy].obtainStartingResources();
+                                }
+                                repaint();
                             }
+                        }
+                    } else if (main.buildingRoad) {
+
+                        int ygroup = (y + h / 2 + 45) / (3 * h);
+                        int closestIntery = (y + h / 2 + 45) / (3 * h) * (3 * h) - h + 45;
+                        int closestInterBoardx;
+                        int closestInterx;
+
+                        if (Math.abs(y - closestIntery) < 30) {
+                            closestInterBoardx = (x + w / 2 - 608) / w;
+                            closestInterx = (x + w / 2 - 608) / w * w + 608;
+                            out.println(closestInterx + " " + closestInterBoardx);
+
+                            if (main.inter[closestInterBoardx][3 * ygroup] != null) {
+                                out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
+                                if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 225 &&
+                                        main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null &&
+                                        main.players[main.turn].canBuildRoad(closestInterBoardx, 3 * ygroup, 2)) {
+                                    main.inter[closestInterBoardx][3 * ygroup].buildMiddleRoad(main.players[main.turn]);
+                                    main.highlightEligibleRoads = false;
+                                    main.buildingRoad = false;
+                                    main.highlightEligibleSettlements = true;
+                                    main.buildingSettlement = true;
+                                    //main.players[main.turn].updateLongestRoad();
+                                    i++;
+                                    repaint();
+                                }
+                            }
+                        } else {
+                            ygroup = y / (3 * h);
+                            int closestInterBoardy = ygroup * 3;
+                            closestIntery = ygroup * (3 * h) + h / 2 + 45;
+                            closestInterBoardx = (x - 608) / w;
+                            closestInterx = closestInterBoardx * w + w / 2 + 608;
+
+                            if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
+                                if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 225 &&
+                                        main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy, 1)) {
+                                    main.inter[closestInterBoardx][closestInterBoardy].buildRightRoad(main.players[main.turn]);
+                                    main.highlightEligibleRoads = false;
+                                    main.buildingRoad = false;
+                                    main.highlightEligibleSettlements = true;
+                                    main.buildingSettlement = true;
+                                    //main.players[main.turn].updateLongestRoad();
+                                    i++;
+                                    repaint();
+                                }
+                            } else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
+                                if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 225 &&
+                                        main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy + 1, 3)) {
+                                    main.inter[closestInterBoardx][closestInterBoardy + 1].buildRightRoad(main.players[main.turn]);
+                                    main.highlightEligibleRoads = false;
+                                    main.buildingRoad = false;
+                                    main.highlightEligibleSettlements = true;
+                                    main.buildingSettlement = true;
+                                    //main.players[main.turn].updateLongestRoad();
+                                    i++;
+                                    repaint();
+                                }
+                            }
+                        }
+                    }
+                    if (i > 7) {
+                        main.startingSetup = false;
+                        main.buildingSettlement = false;
+                        main.highlightEligibleSettlements = false;
+                        main.canRollDie = true;
+                        for (Player p : main.players) {
+                            p.updateEligibleRoads();
+                        }
+                    }
+                    main.turn = main.startingTurnOrder[i];
+                } catch (Exception fuckyoujava) {
+                }
+            } else if (main.canRollDie) {
+                if (x > 345 && x < 503 && y > 540 && y < 615) {
+                    main.rollDie();
+                    repaint();
+                }
+            }
+
+            //FUCK YOU KALE FINISH THIS MOTHERFUCKer
+            else if (main.halving) {
+                for (int j = halvingIndex; j < 4; j++) {
+                    if (main.players[j].resourceHand.size() > 7) {
+                        halvingIndex = j;
+                        break;
+                    }
+                }
+                if (main.players[halvingIndex].resourceHand.size() > 7) {
+                    out.println("halving player " + halvingIndex);
+                    int clickedCard = (x - 75) / 23;
+                    int numCardsToBeDiscarded = main.players[halvingIndex].resourceHand.size() / 2;
+                    if (y - halvingIndex * 120 - 45 < 90) {
+                        try {
+                            main.players[halvingIndex].selectResourceCard(clickedCard);
+                        } catch (Exception fuckoff) {
+                            if (clickedCard == main.players[halvingIndex].resourceHand.size())
+                                main.players[halvingIndex].selectResourceCard(clickedCard - 1);
+                        }
+                        if (main.players[halvingIndex].getSelectedCards().size() == numCardsToBeDiscarded) {
+                            main.players[halvingIndex].removeSelectedCards();
+                            halvingIndex++;
+                            out.println("1 halving next plaer");
+                            for (int j = halvingIndex; j < 4; j++) {
+                                if (main.players[j].resourceHand.size() > 7) {
+                                    halvingIndex = j;
+                                    break;
+                                }
+                            }
+                        }
+                        repaint();
+                    }
+                } else {
+                    halvingIndex++;
+                    out.println("2 halving next player");
+                }
+                if (halvingIndex > 3) {
+                    main.halving = false;
+                    main.movingRobber = true;
+                }
+            } else if (main.movingRobber) {
+                int closestTilex = ((int) ((x - 608 + w / 2) / w - 1)) * w + w + 608;
+                int closestTiley = ((int) ((y - 45) / (3 * h))) * 3 * h + 2 * h + 45;
+                int closestTileBoardx = (int) ((x - 608 + w / 2) / w - 1) + 1;
+                int closestTileBoardy = ((y - 45) / (3 * h)) * 3 + 2;
+
+                if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 2025 && main.board[closestTileBoardx][closestTileBoardy] != null) {
+                    if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
+                        main.moveRobber(closestTileBoardx, closestTileBoardy);
+                        out.println("success " + main.robberx + " " + main.robbery);
+                        main.movingRobber = false;
+                        repaint();
+                    }
+                }
+            } else if (main.stealing) {
+                int clickedSettler = (y - 45) / 120;
+                out.println("stealing clicked on bitchass");
+                if (x > 45 && x < 585) {
+                    main.steal(main.players[main.turn], main.players[clickedSettler]);
+                    repaint();
+                }
+            } else if (main.canSelectCards) {
+
+                int clickedSettler = (y - 45) / 120;
+                int clickedCard = (x - 75) / 23;
+
+                if (clickedSettler > 3) {
+                } else if (y - clickedSettler * 120 - 45 < 90) {
+                    try {
+                        main.players[clickedSettler].selectResourceCard(clickedCard);
+                    } catch (Exception fuckoff) {
+                        if (clickedCard == main.players[clickedSettler].resourceHand.size())
+                            main.players[clickedSettler].selectResourceCard(clickedCard - 1);
+                    }
+                    repaint();
+                }
+
+                if (main.tradingBuilding) {
+
+                    if (x > 360 && x < 450 && y > 645 && y < 690) {
+                        out.println("domestic trade called");
+                        main.domesticTrade();
+                        repaint();
+                    }
+
+                    if (x > 45 && x < 345 && y > 540 && y < 618) {
+                        clickedCard = (x - 45) / 60;
+                        out.println("maritime trade called");
+                        out.println(clickedCard);
+                        if (x - (clickedCard * 60 + 45) < 53) {
+                            main.maritimeTrade(main.rco[clickedCard]);
+                            repaint();
+                        }
+                    }
+
+                    if (x > 45 && x < 345 && y > 645 && y < 795) {
+                        clickedCard = (x - 45) / 75;
+                        out.println("called build");
+                        if (clickedCard == 0) {
+                            if (main.players[main.turn].hasResourcesForRoad()) {
+                                main.buildingRoad = true;
+                                main.highlightEligibleRoads = true;
+                                main.canSelectCards = false;
+                            } else {
+                                main.guide = "Insufficient resources for road";
+                            }
+                        } else if (clickedCard == 1) {
+                            if (main.players[main.turn].hasResourcesForSettlement()) {
+                                main.buildingSettlement = true;
+                                main.highlightEligibleSettlements = true;
+                                main.canSelectCards = false;
+                            } else {
+                                main.guide = "Insufficient resources for settlement";
+                            }
+                        } else if (clickedCard == 2) {
+                            if (main.players[main.turn].hasResourcesForCity()) {
+                                main.buildingCity = true;
+                                main.highlightEligibleCities = true;
+                                main.canSelectCards = false;
+                            } else {
+                                main.guide = "Insufficient resources for city";
+                            }
+                        } else {
+                            if (main.players[main.turn].hasResourcesForDevelopmentCard()) {
+                                main.players[main.turn].buyDevelopmentCard();
+                            } else {
+                                main.guide = "Insufficient resources for development card";
+                            }
+                        }
+                        repaint();
+                    }
+                }
+                if (main.canEndTurn) {
+                    if (x > 360 && x < 450 && y > 705 && y < 750) {
+                        main.endTurn();
+                        out.println("turn ended");
+                        repaint();
+                    }
+                }
+            } else if (main.buildingSettlement) {
+                int closestInterx = ((int) ((x - 608 + w / 2) / w)) * w + 608;
+                int closestIntery = ((int) ((y - 45 + h / 2) / h)) * h + 45;
+                int closestInterBoardx = ((int) ((x - 608 + w / 2) / w));
+                int closestInterBoardy = ((int) ((y - 45 + h / 2) / h));
+
+                if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 2025 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                    if (main.players[main.turn].canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
+                        main.buildSettlement(main.players[main.turn], closestInterBoardx, closestInterBoardy);
+                        repaint();
+                    }
+                }
+                main.canSelectCards = true;
+            } else if (main.buildingCity) {
+                int closestInterx = ((int) ((x - 608 + w / 2) / w)) * w + 608;
+                int closestIntery = ((int) ((y - 45 + h / 2) / h)) * h + 45;
+                int closestInterBoardx = ((int) ((x - 608 + w / 2) / w));
+                int closestInterBoardy = ((int) ((y - 45 + h / 2) / h));
+
+                if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 2025 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                    if (main.inter[closestInterBoardx][closestInterBoardy].getSettlement() != null && main.inter[closestInterBoardx][closestInterBoardy].getSettlement().getTier() == 1) {
+                        main.buildCity(main.players[main.turn], closestInterBoardx, closestInterBoardy);
+                        repaint();
+                    }
+                }
+                main.canSelectCards = true;
+            } else if (main.buildingRoad) {
+
+                int ygroup = (y + h / 2 + 45) / (3 * h);
+                int closestIntery = (y + h / 2 + 45) / (3 * h) * (3 * h) - h + 45;
+                int closestInterBoardx;
+                int closestInterx;
+
+                if (Math.abs(y - closestIntery) < 30) {
+                    closestInterBoardx = (x + w / 2 - 608) / w;
+                    closestInterx = (x + w / 2 - 608) / w * w + 608;
+                    out.println(closestInterx + " " + closestInterBoardx);
+
+                    if (main.inter[closestInterBoardx][3 * ygroup] != null) {
+                        out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
+                        if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null) {
+                            main.buildRoad(main.players[main.turn], closestInterBoardx, 3 * ygroup, 2);
+                            repaint();
+                        }
+                    }
+                } else {
+                    ygroup = y / (3 * h);
+                    int closestInterBoardy = ygroup * 3;
+                    closestIntery = ygroup * (3 * h) + h / 2 + 45;
+                    closestInterBoardx = (x - 608) / w;
+                    closestInterx = closestInterBoardx * w + w / 2 + 608;
+
+                    if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
+                        if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 900) {
+                            main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy, 1);
+                            repaint();
+                        }
+                    } else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
+                        if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 900) {
+                            main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy + 1, 1);
                             repaint();
                         }
                     }
                 }
-                else if (main.buildingRoad) {
-
-                    int ygroup = (y + h / 2 + 30) / (3 * h);
-                    int closestIntery = (y + h / 2 + 30) / (3 * h) * (3 * h) - h + 30;
-                    int closestInterBoardx;
-                    int closestInterx;
-
-                    if (Math.abs(y - closestIntery) < 20) {
-                        closestInterBoardx = (x + w / 2 - 390) / w;
-                        closestInterx = (x + w / 2 - 390) / w * w + 390;
-                        out.println(closestInterx + " " + closestInterBoardx);
-
-                        if (main.inter[closestInterBoardx][3 * ygroup] != null) {
-                            out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
-                            if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
-                                    main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null &&
-                                    main.players[main.turn].canBuildRoad(closestInterBoardx, 3 * ygroup, 2)) {
-                                main.inter[closestInterBoardx][3 * ygroup].buildMiddleRoad(main.players[main.turn]);
-                                main.highlightEligibleRoads = false;
-                                main.buildingRoad = false;
-                                main.highlightEligibleSettlements = true;
-                                main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
-                                i++;
-                                repaint();
-                            }
-                        }
-                    }
-                    else {
-                        ygroup = y / (3 * h);
-                        int closestInterBoardy = ygroup * 3;
-                        closestIntery = ygroup * (3 * h) + h / 2 + 30;
-                        closestInterBoardx = (x - 390) / w;
-                        closestInterx = closestInterBoardx * w + w / 2 + 390;
-
-                        if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
-                            if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
-                                    main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy, 1)) {
-                                main.inter[closestInterBoardx][closestInterBoardy].buildRightRoad(main.players[main.turn]);
-                                main.highlightEligibleRoads = false;
-                                main.buildingRoad = false;
-                                main.highlightEligibleSettlements = true;
-                                main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
-                                i++;
-                                repaint();
-                            }
-                        }
-                        else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
-                            if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 100 &&
-                                    main.players[main.turn].canBuildRoad(closestInterBoardx, closestInterBoardy + 1, 3)) {
-                                main.inter[closestInterBoardx][closestInterBoardy + 1].buildRightRoad(main.players[main.turn]);
-                                main.highlightEligibleRoads = false;
-                                main.buildingRoad = false;
-                                main.highlightEligibleSettlements = true;
-                                main.buildingSettlement = true;
-                                //main.players[main.turn].updateLongestRoad();
-                                i++;
-                                repaint();
-                            }
-                        }
-                    }
-                }
-                if (i > 7) {
-                    main.startingSetup = false;
-                    main.buildingSettlement = false;
-                    main.highlightEligibleSettlements = false;
-                    main.canRollDie = true;
-                    for (Player p: main.players) {
-                        p.updateEligibleRoads();
-                    }
-                }
-                main.turn = main.startingTurnOrder[i];
-            } catch (Exception fuckyoujava) {}
-        }
-
-        else if (main.canRollDie) {
-            if (x > 230 && x < 335 && y > 360 && y < 410) {
-                main.rollDie();
-                repaint();
+                main.canSelectCards = true;
             }
         }
-
-        //FUCK YOU KALE FINISH THIS MOTHERFUCKer
-        else if (main.halving) {
-            for (int j = halvingIndex; j < 4; j++) {
-                if (main.players[j].resourceHand.size() > 7) {
-                    halvingIndex = j;
-                    break;
-                }
-            }
-            if (main.players[halvingIndex].resourceHand.size() > 7) {
-                out.println("halving player " + halvingIndex);
-                int clickedCard = (x - 50) / 15;
-                int numCardsToBeDiscarded = main.players[halvingIndex].resourceHand.size() / 2;
-                if (y - halvingIndex * 80 - 30 < 60) {
-                    try {
-                        main.players[halvingIndex].selectResourceCard(clickedCard);
-                    }
-                    catch (Exception fuckoff) {
-                        if (clickedCard == main.players[halvingIndex].resourceHand.size())
-                            main.players[halvingIndex].selectResourceCard(clickedCard - 1);
-                    }
-                    if (main.players[halvingIndex].getSelectedCards().size() == numCardsToBeDiscarded) {
-                        main.players[halvingIndex].removeSelectedCards();
-                        halvingIndex++;
-                        out.println("1 halving next plaer");
-                        for (int j = halvingIndex; j < 4; j++) {
-                            if (main.players[j].resourceHand.size() > 7) {
-                                halvingIndex = j;
-                                break;
-                            }
-                        }
-                    }
-                    repaint();
-                }
-            }
-            else {
-                halvingIndex++;
-                out.println("2 halving next player");
-            }
-            if (halvingIndex > 3) {
-                main.halving = false;
-                main.movingRobber = true;
-            }
-        }
-
-        else if (main.movingRobber) {
-            int closestTilex = ((int) ((x - 390 + w / 2) / w - 1)) * w + w + 390;
-            int closestTiley = ((int) ((y - 30) / (3 * h))) * 3 * h + 2 * h + 30;
-            int closestTileBoardx = (int) ((x - 390 + w / 2) / w - 1) + 1;
-            int closestTileBoardy = ((y - 30) / (3 * h)) * 3 + 2;
-
-            if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 900 && main.board[closestTileBoardx][closestTileBoardy] != null) {
-                if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
-                    main.moveRobber(closestTileBoardx, closestTileBoardy);
-                    out.println("success " + main.robberx + " " + main.robbery);
-                    main.movingRobber = false;
-                    repaint();
-                }
-            }
-        }
-
-        else if (main.stealing) {
-            int clickedSettler = (y - 30) / 80;
-            out.println("stealing clicked on bitchass");
-            if (x > 30 && x < 390) {
-                main.steal(main.players[main.turn], main.players[clickedSettler]);
-                repaint();
-            }
-        }
-
-        else if (main.canSelectCards) {
-
-            int clickedSettler = (y - 30) / 80;
-            int clickedCard = (x - 50) / 15;
-
-            if (clickedSettler > 3) {}
-            else if (y - clickedSettler * 80 - 30 < 60) {
-                try {
-                    main.players[clickedSettler].selectResourceCard(clickedCard);
-                }
-                catch (Exception fuckoff) {
-                    if (clickedCard == main.players[clickedSettler].resourceHand.size())
-                        main.players[clickedSettler].selectResourceCard(clickedCard - 1);
-                }
-                repaint();
-            }
-
-            if (main.tradingBuilding) {
-
-                if (x > 240 && x < 300 && y > 430 && y < 460) {
-                    out.println("domestic trade called");
-                    main.domesticTrade();
-                    repaint();
-                }
-
-                if (x > 30 && x < 230 && y > 360 && y < 412) {
-                    clickedCard = (x - 30) / 40;
-                    out.println("maritime trade called");
-                    out.println(clickedCard);
-                    if (x - (clickedCard * 40 + 30) < 35) {
-                        main.maritimeTrade(main.rco[clickedCard]);
-                        repaint();
-                    }
-                }
-
-                if (x > 30 && x < 230 && y > 430 && y < 530) {
-                    clickedCard = (x - 30) / 50;
-                    out.println("called build");
-                    if (clickedCard == 0) {
-                        if (main.players[main.turn].hasResourcesForRoad()) {
-                            main.buildingRoad = true;
-                            main.highlightEligibleRoads = true;
-                            main.canSelectCards = false;
-                        }
-                        else {
-                            main.guide = "Insufficient resources for road";
-                        }
-                    }
-                    else if (clickedCard == 1) {
-                        if (main.players[main.turn].hasResourcesForSettlement()) {
-                            main.buildingSettlement = true;
-                            main.highlightEligibleSettlements = true;
-                            main.canSelectCards = false;
-                        }
-                        else {
-                            main.guide = "Insufficient resources for settlement";
-                        }
-                    }
-                    else if (clickedCard == 2) {
-                        if (main.players[main.turn].hasResourcesForCity()) {
-                            main.buildingCity = true;
-                            main.highlightEligibleCities = true;
-                            main.canSelectCards = false;
-                        }
-                        else {
-                            main.guide = "Insufficient resources for city";
-                        }
-                    }
-                    else {
-                        if (main.players[main.turn].hasResourcesForDevelopmentCard()) {
-                            main.players[main.turn].buyDevelopmentCard();
-                        }
-                        else {
-                            main.guide = "Insufficient resources for development card";
-                        }
-                    }
-                    repaint();
-                }
-            }
-            if (main.canEndTurn) {
-                if (x > 240 && x < 300 && y > 470 && y < 500) {
-                    main.endTurn();
-                    out.println("turn ended");
-                    repaint();
-                }
-            }
-        }
-
-        else if (main.buildingSettlement) {
-            int closestInterx = ((int) ((x - 390 + w / 2) / w)) * w + 390;
-            int closestIntery = ((int) ((y - 30 + h / 2) / h)) * h + 30;
-            int closestInterBoardx = ((int) ((x - 390 + w / 2) / w));
-            int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
-
-            if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
-                if (main.players[main.turn].canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
-                    main.buildSettlement(main.players[main.turn], closestInterBoardx, closestInterBoardy);
-                    repaint();
-                }
-            }
-            main.canSelectCards = true;
-        }
-
-        else if (main.buildingCity) {
-            int closestInterx = ((int) ((x - 390 + w / 2) / w)) * w + 390;
-            int closestIntery = ((int) ((y - 30 + h / 2) / h)) * h + 30;
-            int closestInterBoardx = ((int) ((x - 390 + w / 2) / w));
-            int closestInterBoardy = ((int) ((y - 30 + h / 2) / h));
-
-            if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 900 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
-                if (main.inter[closestInterBoardx][closestInterBoardy].getSettlement() != null && main.inter[closestInterBoardx][closestInterBoardy].getSettlement().getTier() == 1) {
-                    main.buildCity(main.players[main.turn], closestInterBoardx, closestInterBoardy);
-                    repaint();
-                }
-            }
-            main.canSelectCards = true;
-        }
-
-        else if (main.buildingRoad) {
-
-            int ygroup = (y + h / 2 + 30) / (3 * h);
-            int closestIntery = (y + h / 2 + 30) / (3 * h) * (3 * h) - h + 30;
-            int closestInterBoardx;
-            int closestInterx;
-
-            if (Math.abs(y - closestIntery) < 20) {
-                closestInterBoardx = (x + w / 2 - 390) / w;
-                closestInterx = (x + w / 2 - 390) / w * w + 390;
-                out.println(closestInterx + " " + closestInterBoardx);
-
-                if (main.inter[closestInterBoardx][3 * ygroup] != null) {
-                    out.println(Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2));
-                    if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400 && main.inter[closestInterBoardx][3 * ygroup].getMiddleRoad() == null) {
-                        main.buildRoad(main.players[main.turn], closestInterBoardx, 3 * ygroup, 2);
-                        repaint();
-                    }
-                }
-            }
-            else {
-                ygroup = y / (3 * h);
-                int closestInterBoardy = ygroup * 3;
-                closestIntery = ygroup * (3 * h) + h / 2 + 30;
-                closestInterBoardx = (x - 390) / w;
-                closestInterx = closestInterBoardx * w + w/2 + 390;
-
-                if (main.inter[closestInterBoardx][closestInterBoardy] != null && main.inter[closestInterBoardx + 1][closestInterBoardy + 1] != null) {
-                    if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400) {
-                        main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy, 1);
-                        repaint();
-                    }
-                }
-                else if (main.inter[closestInterBoardx][closestInterBoardy + 1] != null && main.inter[closestInterBoardx + 1][closestInterBoardy] != null) {
-                    if (Math.pow(x - closestInterx, 2) + Math.pow(closestIntery - y, 2) < 400) {
-                        main.buildRoad(main.players[main.turn], closestInterBoardx, closestInterBoardy + 1, 1);
-                        repaint();
-                    }
-                }
-            }
-            main.canSelectCards = true;
-        }
-
     }
 
     public void resetHalvingIndex() {
