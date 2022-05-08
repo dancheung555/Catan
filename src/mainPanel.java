@@ -464,27 +464,7 @@ public class mainPanel extends JPanel implements MouseListener {
         out.println("" + x + " " + y);
 
         if (main.startingScreen) {
-            if (x > 1200 && x < 1400 && y > 300 && y < 400)
-                main.startingScreen = false;
-            else if (x > 1200 && x < 1400 && y > 410 && y < 510) {
-                System.out.println("opening connection");
-                try {
-                    URL url = new URL("https://www.catan.com/sites/prod/files/2021-06/catan_base_rules_2020_200707.pdf");
-                    InputStream in = url.openStream();
-                    FileOutputStream fos = new FileOutputStream(new File("Catan Rules.pdf"));
-
-                    System.out.println("reading from resource and writing to file...");
-                    int length = -1;
-                    byte[] buffer = new byte[1024];// buffer for portion of data from connection
-                    while ((length = in.read(buffer)) > -1) {
-                        fos.write(buffer, 0, length);
-                    }
-                    fos.close();
-                    in.close();
-                    System.out.println("File downloaded");
-                }
-                catch (Exception fuckURLs) { out.println("error URL"); }
-            }
+            main.startingScreen = false;
             repaint();
         }
 
