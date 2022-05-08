@@ -33,9 +33,9 @@ public class main {
 
     //gamestates
     static boolean
+            startingScreen,
             startingSetup,
-            playingDC,
-            monopolying,
+            playingdevelopmentcard,
             halving,
             movingRobber,
             stealing,
@@ -54,7 +54,15 @@ public class main {
             highlightEligibleCities,
             highlightEligibleRoads;
 
-    //other
+    //development card functions
+    static boolean
+            knighting,
+            monopolying,
+            yearofplentying,
+            yearofplentying2,
+            roadbuildinging,
+            roadbuildinging2;
+
     static boolean[] displayHands = new boolean[]{false, false, false, false};
 
     static String guide = "fuck you";
@@ -88,18 +96,22 @@ public class main {
         dice1 = (int) (6 * Math.random() + 1);
         dice2 = (int) (6 * Math.random() + 1);
         if (dice1 + dice2 == 7) {
-            for (Player p: players) {
-                if (p.resourceHand.size() > 7) {
+            for (int i = 0; i < 4; i++) {
+                if (players[i].resourceHand.size() > 7) {
                     halving = true;
+                    guide = "Player " + (i + 1) + ": choose " + (players[i].resourceHand.size() / 2) + " resource cards to discard";
                     mf.mp.resetHalvingIndex();
+                    break;
                 }
             }
-            if (!halving)
+            if (!halving) {
                 movingRobber = true;
+                guide = "Choose a tile to move the robber to";
+            }
         }
         else {
             distributeResources(dice1 + dice2);
-            guide = "Player " + turn + ": trade and build!";
+            guide = "Player " + (turn + 1) + ": trade and build!";
         }
         canRollDie = false;
         canSelectCards = true;
@@ -107,6 +119,36 @@ public class main {
         canEndTurn = true;
 
         return dice1 + dice2;
+    }
+
+    public static boolean checkPlayingDevelopmentCard(Player p) {
+        if (p.selectedDevelopmentCard != -1) {
+            playingdevelopmentcard = true;
+            return true;
+        }
+        return false;
+    }
+
+    public static void developmentCardFunction(Player p) {
+        if (p.selectedDevelopmentCard != -1) {
+            if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
+                knighting = true;
+                guide = "Choose a tile to move the robber to";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.MONOPOLY) {
+                monopolying = true;
+                guide = "Choose a resource (click icon in bank), all players must give their resources of this type to you!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.ROADBUILDING) {
+                roadbuildinging = true;
+                guide = "Build two roads free of charge!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.YEAROFPLENTY) {
+                yearofplentying = true;
+                guide = "Choose any two resources from the bank, can be the same";
+            }
+        }
+
     }
 
     public static void distributeResources(int roll) {
@@ -131,6 +173,8 @@ public class main {
         if (b == null)
             return;
 
+        out.println(players[turn]);
+        out.println(b);
         ArrayList<ResourceCard> aOffer = players[turn].getSelectedCards();
         ArrayList<ResourceCard> bOffer = b.getSelectedCards();
 
@@ -205,7 +249,7 @@ public class main {
         main.buildingCity = false;
     }
 
-    public static void buildRoad(Player p, int x, int y, int direction) {
+    public static void buildRoad(Player p, int x, int y, int direction, boolean isFree) {
         if (direction == 2) {
             main.inter[x][y].buildMiddleRoad(p);
         }
@@ -214,7 +258,8 @@ public class main {
         }
         p.updateEligibleSettlements();
         p.updateEligibleRoads();
-        p.buyRoad();
+        if (!isFree)
+            p.buyRoad();
         p.updateLongestRoad();
         main.assignLongestRoad();
         main.highlightEligibleRoads = false;
@@ -239,13 +284,19 @@ public class main {
         robbery = y;
         movingRobber = false;
         stealing = true;
+        guide = "Choose a player to steal a card from";
     }
 
     public static void steal(Player stealer, Player victim) {
         out.println("steal method called");
-        stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
-        stealing = false;
-
+        if (stealer.equals(victim)) {
+            guide = "Can't steal from yourself!";
+        }
+        else {
+            stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
+            guide = "Player " + (turn + 1) + ": trade and build!";
+            stealing = false;
+        }
     }
 
     public static void tempdisplayshittyboard() {
