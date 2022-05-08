@@ -70,6 +70,7 @@ public class main {
     public static void main(String[] args) {
 
 
+        startingScreen = true;
         createBoard();
         createDevelopmentCardStack();
         fillBank();
