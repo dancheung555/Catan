@@ -99,7 +99,7 @@ public class mainPanel extends JPanel implements MouseListener {
     public void paint(Graphics g)
     {
         if (main.startingScreen) {
-            
+
         }
         else {
             g.setColor(new Color(191, 191, 191));
