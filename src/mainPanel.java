@@ -594,6 +594,7 @@ public class mainPanel extends JPanel implements MouseListener {
                             for (int j = halvingIndex; j < 4; j++) {
                                 if (main.players[j].resourceHand.size() > 7) {
                                     halvingIndex = j;
+                                    main.guide = "Player " + (j + 1) + ": choose " + (main.players[j].resourceHand.size() / 2) + " resource cards to discard";
                                     break;
                                 }
                             }
@@ -607,6 +608,7 @@ public class mainPanel extends JPanel implements MouseListener {
                 if (halvingIndex > 3) {
                     main.halving = false;
                     main.movingRobber = true;
+                    main.guide = "Choose a tile to move the robber to";
                 }
             } else if (main.movingRobber) {
                 int closestTilex = ((int) ((x - 608 + w / 2) / w - 1)) * w + w + 608;
@@ -618,7 +620,6 @@ public class mainPanel extends JPanel implements MouseListener {
                     if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
                         main.moveRobber(closestTileBoardx, closestTileBoardy);
                         out.println("success " + main.robberx + " " + main.robbery);
-                        main.movingRobber = false;
                         repaint();
                     }
                 }

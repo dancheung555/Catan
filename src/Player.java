@@ -425,4 +425,15 @@ public class Player {
     public void rewardLargestArmy() { largestArmy = true; }
     public void removeLargestArmy() { largestArmy = false; }
 
+    public String toString() {
+        String out = "";
+        for (boolean b: selectedResources) {
+            if (b)
+                out += "1";
+            else
+                out += "0";
+        }
+        return out;
+    }
+
 }

@@ -88,10 +88,12 @@ public class main {
         dice1 = (int) (6 * Math.random() + 1);
         dice2 = (int) (6 * Math.random() + 1);
         if (dice1 + dice2 == 7) {
-            for (Player p: players) {
-                if (p.resourceHand.size() > 7) {
+            for (int i = 0; i < 4; i++) {
+                if (players[i].resourceHand.size() > 7) {
                     halving = true;
+                    guide = "Player " + (i + 1) + ": choose " + (players[i].resourceHand.size() / 2) + " resource cards to discard";
                     mf.mp.resetHalvingIndex();
+                    break;
                 }
             }
             if (!halving)
@@ -99,7 +101,7 @@ public class main {
         }
         else {
             distributeResources(dice1 + dice2);
-            guide = "Player " + turn + ": trade and build!";
+            guide = "Player " + (turn + 1) + ": trade and build!";
         }
         canRollDie = false;
         canSelectCards = true;
@@ -131,6 +133,8 @@ public class main {
         if (b == null)
             return;
 
+        out.println(players[turn]);
+        out.println(b);
         ArrayList<ResourceCard> aOffer = players[turn].getSelectedCards();
         ArrayList<ResourceCard> bOffer = b.getSelectedCards();
 
@@ -239,13 +243,19 @@ public class main {
         robbery = y;
         movingRobber = false;
         stealing = true;
+        guide = "Choose a player to steal a card from";
     }
 
     public static void steal(Player stealer, Player victim) {
         out.println("steal method called");
-        stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
-        stealing = false;
-
+        if (stealer.equals(victim)) {
+            guide = "Can't steal from yourself!";
+        }
+        else {
+            stealer.addResourceCard(victim.resourceHand.remove((int) (Math.random() * victim.resourceHand.size())), 1);
+            guide = "Player " + (turn + 1) + ": trade and build!";
+            stealing = false;
+        }
     }
 
     public static void tempdisplayshittyboard() {
