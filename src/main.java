@@ -33,9 +33,9 @@ public class main {
 
     //gamestates
     static boolean
+            startingScreen,
             startingSetup,
-            playingDC,
-            monopolying,
+            playingdevelopmentcard,
             halving,
             movingRobber,
             stealing,
@@ -54,7 +54,15 @@ public class main {
             highlightEligibleCities,
             highlightEligibleRoads;
 
-    //other
+    //development card functions
+    static boolean
+            knighting,
+            monopolying,
+            yearofplentying,
+            yearofplentying2,
+            roadbuildinging,
+            roadbuildinging2;
+
     static boolean[] displayHands = new boolean[]{false, false, false, false};
 
     static String guide = "fuck you";
@@ -111,6 +119,36 @@ public class main {
         canEndTurn = true;
 
         return dice1 + dice2;
+    }
+
+    public static boolean checkPlayingDevelopmentCard(Player p) {
+        if (p.selectedDevelopmentCard != -1) {
+            playingdevelopmentcard = true;
+            return true;
+        }
+        return false;
+    }
+
+    public static void developmentCardFunction(Player p) {
+        if (p.selectedDevelopmentCard != -1) {
+            if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
+                knighting = true;
+                guide = "Choose a tile to move the robber to";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.MONOPOLY) {
+                monopolying = true;
+                guide = "Choose a resource (click icon in bank), all players must give their resources of this type to you!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.ROADBUILDING) {
+                roadbuildinging = true;
+                guide = "Build two roads free of charge!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.YEAROFPLENTY) {
+                yearofplentying = true;
+                guide = "Choose any two resources from the bank, can be the same";
+            }
+        }
+
     }
 
     public static void distributeResources(int roll) {
@@ -211,7 +249,7 @@ public class main {
         main.buildingCity = false;
     }
 
-    public static void buildRoad(Player p, int x, int y, int direction) {
+    public static void buildRoad(Player p, int x, int y, int direction, boolean isFree) {
         if (direction == 2) {
             main.inter[x][y].buildMiddleRoad(p);
         }
@@ -220,7 +258,8 @@ public class main {
         }
         p.updateEligibleSettlements();
         p.updateEligibleRoads();
-        p.buyRoad();
+        if (!isFree)
+            p.buyRoad();
         p.updateLongestRoad();
         main.assignLongestRoad();
         main.highlightEligibleRoads = false;

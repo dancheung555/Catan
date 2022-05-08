@@ -98,21 +98,17 @@ public class Player {
     }
 
     public void selectDevelopmentCard(int sel) {
+        System.out.println("selectDC method called");
         selectedDevelopmentCard = sel;
-        developmentCardFunction();
+        main.developmentCardFunction(this);
     }
 
-    public void developmentCardFunction() {
-        if (developmentCardHand.get(selectedDevelopmentCard) == DevelopmentCard.KNIGHT) {
-            main.movingRobber = true;
-        }
-        else if (developmentCardHand.get(selectedDevelopmentCard) == DevelopmentCard.MONOPOLY) {
-
-        }
+    public DevelopmentCard getSelectedDevelopmentCard() {
+        return developmentCardHand.get(selectedDevelopmentCard);
     }
 
     public void removeDevelopmentCard() {
-        resourceHand.remove(selectedDevelopmentCard);
+        developmentCardHand.remove(selectedDevelopmentCard);
     }
 
     public void addSettlement(Settlement s) {
@@ -167,7 +163,7 @@ public class Player {
         if (c % 3 == 0) {
             if (fromDirection != 3) {
                 try {
-                    if (main.inter[r][c].getLeftRoad() != null)
+                    if (main.inter[r][c].getLeftRoad() != null && main.inter[r][c].getLeftRoad().owner.equals(this))
                         roadCounter(r - 1, c + 1, 1);
                     else if (main.inter[r - 1][c + 1] != null)
                         eligibleRoads.add(new Road(r, c, r - 1, c + 1, this));
@@ -175,7 +171,7 @@ public class Player {
             }
             if (fromDirection != 2) {
                 try {
-                    if (main.inter[r][c].getMiddleRoad() != null)
+                    if (main.inter[r][c].getMiddleRoad() != null && main.inter[r][c].getMiddleRoad().owner.equals(this))
                         roadCounter(r, c - 2, 2);
                     else if (main.inter[r][c - 2] != null)
                         eligibleRoads.add(new Road(r, c, r, c - 2, this));
@@ -183,7 +179,7 @@ public class Player {
             }
             if (fromDirection != 1) {
                 try {
-                    if (main.inter[r][c].getRightRoad() != null)
+                    if (main.inter[r][c].getRightRoad() != null && main.inter[r][c].getRightRoad().owner.equals(this))
                         roadCounter(r + 1, c + 1, 3);
                     else if (main.inter[r + 1][c + 1] != null)
                         eligibleRoads.add(new Road(r, c, r + 1, c + 1, this));
@@ -193,7 +189,7 @@ public class Player {
         else {
             if (fromDirection != 3) {
                 try {
-                    if (main.inter[r][c].getLeftRoad() != null)
+                    if (main.inter[r][c].getLeftRoad() != null && main.inter[r][c].getLeftRoad().owner.equals(this))
                         roadCounter(r - 1, c - 1, 1);
                     else if (main.inter[r - 1][c - 1] != null)
                         eligibleRoads.add(new Road(r, c, r - 1, c - 1, this));
@@ -201,7 +197,7 @@ public class Player {
             }
             if (fromDirection != 2) {
                 try {
-                    if (main.inter[r][c].getMiddleRoad() != null)
+                    if (main.inter[r][c].getMiddleRoad() != null && main.inter[r][c].getMiddleRoad().owner.equals(this))
                         roadCounter(r, c + 2, 2);
                     else if (main.inter[r][c + 2] != null)
                         eligibleRoads.add(new Road(r, c, r, c + 2, this));
@@ -209,7 +205,7 @@ public class Player {
             }
             if (fromDirection != 1) {
                 try {
-                    if (main.inter[r][c].getRightRoad() != null)
+                    if (main.inter[r][c].getRightRoad() != null && main.inter[r][c].getRightRoad().owner.equals(this))
                         roadCounter(r + 1, c - 1, 3);
                     else if (main.inter[r + 1][c - 1] != null)
                         eligibleRoads.add(new Road(r, c, r + 1, c - 1, this));
@@ -308,6 +304,8 @@ public class Player {
     public void buyRoad() {
         removeResourceCard(ResourceCard.BRICK, 1);
         removeResourceCard(ResourceCard.WOOD, 1);
+        main.addToBank(ResourceCard.BRICK, 1);
+        main.addToBank(ResourceCard.WOOD, 1);
     }
 
     public boolean hasResourcesForSettlement() {
@@ -322,6 +320,10 @@ public class Player {
         removeResourceCard(ResourceCard.WOOD, 1);
         removeResourceCard(ResourceCard.WHEAT, 1);
         removeResourceCard(ResourceCard.SHEEP, 1);
+        main.addToBank(ResourceCard.BRICK, 1);
+        main.addToBank(ResourceCard.WOOD, 1);
+        main.addToBank(ResourceCard.WHEAT, 1);
+        main.addToBank(ResourceCard.SHEEP, 1);
     }
 
     public boolean hasResourcesForCity() {
@@ -332,6 +334,8 @@ public class Player {
     public void buyCity() {
         removeResourceCard(ResourceCard.WHEAT, 2);
         removeResourceCard(ResourceCard.ORE, 3);
+        main.addToBank(ResourceCard.WHEAT, 2);
+        main.addToBank(ResourceCard.ORE, 3);
     }
 
     public boolean hasResourcesForDevelopmentCard() {
@@ -344,6 +348,9 @@ public class Player {
         removeResourceCard(ResourceCard.SHEEP, 1);
         removeResourceCard(ResourceCard.WHEAT, 1);
         removeResourceCard(ResourceCard.ORE, 1);
+        main.addToBank(ResourceCard.SHEEP, 1);
+        main.addToBank(ResourceCard.WHEAT, 1);
+        main.addToBank(ResourceCard.ORE, 1);
         developmentCardHand.add(main.daStack.pop());
         updateHiddenVictoryPoints();
     }
@@ -390,24 +397,24 @@ public class Player {
     private int updateLongestRoadHelper(int r, int c, int fromDirection) {
         int max = 0, leftLength = 0, middleLength = 0, rightLength = 0;
         if (c % 3 == 0) {
-            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3) {
+            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3 && main.inter[r][c].getLeftRoad().owner.equals(this)) {
                 leftLength = 1 + updateLongestRoadHelper(r - 1, c + 1, 1);
             }
-            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2) {
+            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2 && main.inter[r][c].getMiddleRoad().owner.equals(this)) {
                 middleLength = 1 + updateLongestRoadHelper(r, c - 2, 2);
             }
-            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1) {
+            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1 && main.inter[r][c].getRightRoad().owner.equals(this)) {
                 rightLength = 1 + updateLongestRoadHelper(r + 1, c + 1, 3);
             }
         }
         else {
-            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3) {
+            if (main.inter[r][c].getLeftRoad() != null && fromDirection != 3 && main.inter[r][c].getLeftRoad().owner.equals(this)) {
                 leftLength = 1 + updateLongestRoadHelper(r - 1, c - 1, 1);
             }
-            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2) {
+            if (main.inter[r][c].getMiddleRoad() != null && fromDirection != 2 && main.inter[r][c].getMiddleRoad().owner.equals(this)) {
                 middleLength = 1 + updateLongestRoadHelper(r, c + 2, 2);
             }
-            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1) {
+            if (main.inter[r][c].getRightRoad() != null && fromDirection != 1 && main.inter[r][c].getRightRoad().owner.equals(this)) {
                 rightLength = 1 + updateLongestRoadHelper(r + 1, c - 1, 3);
             }
         }
