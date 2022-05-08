@@ -14,7 +14,7 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
             knight, victorypoint, monopoly, roadbuilding, yearofplenty,
-            developmentCosts, background, robber;
+            developmentCosts, background, robber, startpanel;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
 
     private BufferedImage[] pips = new BufferedImage[13];
@@ -34,6 +34,8 @@ public class mainPanel extends JPanel implements MouseListener {
     {
         try
         {
+            startpanel = ImageIO.read(new File("StartPanel.png"));
+
             clay = ImageIO.read(new File("Clay.png"));
             forest = ImageIO.read(new File("Forest.png"));
             desert = ImageIO.read(new File("Desert.png"));
