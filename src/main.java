@@ -96,8 +96,10 @@ public class main {
                     break;
                 }
             }
-            if (!halving)
+            if (!halving) {
                 movingRobber = true;
+                guide = "Choose a tile to move the robber to";
+            }
         }
         else {
             distributeResources(dice1 + dice2);

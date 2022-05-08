@@ -63,8 +63,8 @@ public class mainPanel extends JPanel implements MouseListener {
             cardBack = ImageIO.read(new File("Development Card.png"));
             developmentCosts = ImageIO.read(new File("developmentcosts.png"));
 
-            knight = ImageIO.read(new File("Knight.png"));
-            victorypoint = ImageIO.read(new File("Chapel.png"));
+            knight = ImageIO.read(new File("Knight Card.png"));
+            victorypoint = ImageIO.read(new File("Victory Point Card.png"));
             monopoly = ImageIO.read(new File("Monopoly.png"));
             roadbuilding = ImageIO.read(new File("Road Building.png"));
             yearofplenty = ImageIO.read(new File("Year of Plenty.png"));
@@ -263,7 +263,7 @@ public class mainPanel extends JPanel implements MouseListener {
         g.fillRect(885, 510,60,20);
         */
 
-        g.drawImage(background, 540, 0, 900, 810, null);
+        g.drawImage(background, 542, 0, 900, 810, null);
 
         int x, y;
         Tile temp = null;
@@ -616,7 +616,7 @@ public class mainPanel extends JPanel implements MouseListener {
                 int closestTileBoardx = (int) ((x - 608 + w / 2) / w - 1) + 1;
                 int closestTileBoardy = ((y - 45) / (3 * h)) * 3 + 2;
 
-                if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 2025 && main.board[closestTileBoardx][closestTileBoardy] != null) {
+                if (Math.pow(closestTilex - x, 2) + Math.pow(closestTiley - y, 2) < 8100 && main.board[closestTileBoardx][closestTileBoardy] != null) {
                     if (main.board[closestTileBoardx][closestTileBoardy].getPipNumber() != 0) {
                         main.moveRobber(closestTileBoardx, closestTileBoardy);
                         out.println("success " + main.robberx + " " + main.robbery);
@@ -714,7 +714,7 @@ public class mainPanel extends JPanel implements MouseListener {
                 int closestInterBoardx = ((int) ((x - 608 + w / 2) / w));
                 int closestInterBoardy = ((int) ((y - 45 + h / 2) / h));
 
-                if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 2025 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
+                if (Math.pow(closestInterx - x, 2) + Math.pow(closestIntery - y, 2) < 8100 && main.inter[closestInterBoardx][closestInterBoardy] != null) {
                     if (main.players[main.turn].canBuildSettlement(closestInterBoardx, closestInterBoardy)) {
                         main.buildSettlement(main.players[main.turn], closestInterBoardx, closestInterBoardy);
                         repaint();
