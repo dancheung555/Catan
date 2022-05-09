@@ -15,7 +15,7 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
             knight, victorypoint, monopoly, roadbuilding, yearofplenty,
-            developmentCosts, background, robber, startpanel;
+            developmentCosts, background, robber, startpanel, eyecon;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
 
     private BufferedImage[] pips = new BufferedImage[13];
@@ -87,6 +87,7 @@ public class mainPanel extends JPanel implements MouseListener {
             sheepicon = ImageIO.read(Tile.class.getResource("/Images/icon sheep.png"));
             wheaticon = ImageIO.read(Tile.class.getResource("/Images/icon wheat.png"));
             woodicon = ImageIO.read(Tile.class.getResource("/Images/icon wood.png"));
+            eyecon = ImageIO.read(Tile.class.getResource("/Images/Eyecon.png"));
 
             robber = ImageIO.read(Tile.class.getResource("/Images/robber.png"));
 
@@ -105,7 +106,7 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(startpanel, 0, 0, 1440, 810, null);
         }
         else {
-            g.setColor(new Color(191, 191, 191));
+            g.setColor(new Color(245, 233, 171));
             g.fillRect(0, 0, 1440, 810);
 
             int cardx;
@@ -118,8 +119,8 @@ public class mainPanel extends JPanel implements MouseListener {
                 if (i == main.turn) {
                     g.fillPolygon(new int[]{8, 8, 38}, new int[]{75 + i * 120, 90 + i * 120, 83 + i * 120}, 3);
                 }
-                g.setColor(Color.gray);
-                g.fillRoundRect(8, 98 + i * 120, 30, 30, 5, 5);
+
+                g.drawImage(eyecon, 8, 98 + i * 120, 30, 30, null);
 
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
                 g.setColor(Color.black);
