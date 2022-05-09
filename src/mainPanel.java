@@ -35,60 +35,60 @@ public class mainPanel extends JPanel implements MouseListener {
     {
         try
         {
-            startpanel = ImageIO.read(new File("StartPanel.png"));
+            startpanel = ImageIO.read(Tile.class.getResource("/Images/StartPanel.png"));
 
-            clay = ImageIO.read(new File("Clay.png"));
-            forest = ImageIO.read(new File("Forest.png"));
-            desert = ImageIO.read(new File("Desert.png"));
-            mountains = ImageIO.read(new File("Mountains.png"));
-            grassland = ImageIO.read(new File("Grassland.png"));
-            wheat = ImageIO.read(new File("Wheat.png"));
+            clay = ImageIO.read(Tile.class.getResource("/Images/Clay.png"));
+            forest = ImageIO.read(Tile.class.getResource("/Images/Forest.png"));
+            desert = ImageIO.read(Tile.class.getResource("/Images/Desert.png"));
+            mountains = ImageIO.read(Tile.class.getResource("/Images/Mountains.png"));
+            grassland = ImageIO.read(Tile.class.getResource("/Images/Grassland.png"));
+            wheat = ImageIO.read(Tile.class.getResource("/Images/Wheat.png"));
 
             pips[0] = null;
             pips[1] = null;
-            pips[2] = ImageIO.read(new File("2 pip.png"));
-            pips[3] = ImageIO.read(new File("3 pip.png"));
-            pips[4] = ImageIO.read(new File("4 pip.png"));
-            pips[5] = ImageIO.read(new File("5 pip.png"));
-            pips[6] = ImageIO.read(new File("6 pip.png"));
+            pips[2] = ImageIO.read(Tile.class.getResource("/Images/2 pip.png"));
+            pips[3] = ImageIO.read(Tile.class.getResource("/Images/3 pip.png"));
+            pips[4] = ImageIO.read(Tile.class.getResource("/Images/4 pip.png"));
+            pips[5] = ImageIO.read(Tile.class.getResource("/Images/5 pip.png"));
+            pips[6] = ImageIO.read(Tile.class.getResource("/Images/6 pip.png"));
             pips[7] = null;
-            pips[8] = ImageIO.read(new File("8 pip.png"));
-            pips[9] = ImageIO.read(new File("9 pip.png"));
-            pips[10] = ImageIO.read(new File("10 pip.png"));
-            pips[11] = ImageIO.read(new File("11 pip.png"));
-            pips[12] = ImageIO.read(new File("12 pip.png"));
+            pips[8] = ImageIO.read(Tile.class.getResource("/Images/8 pip.png"));
+            pips[9] = ImageIO.read(Tile.class.getResource("/Images/9 pip.png"));
+            pips[10] = ImageIO.read(Tile.class.getResource("/Images/10 pip.png"));
+            pips[11] = ImageIO.read(Tile.class.getResource("/Images/11 pip.png"));
+            pips[12] = ImageIO.read(Tile.class.getResource("/Images/12 pip.png"));
 
             dicepips[0] = null;
-            dicepips[1] = ImageIO.read(new File("dice1pip.png"));
-            dicepips[2] = ImageIO.read(new File("dice2pip.png"));
-            dicepips[3] = ImageIO.read(new File("dice3pip.png"));
-            dicepips[4] = ImageIO.read(new File("dice4pip.png"));
-            dicepips[5] = ImageIO.read(new File("dice5pip.png"));
-            dicepips[6] = ImageIO.read(new File("dice6pip.png"));
+            dicepips[1] = ImageIO.read(Tile.class.getResource("/Images/dice1pip.png"));
+            dicepips[2] = ImageIO.read(Tile.class.getResource("/Images/dice2pip.png"));
+            dicepips[3] = ImageIO.read(Tile.class.getResource("/Images/dice3pip.png"));
+            dicepips[4] = ImageIO.read(Tile.class.getResource("/Images/dice4pip.png"));
+            dicepips[5] = ImageIO.read(Tile.class.getResource("/Images/dice5pip.png"));
+            dicepips[6] = ImageIO.read(Tile.class.getResource("/Images/dice6pip.png"));
 
-            background = ImageIO.read(new File("board background.png"));
+            background = ImageIO.read(Tile.class.getResource("/Images/board background.png"));
 
-            clayCard = ImageIO.read(new File("Clay Card.png"));
-            wheatCard = ImageIO.read(new File("Wheat Card.png"));
-            woodCard = ImageIO.read(new File("Wood Card.png"));
-            oreCard = ImageIO.read(new File("Ore Card.png"));
-            sheepCard = ImageIO.read(new File("Sheep Card.png"));
-            cardBack = ImageIO.read(new File("Development Card.png"));
-            developmentCosts = ImageIO.read(new File("developmentcosts.png"));
+            clayCard = ImageIO.read(Tile.class.getResource("/Images/Clay Card.png"));
+            wheatCard = ImageIO.read(Tile.class.getResource("/Images/Wheat Card.png"));
+            woodCard = ImageIO.read(Tile.class.getResource("/Images/Wood Card.png"));
+            oreCard = ImageIO.read(Tile.class.getResource("/Images/Ore Card.png"));
+            sheepCard = ImageIO.read(Tile.class.getResource("/Images/Sheep Card.png"));
+            cardBack = ImageIO.read(Tile.class.getResource("/Images/Development Card.png"));
+            developmentCosts = ImageIO.read(Tile.class.getResource("/Images/developmentcosts.png"));
 
-            knight = ImageIO.read(new File("Knight Card.png"));
-            victorypoint = ImageIO.read(new File("Victory Point Card.png"));
-            monopoly = ImageIO.read(new File("Monopoly.png"));
-            roadbuilding = ImageIO.read(new File("Road Building.png"));
-            yearofplenty = ImageIO.read(new File("Year of Plenty.png"));
+            knight = ImageIO.read(Tile.class.getResource("/Images/Knight Card.png"));
+            victorypoint = ImageIO.read(Tile.class.getResource("/Images/Victory Point Card.png"));
+            monopoly = ImageIO.read(Tile.class.getResource("/Images/Monopoly.png"));
+            roadbuilding = ImageIO.read(Tile.class.getResource("/Images/Road Building.png"));
+            yearofplenty = ImageIO.read(Tile.class.getResource("/Images/Year of Plenty.png"));
 
-            brickicon = ImageIO.read(new File("icon brick.png"));
-            oreicon = ImageIO.read(new File("icon ore.png"));
-            sheepicon = ImageIO.read(new File("icon sheep.png"));
-            wheaticon = ImageIO.read(new File("icon wheat.png"));
-            woodicon = ImageIO.read(new File("icon wood.png"));
+            brickicon = ImageIO.read(Tile.class.getResource("/Images/icon brick.png"));
+            oreicon = ImageIO.read(Tile.class.getResource("/Images/icon ore.png"));
+            sheepicon = ImageIO.read(Tile.class.getResource("/Images/icon sheep.png"));
+            wheaticon = ImageIO.read(Tile.class.getResource("/Images/icon wheat.png"));
+            woodicon = ImageIO.read(Tile.class.getResource("/Images/icon wood.png"));
 
-            robber = ImageIO.read(new File("robber.png"));
+            robber = ImageIO.read(Tile.class.getResource("/Images/robber.png"));
 
         }
         catch (Exception E)
@@ -119,7 +119,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     g.fillPolygon(new int[]{8, 8, 38}, new int[]{75 + i * 120, 90 + i * 120, 83 + i * 120}, 3);
                 }
                 g.setColor(Color.gray);
-                g.fillRect(8, 98 + i * 120, 30, 30);
+                g.fillRoundRect(8, 98 + i * 120, 30, 30, 5, 5);
 
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
                 g.setColor(Color.black);
@@ -205,10 +205,6 @@ public class mainPanel extends JPanel implements MouseListener {
             if (main.canRollDie)
                 main.guide = "Roll the die!";
 
-            //trade button
-            g.setColor(Color.red);
-            g.fillRect(360, 645, 140, 45);
-
             //display bank
             g.setColor(Color.black);
             Font bankFont = new Font("Times New Roman", Font.PLAIN, 15);
@@ -225,9 +221,18 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(woodCard, 285, 540, 53, 78, null);
             g.drawString("" + main.bank.get(ResourceCard.WOOD), 310 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 630);
 
-            //end turn button
-            g.setColor(Color.cyan);
-            g.fillRect(360, 705, 140, 45);
+            //trade, end turn buttons
+            g.setColor(new Color(162, 4, 4));
+            g.fillRoundRect(360, 645, 140, 60, 15, 15);
+            g.fillRoundRect(360, 720, 140, 60, 15, 15);
+            g.setColor(Color.white);
+            Font buttonFont = new Font("Times New Roman", Font.PLAIN, 40);
+            g.setFont(buttonFont);
+            FontMetrics buttonFontMetrics = getFontMetrics(buttonFont);
+            g.drawString("Trade", 430 - buttonFontMetrics.stringWidth("Trade")/2, 690);
+            g.drawString("Pass Die", 430 - buttonFontMetrics.stringWidth("Pass Die")/2, 762);
+
+
 
             g.drawImage(developmentCosts, 45, 645, 300, 150, null);
 
@@ -840,7 +845,7 @@ public class mainPanel extends JPanel implements MouseListener {
 
                 if (main.tradingBuilding) {
 
-                    if (x > 360 && x < 450 && y > 645 && y < 690) {
+                    if (x > 360 && x < 500 && y > 645 && y < 705) {
                         out.println("domestic trade called");
                         main.domesticTrade();
                         repaint();
@@ -894,7 +899,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     }
                 }
                 if (main.canEndTurn) {
-                    if (x > 360 && x < 450 && y > 705 && y < 750) {
+                    if (x > 360 && x < 500 && y > 720 && y < 780) {
                         main.endTurn();
                         out.println("turn ended");
                         repaint();
