@@ -106,7 +106,7 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(startpanel, 0, 0, 1440, 810, null);
         }
         else {
-            g.setColor(new Color(245, 233, 171));
+            g.setColor(new Color(170, 128, 97));
             g.fillRect(0, 0, 1440, 810);
 
             int cardx;
@@ -204,7 +204,7 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(dicepips[main.dice1], 345, 540, 75, 75, null);
             g.drawImage(dicepips[main.dice2], 425, 540, 75, 75, null);
             if (main.canRollDie)
-                main.guide = "Roll the die!";
+                main.guide = "Player " + (main.turn + 1) + ": Click on the dice to roll!";
 
             //display bank
             g.setColor(Color.black);
@@ -227,11 +227,11 @@ public class mainPanel extends JPanel implements MouseListener {
             g.fillRoundRect(360, 645, 140, 60, 15, 15);
             g.fillRoundRect(360, 720, 140, 60, 15, 15);
             g.setColor(Color.white);
-            Font buttonFont = new Font("Times New Roman", Font.PLAIN, 40);
+            Font buttonFont = new Font("Times New Roman", Font.PLAIN, 30);
             g.setFont(buttonFont);
             FontMetrics buttonFontMetrics = getFontMetrics(buttonFont);
             g.drawString("Trade", 430 - buttonFontMetrics.stringWidth("Trade")/2, 690);
-            g.drawString("Pass Die", 430 - buttonFontMetrics.stringWidth("Pass Die")/2, 762);
+            g.drawString("Piss Dice", 430 - buttonFontMetrics.stringWidth("Piss Dice")/2, 762);
 
 
 
@@ -412,7 +412,7 @@ public class mainPanel extends JPanel implements MouseListener {
             }
 
             //to highlight open and eligible settlement, city, or road intersections/edges
-            g.setColor(new Color(85, 255, 59, 172));
+            g.setColor(new Color(85, 255, 59, 191));
             if (main.highlightEligibleSettlements) {
                 if (main.startingSetup) {
                     for (int i = 3; i < 184; i += 2) {
@@ -446,8 +446,8 @@ public class mainPanel extends JPanel implements MouseListener {
             //print guide
             if (!main.gameEnded) {
                 g.setColor(Color.black);
-                g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-                g.drawString(main.guide, 5, 15);
+                g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+                g.drawString(main.guide, 5, 25);
             } else {
                 g.setColor(new Color(63, 63, 63, 191));
                 g.fillRect(0, 0, 1440, 810);
@@ -874,12 +874,16 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.guide = "Insufficient resources for road";
                             }
                         } else if (clickedCard == 1) {
-                            if (main.players[main.turn].hasResourcesForSettlement()) {
+                            if (main.players[main.turn].hasResourcesForSettlement() && main.players[main.turn].eligibleSettlements.size() != 0) {
                                 main.buildingSettlement = true;
                                 main.highlightEligibleSettlements = true;
                                 main.canSelectCards = false;
-                            } else {
+                            }
+                            else if (!main.players[main.turn].hasResourcesForSettlement()){
                                 main.guide = "Insufficient resources for settlement";
+                            }
+                            else {
+                                main.guide = "Nowhere to build settlement";
                             }
                         } else if (clickedCard == 2) {
                             if (main.players[main.turn].hasResourcesForCity()) {
