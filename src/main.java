@@ -35,6 +35,7 @@ public class main {
     static boolean
             startingScreen,
             startingSetup,
+            dickpictips,
             playingdevelopmentcard,
             halving,
             movingRobber,

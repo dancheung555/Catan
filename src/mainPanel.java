@@ -15,7 +15,7 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
             knight, victorypoint, monopoly, roadbuilding, yearofplenty,
-            developmentCosts, background, robber, startpanel, eyecon;
+            developmentCosts, background, robber, startpanel, eyecon, tips;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
 
     private BufferedImage[] pips = new BufferedImage[13];
@@ -36,6 +36,7 @@ public class mainPanel extends JPanel implements MouseListener {
         try
         {
             startpanel = ImageIO.read(Tile.class.getResource("/Images/StartPanel.png"));
+            tips = ImageIO.read(Tile.class.getResource("/Images/tips.png"));
 
             clay = ImageIO.read(Tile.class.getResource("/Images/Clay.png"));
             forest = ImageIO.read(Tile.class.getResource("/Images/Forest.png"));
@@ -447,7 +448,7 @@ public class mainPanel extends JPanel implements MouseListener {
             if (!main.gameEnded) {
                 g.setColor(Color.black);
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-                g.drawString(main.guide, 5, 25);
+                g.drawString(main.guide, 40, 25);
             } else {
                 g.setColor(new Color(63, 63, 63, 191));
                 g.fillRect(0, 0, 1440, 810);
@@ -455,6 +456,13 @@ public class mainPanel extends JPanel implements MouseListener {
                 g.setFont(endFont);
                 FontMetrics endFontMetrics = getFontMetrics(endFont);
                 g.drawString("Player " + main.winner + " wins!", 720 - endFontMetrics.stringWidth("Player " + main.winner + " wins!"), 455);
+            }
+
+            //display dickpics
+            g.setColor(Color.white);
+            g.fillOval(5, 5, 30, 30);
+            if (main.dickpictips) {
+                g.drawImage(tips, 40, 40, 1000, 1500, null);
             }
         }
     }
@@ -472,6 +480,14 @@ public class mainPanel extends JPanel implements MouseListener {
         if (main.startingScreen) {
             main.startingScreen = false;
             repaint();
+        }
+
+        else if (main.dickpictips) {
+            main.dickpictips = false;
+        }
+
+        else if (x > 5 && x < 35 && y > 5 && y < 35) {
+            main.dickpictips = true;
         }
 
         else if (!main.gameEnded) {
