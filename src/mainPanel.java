@@ -15,7 +15,7 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
             knight, victorypoint, monopoly, roadbuilding, yearofplenty,
-            developmentCosts, background, robber, startpanel, eyecon, tips;
+            developmentCosts, background, robber, startpanel, eyecon, tips, tipicon;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
 
     private BufferedImage[] pips = new BufferedImage[13];
@@ -37,6 +37,7 @@ public class mainPanel extends JPanel implements MouseListener {
         {
             startpanel = ImageIO.read(Tile.class.getResource("/Images/StartPanel.png"));
             tips = ImageIO.read(Tile.class.getResource("/Images/tips.png"));
+            tipicon = ImageIO.read(Tile.class.getResource("/Images/tipicon.png"));
 
             clay = ImageIO.read(Tile.class.getResource("/Images/Clay.png"));
             forest = ImageIO.read(Tile.class.getResource("/Images/Forest.png"));
@@ -112,11 +113,14 @@ public class mainPanel extends JPanel implements MouseListener {
 
             int cardx;
             for (int i = 0; i < 4; i++) {
+                g.setColor(new Color(80, 46, 0));
+                g.fillRoundRect(42, 48 + i * 120, 467, 110, 20, 20);
+
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
                 g.setColor(main.players[i].getColor());
                 g.drawString("" + (i + 1), 45, 120 + i * 120);
 
-                g.setColor(Color.darkGray);
+                g.setColor(Color.yellow);
                 if (i == main.turn) {
                     g.fillPolygon(new int[]{8, 8, 38}, new int[]{75 + i * 120, 90 + i * 120, 83 + i * 120}, 3);
                 }
@@ -169,7 +173,8 @@ public class mainPanel extends JPanel implements MouseListener {
                             cardx++;
                         }
                     }
-                    g.drawString("VP: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 45, i * 120 + 150);
+                    g.setColor(Color.white);
+                    g.drawString("Victory Points: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 45, i * 120 + 150);
                 } else {
                     for (ResourceCard rc : main.players[i].resourceHand) {
                         if (rc != null) {
@@ -190,15 +195,17 @@ public class mainPanel extends JPanel implements MouseListener {
                             cardx++;
                         }
                     }
-                    g.drawString("VP: " + main.players[i].visibleVictoryPoints, 45, i * 120 + 150);
+                    g.setColor(Color.white);
+                    g.drawString("Victory Points: " + main.players[i].visibleVictoryPoints, 45, i * 120 + 150);
                 }
+                g.setColor(Color.white);
                 if (main.players[i].longestRoad)
                     g.setColor(new Color(255, 203, 67));
-                g.drawString("LR: " + main.players[i].longestRoadLength, 165, i * 120 + 150);
-                g.setColor(Color.black);
+                g.drawString("Longest Road: " + main.players[i].longestRoadLength, 205, i * 120 + 150);
+                g.setColor(Color.white);
                 if (main.players[i].largestArmy)
                     g.setColor(new Color(255, 203, 67));
-                g.drawString("LA: " + main.players[i].knightsPlayed, 285, i * 120 + 150);
+                g.drawString("Army Size: " + main.players[i].knightsPlayed, 360, i * 120 + 150);
             }
 
             //dice
@@ -208,7 +215,6 @@ public class mainPanel extends JPanel implements MouseListener {
                 main.guide = "Player " + (main.turn + 1) + ": Click on the dice to roll!";
 
             //display bank
-            g.setColor(Color.black);
             Font bankFont = new Font("Times New Roman", Font.PLAIN, 15);
             g.setFont(bankFont);
             FontMetrics bankFontMetrics = getFontMetrics(bankFont);
@@ -232,7 +238,7 @@ public class mainPanel extends JPanel implements MouseListener {
             g.setFont(buttonFont);
             FontMetrics buttonFontMetrics = getFontMetrics(buttonFont);
             g.drawString("Trade", 430 - buttonFontMetrics.stringWidth("Trade")/2, 690);
-            g.drawString("Piss Dice", 430 - buttonFontMetrics.stringWidth("Piss Dice")/2, 762);
+            g.drawString("Pass Dice", 430 - buttonFontMetrics.stringWidth("Pass Dice")/2, 762);
 
 
 
@@ -446,7 +452,7 @@ public class mainPanel extends JPanel implements MouseListener {
 
             //print guide
             if (!main.gameEnded) {
-                g.setColor(Color.black);
+                g.setColor(Color.white);
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
                 g.drawString(main.guide, 40, 25);
             } else {
@@ -459,10 +465,9 @@ public class mainPanel extends JPanel implements MouseListener {
             }
 
             //display dickpics
-            g.setColor(Color.white);
-            g.fillOval(5, 5, 30, 30);
+            g.drawImage(tipicon, 5, 5, 30, 30, null);
             if (main.dickpictips) {
-                g.drawImage(tips, 40, 40, 1000, 1500, null);
+                g.drawImage(tips, 40, 40, 500, 750, null);
             }
         }
     }

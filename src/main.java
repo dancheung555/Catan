@@ -37,6 +37,7 @@ public class main {
             startingSetup,
             dickpictips,
             playingdevelopmentcard,
+            hasplayeddcthisturn,
             halving,
             movingRobber,
             stealing,
@@ -133,7 +134,13 @@ public class main {
 
     public static void developmentCardFunction(Player p) {
         if (p.selectedDevelopmentCard != -1) {
-            if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
+            if (p.boughtDevelopmentCard == p.selectedDevelopmentCard) {
+                guide = "Cannot play a development card bought in the same turn!";
+            }
+            else if (hasplayeddcthisturn) {
+                guide = "Can only play one development card per turn!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
                 knighting = true;
                 guide = "Player " + (turn + 1) + ": Click a tile to move the robber (click the pip)";
             }
@@ -548,6 +555,10 @@ public class main {
         canRollDie = true;
         canSelectCards = false;
         tradingBuilding = false;
+        hasplayeddcthisturn = false;
+        for (int i = 0; i < 4; i++) {
+            players[i].deselectAll();
+        }
         turn = (turn + 1) % 4;
     }
 
