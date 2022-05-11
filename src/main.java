@@ -35,7 +35,9 @@ public class main {
     static boolean
             startingScreen,
             startingSetup,
+            dickpictips,
             playingdevelopmentcard,
+            hasplayeddcthisturn,
             halving,
             movingRobber,
             stealing,
@@ -70,6 +72,7 @@ public class main {
     public static void main(String[] args) {
 
 
+        startingScreen = true;
         createBoard();
         createDevelopmentCardStack();
         fillBank();
@@ -106,7 +109,7 @@ public class main {
             }
             if (!halving) {
                 movingRobber = true;
-                guide = "Choose a tile to move the robber to";
+                guide = "Player " + (turn + 1) + ": Click a tile to move the robber (click the pip)";
             }
         }
         else {
@@ -131,21 +134,28 @@ public class main {
 
     public static void developmentCardFunction(Player p) {
         if (p.selectedDevelopmentCard != -1) {
-            if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
+            if (p.boughtDevelopmentCard == p.selectedDevelopmentCard) {
+                guide = "Cannot play a development card bought in the same turn!";
+            }
+            else if (hasplayeddcthisturn) {
+                guide = "Can only play one development card per turn!";
+            }
+            else if (p.getSelectedDevelopmentCard() == DevelopmentCard.KNIGHT) {
                 knighting = true;
-                guide = "Choose a tile to move the robber to";
+                guide = "Player " + (turn + 1) + ": Click a tile to move the robber (click the pip)";
             }
             else if (p.getSelectedDevelopmentCard() == DevelopmentCard.MONOPOLY) {
                 monopolying = true;
-                guide = "Choose a resource (click icon in bank), all players must give their resources of this type to you!";
+                guide = "Player " + (turn + 1) + ": Choose a resource (click card in bank), \n" +
+                        "all players must give their resources of this type to you!";
             }
             else if (p.getSelectedDevelopmentCard() == DevelopmentCard.ROADBUILDING) {
                 roadbuildinging = true;
-                guide = "Build two roads free of charge!";
+                guide = "Player " + (turn + 1) + ": Build two roads free of charge!";
             }
             else if (p.getSelectedDevelopmentCard() == DevelopmentCard.YEAROFPLENTY) {
                 yearofplentying = true;
-                guide = "Choose any two resources from the bank, can be the same";
+                guide = "Player " + (turn + 1) + ": Choose any two resources from the bank";
             }
         }
 
@@ -283,12 +293,49 @@ public class main {
         robberx = x;
         robbery = y;
         movingRobber = false;
-        stealing = true;
-        guide = "Choose a player to steal a card from";
+        if (canSteal(players[turn])) {
+            stealing = true;
+            guide = "Player " + (turn + 1) + ": Choose a player to steal from";
+        }
+        else
+            guide = "Player " + (turn + 1) + ": trade and build!";
+    }
+
+    public static boolean canSteal(Player stealer) {
+        if (inter[robberx - 1][robbery - 1].settlement != null && inter[robberx - 1][robbery - 1].settlement.owner != stealer) {
+            return true;
+        }
+        else if (inter[robberx - 1][robbery + 1].settlement != null && inter[robberx - 1][robbery + 1].settlement.owner != stealer) {
+            return true;
+        }
+        else if (inter[robberx][robbery + 2].settlement != null && inter[robberx][robbery + 2].settlement.owner != stealer) {
+            return true;
+        }
+        else if (inter[robberx + 1][robbery + 1].settlement != null && inter[robberx + 1][robbery + 1].settlement.owner != stealer) {
+            return true;
+        }
+        else if (inter[robberx + 1][robbery - 1].settlement != null && inter[robberx + 1][robbery - 1].settlement.owner != stealer) {
+            return true;
+        }
+        else if (inter[robberx][robbery - 2].settlement != null && inter[robberx][robbery - 2].settlement.owner != stealer) {
+            return true;
+        }
+        return false;
     }
 
     public static void steal(Player stealer, Player victim) {
         out.println("steal method called");
+        if (inter[robberx - 1][robbery - 1].settlement != null && inter[robberx - 1][robbery - 1].settlement.owner == victim) {}
+        else if (inter[robberx - 1][robbery + 1].settlement != null && inter[robberx - 1][robbery + 1].settlement.owner == victim) {}
+        else if (inter[robberx][robbery + 2].settlement != null && inter[robberx][robbery + 2].settlement.owner == victim) {}
+        else if (inter[robberx + 1][robbery + 1].settlement != null && inter[robberx + 1][robbery + 1].settlement.owner == victim) {}
+        else if (inter[robberx + 1][robbery - 1].settlement != null && inter[robberx + 1][robbery - 1].settlement.owner == victim) {}
+        else if (inter[robberx][robbery - 2].settlement != null && inter[robberx][robbery - 2].settlement.owner == victim) {}
+        else {
+            guide = "Victim must be adjacent to robber tile";
+            return;
+        }
+
         if (stealer.equals(victim)) {
             guide = "Can't steal from yourself!";
         }
@@ -297,6 +344,7 @@ public class main {
             guide = "Player " + (turn + 1) + ": trade and build!";
             stealing = false;
         }
+
     }
 
     public static void tempdisplayshittyboard() {
@@ -507,14 +555,19 @@ public class main {
         canRollDie = true;
         canSelectCards = false;
         tradingBuilding = false;
+        hasplayeddcthisturn = false;
+        for (int i = 0; i < 4; i++) {
+            players[i].deselectAll();
+        }
         turn = (turn + 1) % 4;
     }
 
     public static void checkForWinner() {
         for (int i = 0; i < 4; i++) {
             if (players[i].visibleVictoryPoints + players[i].hiddenVictoryPoints >= 10) {
-                winner = i;
+                winner = i + 1;
                 gameEnded = true;
+                return;
             }
         }
     }

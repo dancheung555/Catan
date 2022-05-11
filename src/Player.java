@@ -9,6 +9,7 @@ public class Player {
 
     ArrayList<DevelopmentCard> developmentCardHand = new ArrayList<DevelopmentCard>();
     int selectedDevelopmentCard = -1;
+    int boughtDevelopmentCard = -1;
 
     ArrayList<Settlement> settlements = new ArrayList<Settlement>();
 
@@ -63,6 +64,10 @@ public class Player {
             selectedResources[i] = true;
     }
 
+    public void deselectAll() {
+        selectedResources = new boolean[resourceHand.size()];
+    }
+
     public boolean hasResourceCardsSelected() {
         for (boolean b: selectedResources) {
             if (b)
@@ -109,6 +114,8 @@ public class Player {
 
     public void removeDevelopmentCard() {
         developmentCardHand.remove(selectedDevelopmentCard);
+        main.hasplayeddcthisturn = true;
+        selectedDevelopmentCard = -1;
     }
 
     public void addSettlement(Settlement s) {
@@ -352,6 +359,7 @@ public class Player {
         main.addToBank(ResourceCard.WHEAT, 1);
         main.addToBank(ResourceCard.ORE, 1);
         developmentCardHand.add(main.daStack.pop());
+        boughtDevelopmentCard = developmentCardHand.size() - 1;
         updateHiddenVictoryPoints();
     }
 

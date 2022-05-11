@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.Stack;
 import java.util.Collections;
 
@@ -14,7 +15,7 @@ public class mainPanel extends JPanel implements MouseListener {
     private BufferedImage clay, forest, desert, mountains, grassland, wheat,
             clayCard, wheatCard, woodCard, oreCard, sheepCard, cardBack,
             knight, victorypoint, monopoly, roadbuilding, yearofplenty,
-            developmentCosts, background, robber, startpanel;
+            developmentCosts, background, robber, startpanel, eyecon, tips, tipicon;
     private BufferedImage brickicon, oreicon, sheepicon, wheaticon, woodicon;
 
     private BufferedImage[] pips = new BufferedImage[13];
@@ -34,60 +35,63 @@ public class mainPanel extends JPanel implements MouseListener {
     {
         try
         {
-            startpanel = ImageIO.read(new File("StartPanel.png"));
+            startpanel = ImageIO.read(Tile.class.getResource("/Images/StartPanel.png"));
+            tips = ImageIO.read(Tile.class.getResource("/Images/tips.png"));
+            tipicon = ImageIO.read(Tile.class.getResource("/Images/tipicon.png"));
 
-            clay = ImageIO.read(new File("Clay.png"));
-            forest = ImageIO.read(new File("Forest.png"));
-            desert = ImageIO.read(new File("Desert.png"));
-            mountains = ImageIO.read(new File("Mountains.png"));
-            grassland = ImageIO.read(new File("Grassland.png"));
-            wheat = ImageIO.read(new File("Wheat.png"));
+            clay = ImageIO.read(Tile.class.getResource("/Images/Clay.png"));
+            forest = ImageIO.read(Tile.class.getResource("/Images/Forest.png"));
+            desert = ImageIO.read(Tile.class.getResource("/Images/Desert.png"));
+            mountains = ImageIO.read(Tile.class.getResource("/Images/Mountains.png"));
+            grassland = ImageIO.read(Tile.class.getResource("/Images/Grassland.png"));
+            wheat = ImageIO.read(Tile.class.getResource("/Images/Wheat.png"));
 
             pips[0] = null;
             pips[1] = null;
-            pips[2] = ImageIO.read(new File("2 pip.png"));
-            pips[3] = ImageIO.read(new File("3 pip.png"));
-            pips[4] = ImageIO.read(new File("4 pip.png"));
-            pips[5] = ImageIO.read(new File("5 pip.png"));
-            pips[6] = ImageIO.read(new File("6 pip.png"));
+            pips[2] = ImageIO.read(Tile.class.getResource("/Images/2 pip.png"));
+            pips[3] = ImageIO.read(Tile.class.getResource("/Images/3 pip.png"));
+            pips[4] = ImageIO.read(Tile.class.getResource("/Images/4 pip.png"));
+            pips[5] = ImageIO.read(Tile.class.getResource("/Images/5 pip.png"));
+            pips[6] = ImageIO.read(Tile.class.getResource("/Images/6 pip.png"));
             pips[7] = null;
-            pips[8] = ImageIO.read(new File("8 pip.png"));
-            pips[9] = ImageIO.read(new File("9 pip.png"));
-            pips[10] = ImageIO.read(new File("10 pip.png"));
-            pips[11] = ImageIO.read(new File("11 pip.png"));
-            pips[12] = ImageIO.read(new File("12 pip.png"));
+            pips[8] = ImageIO.read(Tile.class.getResource("/Images/8 pip.png"));
+            pips[9] = ImageIO.read(Tile.class.getResource("/Images/9 pip.png"));
+            pips[10] = ImageIO.read(Tile.class.getResource("/Images/10 pip.png"));
+            pips[11] = ImageIO.read(Tile.class.getResource("/Images/11 pip.png"));
+            pips[12] = ImageIO.read(Tile.class.getResource("/Images/12 pip.png"));
 
             dicepips[0] = null;
-            dicepips[1] = ImageIO.read(new File("dice1pip.png"));
-            dicepips[2] = ImageIO.read(new File("dice2pip.png"));
-            dicepips[3] = ImageIO.read(new File("dice3pip.png"));
-            dicepips[4] = ImageIO.read(new File("dice4pip.png"));
-            dicepips[5] = ImageIO.read(new File("dice5pip.png"));
-            dicepips[6] = ImageIO.read(new File("dice6pip.png"));
+            dicepips[1] = ImageIO.read(Tile.class.getResource("/Images/dice1pip.png"));
+            dicepips[2] = ImageIO.read(Tile.class.getResource("/Images/dice2pip.png"));
+            dicepips[3] = ImageIO.read(Tile.class.getResource("/Images/dice3pip.png"));
+            dicepips[4] = ImageIO.read(Tile.class.getResource("/Images/dice4pip.png"));
+            dicepips[5] = ImageIO.read(Tile.class.getResource("/Images/dice5pip.png"));
+            dicepips[6] = ImageIO.read(Tile.class.getResource("/Images/dice6pip.png"));
 
-            background = ImageIO.read(new File("board background.png"));
+            background = ImageIO.read(Tile.class.getResource("/Images/board background.png"));
 
-            clayCard = ImageIO.read(new File("Clay Card.png"));
-            wheatCard = ImageIO.read(new File("Wheat Card.png"));
-            woodCard = ImageIO.read(new File("Wood Card.png"));
-            oreCard = ImageIO.read(new File("Ore Card.png"));
-            sheepCard = ImageIO.read(new File("Sheep Card.png"));
-            cardBack = ImageIO.read(new File("Development Card.png"));
-            developmentCosts = ImageIO.read(new File("developmentcosts.png"));
+            clayCard = ImageIO.read(Tile.class.getResource("/Images/Clay Card.png"));
+            wheatCard = ImageIO.read(Tile.class.getResource("/Images/Wheat Card.png"));
+            woodCard = ImageIO.read(Tile.class.getResource("/Images/Wood Card.png"));
+            oreCard = ImageIO.read(Tile.class.getResource("/Images/Ore Card.png"));
+            sheepCard = ImageIO.read(Tile.class.getResource("/Images/Sheep Card.png"));
+            cardBack = ImageIO.read(Tile.class.getResource("/Images/Development Card.png"));
+            developmentCosts = ImageIO.read(Tile.class.getResource("/Images/developmentcosts.png"));
 
-            knight = ImageIO.read(new File("Knight Card.png"));
-            victorypoint = ImageIO.read(new File("Victory Point Card.png"));
-            monopoly = ImageIO.read(new File("Monopoly.png"));
-            roadbuilding = ImageIO.read(new File("Road Building.png"));
-            yearofplenty = ImageIO.read(new File("Year of Plenty.png"));
+            knight = ImageIO.read(Tile.class.getResource("/Images/Knight Card.png"));
+            victorypoint = ImageIO.read(Tile.class.getResource("/Images/Victory Point Card.png"));
+            monopoly = ImageIO.read(Tile.class.getResource("/Images/Monopoly.png"));
+            roadbuilding = ImageIO.read(Tile.class.getResource("/Images/Road Building.png"));
+            yearofplenty = ImageIO.read(Tile.class.getResource("/Images/Year of Plenty.png"));
 
-            brickicon = ImageIO.read(new File("icon brick.png"));
-            oreicon = ImageIO.read(new File("icon ore.png"));
-            sheepicon = ImageIO.read(new File("icon sheep.png"));
-            wheaticon = ImageIO.read(new File("icon wheat.png"));
-            woodicon = ImageIO.read(new File("icon wood.png"));
+            brickicon = ImageIO.read(Tile.class.getResource("/Images/icon brick.png"));
+            oreicon = ImageIO.read(Tile.class.getResource("/Images/icon ore.png"));
+            sheepicon = ImageIO.read(Tile.class.getResource("/Images/icon sheep.png"));
+            wheaticon = ImageIO.read(Tile.class.getResource("/Images/icon wheat.png"));
+            woodicon = ImageIO.read(Tile.class.getResource("/Images/icon wood.png"));
+            eyecon = ImageIO.read(Tile.class.getResource("/Images/Eyecon.png"));
 
-            robber = ImageIO.read(new File("robber.png"));
+            robber = ImageIO.read(Tile.class.getResource("/Images/robber.png"));
 
         }
         catch (Exception E)
@@ -101,24 +105,27 @@ public class mainPanel extends JPanel implements MouseListener {
     public void paint(Graphics g)
     {
         if (main.startingScreen) {
-
+            g.drawImage(startpanel, 0, 0, 1440, 810, null);
         }
         else {
-            g.setColor(new Color(191, 191, 191));
+            g.setColor(new Color(170, 128, 97));
             g.fillRect(0, 0, 1440, 810);
 
             int cardx;
             for (int i = 0; i < 4; i++) {
+                g.setColor(new Color(80, 46, 0));
+                g.fillRoundRect(42, 48 + i * 120, 467, 110, 20, 20);
+
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
                 g.setColor(main.players[i].getColor());
                 g.drawString("" + (i + 1), 45, 120 + i * 120);
 
-                g.setColor(Color.darkGray);
+                g.setColor(Color.yellow);
                 if (i == main.turn) {
                     g.fillPolygon(new int[]{8, 8, 38}, new int[]{75 + i * 120, 90 + i * 120, 83 + i * 120}, 3);
                 }
-                g.setColor(Color.gray);
-                g.fillRect(8, 98 + i * 120, 30, 30);
+
+                g.drawImage(eyecon, 8, 98 + i * 120, 30, 30, null);
 
                 g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
                 g.setColor(Color.black);
@@ -166,7 +173,8 @@ public class mainPanel extends JPanel implements MouseListener {
                             cardx++;
                         }
                     }
-                    g.drawString("VP: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 45, i * 120 + 150);
+                    g.setColor(Color.white);
+                    g.drawString("Victory Points: " + main.players[i].visibleVictoryPoints + " (+" + main.players[i].hiddenVictoryPoints + ")", 45, i * 120 + 150);
                 } else {
                     for (ResourceCard rc : main.players[i].resourceHand) {
                         if (rc != null) {
@@ -187,29 +195,26 @@ public class mainPanel extends JPanel implements MouseListener {
                             cardx++;
                         }
                     }
-                    g.drawString("VP: " + main.players[i].visibleVictoryPoints, 45, i * 120 + 150);
+                    g.setColor(Color.white);
+                    g.drawString("Victory Points: " + main.players[i].visibleVictoryPoints, 45, i * 120 + 150);
                 }
+                g.setColor(Color.white);
                 if (main.players[i].longestRoad)
                     g.setColor(new Color(255, 203, 67));
-                g.drawString("LR: " + main.players[i].longestRoadLength, 165, i * 120 + 150);
-                g.setColor(Color.black);
+                g.drawString("Longest Road: " + main.players[i].longestRoadLength, 205, i * 120 + 150);
+                g.setColor(Color.white);
                 if (main.players[i].largestArmy)
                     g.setColor(new Color(255, 203, 67));
-                g.drawString("LA: " + main.players[i].knightsPlayed, 285, i * 120 + 150);
+                g.drawString("Army Size: " + main.players[i].knightsPlayed, 360, i * 120 + 150);
             }
 
             //dice
             g.drawImage(dicepips[main.dice1], 345, 540, 75, 75, null);
             g.drawImage(dicepips[main.dice2], 425, 540, 75, 75, null);
             if (main.canRollDie)
-                main.guide = "Roll the die!";
-
-            //trade button
-            g.setColor(Color.red);
-            g.fillRect(360, 645, 140, 45);
+                main.guide = "Player " + (main.turn + 1) + ": Click on the dice to roll!";
 
             //display bank
-            g.setColor(Color.black);
             Font bankFont = new Font("Times New Roman", Font.PLAIN, 15);
             g.setFont(bankFont);
             FontMetrics bankFontMetrics = getFontMetrics(bankFont);
@@ -224,9 +229,18 @@ public class mainPanel extends JPanel implements MouseListener {
             g.drawImage(woodCard, 285, 540, 53, 78, null);
             g.drawString("" + main.bank.get(ResourceCard.WOOD), 310 - bankFontMetrics.stringWidth("" + main.bank.get(ResourceCard.WOOD)) / 2, 630);
 
-            //end turn button
-            g.setColor(Color.cyan);
-            g.fillRect(360, 705, 140, 45);
+            //trade, end turn buttons
+            g.setColor(new Color(162, 4, 4));
+            g.fillRoundRect(360, 645, 140, 60, 15, 15);
+            g.fillRoundRect(360, 720, 140, 60, 15, 15);
+            g.setColor(Color.white);
+            Font buttonFont = new Font("Times New Roman", Font.PLAIN, 30);
+            g.setFont(buttonFont);
+            FontMetrics buttonFontMetrics = getFontMetrics(buttonFont);
+            g.drawString("Trade", 430 - buttonFontMetrics.stringWidth("Trade")/2, 690);
+            g.drawString("Pass Dice", 430 - buttonFontMetrics.stringWidth("Pass Dice")/2, 762);
+
+
 
             g.drawImage(developmentCosts, 45, 645, 300, 150, null);
 
@@ -405,7 +419,7 @@ public class mainPanel extends JPanel implements MouseListener {
             }
 
             //to highlight open and eligible settlement, city, or road intersections/edges
-            g.setColor(new Color(85, 255, 59, 172));
+            g.setColor(new Color(85, 255, 59, 191));
             if (main.highlightEligibleSettlements) {
                 if (main.startingSetup) {
                     for (int i = 3; i < 184; i += 2) {
@@ -438,9 +452,9 @@ public class mainPanel extends JPanel implements MouseListener {
 
             //print guide
             if (!main.gameEnded) {
-                g.setColor(Color.black);
-                g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-                g.drawString(main.guide, 5, 15);
+                g.setColor(Color.white);
+                g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+                g.drawString(main.guide, 40, 25);
             } else {
                 g.setColor(new Color(63, 63, 63, 191));
                 g.fillRect(0, 0, 1440, 810);
@@ -448,6 +462,12 @@ public class mainPanel extends JPanel implements MouseListener {
                 g.setFont(endFont);
                 FontMetrics endFontMetrics = getFontMetrics(endFont);
                 g.drawString("Player " + main.winner + " wins!", 720 - endFontMetrics.stringWidth("Player " + main.winner + " wins!"), 455);
+            }
+
+            //display dickpics
+            g.drawImage(tipicon, 5, 5, 30, 30, null);
+            if (main.dickpictips) {
+                g.drawImage(tips, 40, 40, 500, 750, null);
             }
         }
     }
@@ -462,7 +482,20 @@ public class mainPanel extends JPanel implements MouseListener {
 
         out.println("" + x + " " + y);
 
-        if (!main.gameEnded) {
+        if (main.startingScreen) {
+            main.startingScreen = false;
+            repaint();
+        }
+
+        else if (main.dickpictips) {
+            main.dickpictips = false;
+        }
+
+        else if (x > 5 && x < 35 && y > 5 && y < 35) {
+            main.dickpictips = true;
+        }
+
+        else if (!main.gameEnded) {
             for (int i = 0; i < 4; i++) {
                 if (x > 8 && x < 38 && y > 98 + i * 120 && y < 128 + i * 120) {
                     if (main.displayHands[i]) {
@@ -834,7 +867,7 @@ public class mainPanel extends JPanel implements MouseListener {
 
                 if (main.tradingBuilding) {
 
-                    if (x > 360 && x < 450 && y > 645 && y < 690) {
+                    if (x > 360 && x < 500 && y > 645 && y < 705) {
                         out.println("domestic trade called");
                         main.domesticTrade();
                         repaint();
@@ -862,12 +895,16 @@ public class mainPanel extends JPanel implements MouseListener {
                                 main.guide = "Insufficient resources for road";
                             }
                         } else if (clickedCard == 1) {
-                            if (main.players[main.turn].hasResourcesForSettlement()) {
+                            if (main.players[main.turn].hasResourcesForSettlement() && main.players[main.turn].eligibleSettlements.size() != 0) {
                                 main.buildingSettlement = true;
                                 main.highlightEligibleSettlements = true;
                                 main.canSelectCards = false;
-                            } else {
+                            }
+                            else if (!main.players[main.turn].hasResourcesForSettlement()){
                                 main.guide = "Insufficient resources for settlement";
+                            }
+                            else {
+                                main.guide = "Nowhere to build settlement";
                             }
                         } else if (clickedCard == 2) {
                             if (main.players[main.turn].hasResourcesForCity()) {
@@ -888,7 +925,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     }
                 }
                 if (main.canEndTurn) {
-                    if (x > 360 && x < 450 && y > 705 && y < 750) {
+                    if (x > 360 && x < 500 && y > 720 && y < 780) {
                         main.endTurn();
                         out.println("turn ended");
                         repaint();
