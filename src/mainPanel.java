@@ -440,7 +440,8 @@ public class mainPanel extends JPanel implements MouseListener {
             } else if (main.highlightEligibleCities) {
 
                 for (Settlement s : main.players[main.turn].settlements) {
-                    g.fillRect(s.row * w + 593, s.col * h + 30, 30, 30);
+                    if (s.tier == 1)
+                        g.fillRect(s.row * w + 593, s.col * h + 30, 30, 30);
                 }
 
             } else if (main.highlightEligibleRoads || main.roadbuildinging || main.roadbuildinging2) {
@@ -600,6 +601,7 @@ public class mainPanel extends JPanel implements MouseListener {
                     main.yearofplentying = false;
                 }
                 main.players[main.turn].selectedDevelopmentCard = -1;
+                main.guide = "Player " + (main.turn + 1) + ": trade and build!";
                 main.playingdevelopmentcard = false;
             }
 

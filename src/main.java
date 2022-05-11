@@ -556,6 +556,7 @@ public class main {
         canSelectCards = false;
         tradingBuilding = false;
         hasplayeddcthisturn = false;
+        players[turn].boughtDevelopmentCard = -1;
         for (int i = 0; i < 4; i++) {
             players[i].deselectAll();
         }
